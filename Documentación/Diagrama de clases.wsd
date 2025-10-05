@@ -1,0 +1,137 @@
+@startuml eCommerce GT
+package backend {
+    package controller {
+
+    }
+
+    package model {
+        package users {
+            class AdminUser {
+                + newEmployee(): void
+                + viewReports(): void
+            }
+
+            class CommonUser {
+                - card: Card
+                - productsSale: ArrayList<Product>
+                + getCard(): Card
+                + setCard(Card card): Card
+                + getProductsSale(): ArrayList<Product>
+                + setProductsSale(ArrayList<Product> productsSale): void
+                + viewPackages(): void
+            }
+
+            class LogisticsUser {
+                + viewPackages(): void
+            }
+
+            class ModeratorUser {
+                + reviewProduct(): void
+            }
+
+            class User {
+                - userId: UUID
+                - name: String
+                - password: String
+                - email: String
+                + getUserId(): UUID
+                + getName(): String
+                + getPassword(): String
+                + setUserId(UUID userId): void
+                + setName(String name): void
+                + setPassword(String password): void
+                + getEmail(): String
+                + setEmail(String email): String
+            }
+
+            class Card {
+                - numberCard: int
+                - cardHolder: String
+                - expirationDate: String
+                - securityCode: int
+                + getNumberCard(): int
+                + getCardHolder(): String
+                + getExpirtarionDate(): String
+                + getSecurityCode(): int
+
+            }
+
+            User <|-- CommonUser
+            User <|-- ModeratorUser
+            User <|-- LogisticsUser
+            User <|-- AdminUser
+            CommonUser o-- Card
+        }
+
+        package market {
+            class Product {
+                - productId: UUID
+                - name: String
+                - description: String
+                - image: Image
+                - price: Double
+                - stock: int
+                - state: boolean
+                - category: Category
+                - qualification: int
+                - comment: String
+            }
+
+            enum Category {
+                Tecnología,
+                Hogar,
+                Académico,
+                Personal,
+                Decoración,
+                Otro
+            }
+
+            class ShoppingCart {
+                + addProduct(): void
+                + deleteProduct(): void
+                + updateCart(): void
+                + deleteCart(): void
+                + payCart(): void
+            }
+
+            class Order {
+                - userId: UUID
+                - productId: UUID
+                - statusOrder: String
+                - orderDate: Date
+                - deliveryDate: Date
+            }
+
+            class NotificationHistory {
+                - userId: UUID
+                - userEmail: String
+                - notificationDate: Date
+                - description: String
+            }
+
+            Product *-- Category
+            ShoppingCart o-- Product
+        }
+    }
+
+    package repository {
+
+    }
+
+    package service {
+
+    }
+
+    package utils {
+
+    }
+
+    class ECommerceGt {
+        + {static} main(String[] args): void
+    }
+}
+
+package frontend {
+
+}
+@enduml
