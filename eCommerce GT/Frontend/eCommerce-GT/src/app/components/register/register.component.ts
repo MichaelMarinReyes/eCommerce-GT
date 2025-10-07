@@ -26,7 +26,33 @@ export class RegisterComponent {
     throw new Error("No implemntado");
   }
 
+  formatDpi() {
+    let clean = this.dpi.replace(/\D/g, '');
+    clean = clean.substring(0, 13);
+
+    if (clean.length > 10) {
+      this.dpi = `${clean.substring(0, 4)} ${clean.substring(4, 9)} ${clean.substring(9)}`;
+    } else if (clean.length > 4) {
+      this.dpi = `${clean.substring(0, 4)} ${clean.substring(4)}`;
+    } else {
+      this.dpi = clean;
+    }
+  }
+
+  validDpi(dpi: string): boolean {
+    const cleanDpi = this.dpi.replace(/\s+/g,  '');
+
+    if (!/^\d{13}$/.test(cleanDpi)) {
+      alert("El DPI que ha ingresado es incorrecto");
+      return false;
+    }
+    return true;
+  }
+
   register() {
+    if (!this.validDpi(this.dpi)) {
+      return;
+    }
     const campos = [
       { valor: this.dpi, mensaje: "Debe ingresar su número de DPI" },
       { valor: this.userName, mensaje: "Debe ingresar un nombre de usuario" },
