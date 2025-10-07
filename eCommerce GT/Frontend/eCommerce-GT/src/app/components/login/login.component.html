@@ -1,0 +1,35 @@
+<div class="login-container">
+    <h1>Iniciar Sesión</h1>
+    <form (ngSubmit)="login()">
+        <div class="input-group">
+            <label for="email">Correo electrónico</label>
+            <input type="email" id="email" [(ngModel)]="email" name="email" required>
+        </div>
+
+        <div class="input-group password-group">
+            <label for="password">Contraseña</label>
+            <div class="password-wrapper">
+                <input [type]="passwordVisible ? 'text' : 'password'" id="password" [(ngModel)]="password"
+                    name="password" required>
+                <span class="toggle-password" (click)="togglePasswordVisibility()">
+                    <svg *ngIf="!passwordVisible" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                        fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
+                        <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8z" />
+                        <path d="M8 5a3 3 0 1 0 0 6 3 3 0 0 0 0-6z" />
+                    </svg>
+                    <svg *ngIf="passwordVisible" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                        fill="currentColor" class="bi bi-eye-slash" viewBox="0 0 16 16">
+                        <path
+                            d="M13.359 11.238C14.367 10.067 15 8 15 8s-3-5.5-8-5.5a7.868 7.868 0 0 0-4.648 1.497l1.136 1.136A6.013 6.013 0 0 1 8 3c4 0 6 5 6 5s-.544 1.042-1.641 2.238l.998.998z" />
+                        <path d="M2.354 1.646a.5.5 0 0 0-.708.708l12 12a.5.5 0 0 0 .708-.708l-12-12z" />
+                    </svg>
+                </span>
+            </div>
+        </div>
+        <button type="submit">Iniciar Sesión</button>
+    </form>
+
+    <p class="register-link">
+        ¿No tienes cuenta? <a href="/register">Regístrate aquí</a>
+    </p>
+</div>
