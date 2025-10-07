@@ -2,8 +2,8 @@
     <h1>Registrarse</h1>
     <form (ngSubmit)="register()">
         <div class="input-group">
-            <label for="user-name">DPI</label>
-            <input type="text" id="user-name" [(ngModel)]="dpi" name="user-name" required>
+            <label for="dpi">DPI</label>
+            <input type="text" id="dpi" [(ngModel)]="dpi" name="dpi" (input)="formatDpi()" maxlength="15" required />
         </div>
 
         <div class="input-group">
