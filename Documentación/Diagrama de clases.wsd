@@ -29,81 +29,79 @@ package backend {
                 + reviewProduct(): void
             }
 
+            enum Role {
+                Administrator,
+                CommonUser,
+                LogisticsUser,
+                Moderator
+                {static} mapRole(String role): Role
+            }
+
             class User {
-                - userId: UUID
+                - dpi: String
                 - name: String
                 - password: String
                 - email: String
-                + getUserId(): UUID
+                - role: Role
+                + getDpi(): String
                 + getName(): String
                 + getPassword(): String
-                + setUserId(UUID userId): void
+                + setDpi(String dpi): void
                 + setName(String name): void
                 + setPassword(String password): void
                 + getEmail(): String
                 + setEmail(String email): String
             }
-
-            class Card {
-                - numberCard: int
-                - cardHolder: String
-                - expirationDate: String
-                - securityCode: int
-                + getNumberCard(): int
-                + getCardHolder(): String
-                + getExpirtarionDate(): String
-                + getSecurityCode(): int
-
-            }
-
-            User <|-- CommonUser
-            User <|-- ModeratorUser
-            User <|-- LogisticsUser
-            User <|-- AdminUser
-            CommonUser o-- Card
         }
 
         package market {
             class Product {
                 - productId: UUID
-                - name: String
+                - productName: String
                 - description: String
                 - image: Image
                 - price: Double
                 - stock: int
-                - state: boolean
+                - state: String
                 - category: Category
                 - qualification: int
                 - comment: String
             }
 
             enum Category {
-                Tecnología,
-                Hogar,
-                Académico,
+                Technology,
+                Home,
+                Academic,
                 Personal,
-                Decoración,
-                Otro
+                Decoration,
+                Other
+                {static} mapCatgory(String category): Category
             }
 
             class ShoppingCart {
-                + addProduct(): void
-                + deleteProduct(): void
+                - user: CommonUser
+                - productsList: ArrayList<Product>
+                + getUser(): CommonUser
+                + getProductList(): ArrayList<Product>
+                + setUser(CommonUser user): void
+                + addProduct(Product product): void
+                + removeProduct(Product product): void
                 + updateCart(): void
                 + deleteCart(): void
                 + payCart(): void
             }
 
             class Order {
-                - userId: UUID
-                - productId: UUID
+                - sellerUser: CommonUser
+                - buyerUser: CommonUser
+                - products: ArrayList<Product>
                 - statusOrder: String
                 - orderDate: Date
                 - deliveryDate: Date
             }
 
             class NotificationHistory {
-                - userId: UUID
+                - userDpi: String
                 - userEmail: String
                 - notificationDate: Date
                 - description: String
@@ -111,6 +109,26 @@ package backend {
 
             Product *-- Category
             ShoppingCart o-- Product
+        }
+
+        package objects {
+            class UserCard {
+                - cardNumber: String
+                - cardHolder: String
+                - expirationDate: String
+                - cardType: String
+                - securityCode: String
+                + getCardNumber(): String
+                + getCardHolder(): String
+                + getExpirtarionDate(): String
+                + getCardType(): String
+                + getSecurityCode(): String
+                + setCardNumber(String cardNumber): void
+                + setCardHolder(String cardHolder): void
+                + setExpirationDate(String expirationDate): void
+                + setCardType(String cardType): void
+                + setSecurityCode(String securityCode): void
+            }
         }
     }
 
@@ -130,6 +148,13 @@ package backend {
         + {static} main(String[] args): void
     }
 }
+
+User <|-- CommonUser
+User <|-- ModeratorUser
+User <|-- LogisticsUser
+User <|-- AdminUser
+User *-- Role
+CommonUser o-- UserCard
 
 package frontend {
 
