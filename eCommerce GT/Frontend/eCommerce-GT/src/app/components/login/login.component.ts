@@ -8,7 +8,7 @@ import { NgIf } from '@angular/common';
   standalone: true,
   imports: [FormsModule, NgIf],
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrl: './login.component.css'
 })
 
 export class LoginComponent {
@@ -18,7 +18,6 @@ export class LoginComponent {
   passwordVisible = false;
 
   constructor(private router: Router) { }
-
   ngOnInit(): void {
     throw new Error('Method not implemented.');
   }
@@ -29,11 +28,12 @@ export class LoginComponent {
       return;
     }
 
-    alert(`Bienvenido, ${this.email}`);
-    this.router.navigate(['/start-page']);
+    //alert(`Bienvenido, ${this.email}`);
+    this.router.navigate(['/common-user']);
   }
 
   togglePasswordVisibility() {
     this.passwordVisible = !this.passwordVisible;
   }
+
 }
