@@ -23,14 +23,13 @@ public class Product {
     private String productName;
     @Column(name = "description", nullable = false)
     private String description;
-    @Lob
     @Column(name = "image", nullable = true)
-    private byte[] image;
+    private String image;
     @Column(name = "price", nullable = false)
     private double price;
     @Column(name = "stock", nullable = false)
     private int stock;
-    @Column(name = "condition", nullable = false) // indica si es nuevo o usado
+    @Column(name = "condition", nullable = false) // indica pendiente de aprovación
     private boolean condition;
     @ManyToOne
     @JoinColumn(name = "id_category", nullable = false)
@@ -44,4 +43,6 @@ public class Product {
     private Date updatedAt;
     @OneToMany(mappedBy = "productId")
     private List<CartProduct> cartProducts;
+    @OneToMany(mappedBy = "productId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Rating> ratings;
 }
