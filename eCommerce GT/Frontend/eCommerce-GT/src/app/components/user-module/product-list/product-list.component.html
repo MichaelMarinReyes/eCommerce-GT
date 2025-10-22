@@ -2,21 +2,24 @@
     <div class="logo">eCommerce GT</div>
     <nav class="menu">
         <ul class="menu-list">
-            <li><a routerLink="#" class="menu-item">Productos</a>
+            <li>
+                <a routerLink="#" class="menu-item">Productos</a>
                 <ul class="submenu">
                     <li><a routerLink="#">Ver todos los productos</a></li>
                     <li><a routerLink="#">Venta de artículos</a></li>
                 </ul>
             </li>
 
-            <li><a routerLink="#" class="menu-item">Carrito</a>
+            <li>
+                <a routerLink="#" class="menu-item">Carrito</a>
                 <ul class="submenu">
                     <li><a routerLink="#">Carrito de compras</a></li>
                     <li><a routerLink="#">Seguimiento de pedidos</a></li>
                 </ul>
             </li>
 
-            <li><a routerLink="#" class="menu-item">Opiniones</a>
+            <li>
+                <a routerLink="#" class="menu-item">Opiniones</a>
                 <ul class="submenu">
                     <li><a routerLink="#">Rating y comentarios</a></li>
                 </ul>
@@ -28,25 +31,21 @@
     </nav>
 </header>
 
-<h1>Productos disponibles</h1>
-<div class="featured-proucts">
-    <div class="product-card">
-        <img src="https://via.placeholder.com/150" alt="Producto 1">
-        <h3>Producto 1</h3>
-        <p>Q 15.99</p>
-        <button>Comprar</button>
-    </div>
-</div>
-<div class="product-card">
-    <img src="https://via.placeholder.com/150" alt="Producto 2">
-    <h3>Producto 2</h3>
-    <p>Q22.50</p>
-    <button>Comprar</button>
-</div>
+<main>
+    <h1>Productos disponibles</h1>
 
-<div class="product-card">
-    <img src="https://via.placeholder.com/150" alt="Producto 3">
-    <h3>Producto 3</h3>
-    <p>Q9.99</p>
-    <button>Comprar</button>
-</div>
+    <div class="featured-products">
+        <div class="product-card" *ngFor="let product of products">
+            <img [src]="product.image || 'https://placehold.co/150x150'" alt="{{product.name}}">
+
+            <h3>{{ product.name }}</h3>
+            <p>Categoría: {{product.category.categoryName}}</p>
+            <p>Q {{ product.price }}</p>
+            <button>Comprar</button>
+        </div>
+    </div>
+
+    <div *ngIf="products.length === 0" class="no-products">
+        <p>No hay productos disponibles por el momento.</p>
+    </div>
+</main>

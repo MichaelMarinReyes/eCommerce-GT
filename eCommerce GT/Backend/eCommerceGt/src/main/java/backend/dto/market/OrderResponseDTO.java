@@ -1,4 +1,4 @@
-package backend.dto.order;
+package backend.dto.market;
 
 public class OrderResponseDTO {
 }

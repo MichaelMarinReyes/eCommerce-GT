@@ -1,4 +1,4 @@
-package backend.dto.product;
+package backend.dto.market;
 
 import backend.models.market.Category;
 import lombok.Builder;
@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-public class ProductUpdateDTO {
+public class ProductCreateDTO {
     private Long productId;
     private String productName;
     private String description;

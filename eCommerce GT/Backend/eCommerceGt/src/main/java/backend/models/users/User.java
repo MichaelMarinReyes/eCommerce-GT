@@ -34,8 +34,8 @@ public class User {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_role")
     private Role role;
-    @OneToMany(mappedBy = "userDpi", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "userDpi", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<UserCard> userCards;
-    @OneToMany(mappedBy = "userDpi")
+    @OneToMany(mappedBy = "userDpi", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Product> products;
 }

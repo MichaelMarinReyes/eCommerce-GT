@@ -1,8 +1,8 @@
 package backend.controller;
 
-import backend.dto.product.ProductCreateDTO;
-import backend.dto.product.ProductResponseDTO;
-import backend.dto.product.ProductUpdateDTO;
+import backend.dto.market.ProductCreateDTO;
+import backend.dto.market.ProductResponseDTO;
+import backend.dto.market.ProductUpdateDTO;
 import backend.service.ProductService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

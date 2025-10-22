@@ -1,4 +1,4 @@
-package backend.dto.product;
+package backend.dto.market;
 
 import backend.models.market.Category;
 import lombok.Builder;

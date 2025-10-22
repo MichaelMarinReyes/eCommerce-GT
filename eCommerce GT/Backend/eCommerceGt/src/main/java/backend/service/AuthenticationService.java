@@ -1,14 +1,13 @@
 package backend.service;
 
 import backend.dto.loginregister.AuthResponse;
-import backend.dto.user.UserLoginDTO;
-import backend.dto.user.UserRegisterDTO;
+import backend.dto.users.UserLoginDTO;
+import backend.dto.users.UserRegisterDTO;
 import backend.models.users.Role;
 import backend.models.users.User;
 import backend.repository.users.RoleRepository;
 import backend.repository.users.UserRepository;
 import backend.utils.Jwt;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
