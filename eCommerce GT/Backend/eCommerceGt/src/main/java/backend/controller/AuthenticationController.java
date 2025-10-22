@@ -1,10 +1,8 @@
 package backend.controller;
 
 import backend.dto.loginregister.AuthResponse;
-import backend.dto.loginregister.LoginRequest;
-import backend.dto.loginregister.RegisterRequest;
-import backend.dto.user.UserLoginDTO;
-import backend.dto.user.UserRegisterDTO;
+import backend.dto.users.UserLoginDTO;
+import backend.dto.users.UserRegisterDTO;
 import backend.service.AuthenticationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

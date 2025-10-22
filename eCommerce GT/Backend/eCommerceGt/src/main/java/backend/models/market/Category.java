@@ -1,5 +1,6 @@
 package backend.models.market;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,5 +25,6 @@ public class Category {
     @Column(name = "description", nullable = false)
     private String description;
     @OneToMany(mappedBy = "idCategory")
+    @JsonIgnore
     private List<Product> products;
 }

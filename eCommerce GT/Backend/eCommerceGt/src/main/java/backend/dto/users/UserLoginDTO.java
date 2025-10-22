@@ -1,4 +1,4 @@
-package backend.dto.user;
+package backend.dto.users;
 
 import lombok.Builder;
 import lombok.Getter;

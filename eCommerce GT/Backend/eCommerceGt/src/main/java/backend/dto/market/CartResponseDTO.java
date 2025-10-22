@@ -1,4 +1,4 @@
-package backend.dto.cart;
+package backend.dto.market;
 
 public class CartResponseDTO {
 }

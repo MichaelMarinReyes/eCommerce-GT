@@ -1,4 +1,4 @@
-package backend.dto.report;
+package backend.dto.management;
 
 public class NotificationHistoryDTO {
 }
