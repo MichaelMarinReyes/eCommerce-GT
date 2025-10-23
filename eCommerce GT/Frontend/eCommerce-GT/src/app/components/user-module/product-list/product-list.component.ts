@@ -1,27 +1,57 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ProductService, Product } from '../../../services/product.service';
+import { FormsModule } from '@angular/forms';
+import { ProductService } from '../../../services/product.service';
+import { Product } from '../../../models/product.model';
 
 @Component({
   selector: 'app-product-list',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './product-list.component.html',
-  styleUrl: './product-list.component.css'
+  styleUrls: ['./product-list.component.css']
 })
 export class ProductListComponent implements OnInit {
   products: Product[] = [];
+  filteredProducts: Product[] = [];
+  searchTerm: string = '';
+  priceOrder: string = '';
+  selectedCategory: string = '';
 
-  constructor(private productService: ProductService) {}
+  constructor(private productService: ProductService) { }
 
   ngOnInit(): void {
-  this.productService.getProducts().subscribe({
-    next: (data) => {
-      console.log(data);
-      this.products = data;
-    },
-    error: (err) => console.error('Error al cargar productos', err)
-  });
-}
+    this.productService.getProducts().subscribe({
+      next: (data) => {
+        this.products = data;
+        console.log('Productos cargados:', this.products);
+      },
+      error: (err) => {
+        console.error('Error al cargar productos:', err);
+      }
+    });
+  }
 
+  applyFilters(): void {
+    let filtered = [...this.products];
+
+    if (this.searchTerm.trim() !== '') {
+      filtered = filtered.filter(product =>
+        product.name.toLowerCase().includes(this.searchTerm.toLowerCase())
+      );
+    }
+
+    if (this.priceOrder === 'asc') {
+      filtered.sort((a, b) => a.price - b.price);
+    } else if (this.priceOrder === 'desc') {
+      filtered.sort((a, b) => b.price - a.price);
+    }
+
+    if (this.selectedCategory) {
+      filtered = filtered.filter(p =>
+        p.category?.categoryName === this.selectedCategory
+      );
+    }
+    this.filteredProducts = filtered;
+  }
 }

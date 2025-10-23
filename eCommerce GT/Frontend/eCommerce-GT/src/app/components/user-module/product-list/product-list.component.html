@@ -31,21 +31,39 @@
     </nav>
 </header>
 
-<main>
-    <h1>Productos disponibles</h1>
+<h1>Productos disponibles</h1>
 
-    <div class="featured-products">
-        <div class="product-card" *ngFor="let product of products">
-            <img [src]="product.image || 'https://placehold.co/150x150'" alt="{{product.name}}">
+<div class="filters">
+    <input type="text" placeholder="Buscar producto..." [(ngModel)]="searchTerm" (input)="applyFilters()"
+        class="search-box" />
 
-            <h3>{{ product.name }}</h3>
-            <p>Categoría: {{product.category.categoryName}}</p>
-            <p>Q {{ product.price }}</p>
-            <button>Comprar</button>
-        </div>
+    <select [(ngModel)]="priceOrder" (change)="applyFilters()" class="price-filter">
+        <option value="">Ordenar por precio</option>
+        <option value="asc">Menor a mayor</option>
+        <option value="desc">Mayor a menor</option>
+    </select>
+
+    <select [(ngModel)]="selectedCategory" (change)="applyFilters()" class="price-filter">
+        <option value="">Todas las categorías</option>
+        <option value="Académico">Académico</option>
+        <option value="Decoración">Decoración</option>
+        <option value="Hogar">Hogar</option>
+        <option value="Tecnología">Tecnología</option>
+        <option value="Otros">Otros</option>
+    </select>
+</div>
+
+<div class="featured-products">
+    <div class="product-card" *ngFor="let product of products">
+        <img [src]="product.image || 'https://placehold.co/150x150'" alt="{{product.name}}">
+
+        <h3>{{ product.name }}</h3>
+        <p>Categoría: {{ product.category.categoryName }}</p>
+        <p>Q {{ product.price }}</p>
+        <button>Comprar</button>
     </div>
+</div>
 
-    <div *ngIf="products.length === 0" class="no-products">
-        <p>No hay productos disponibles por el momento.</p>
-    </div>
-</main>
+<div *ngIf="products.length === 0" class="no-products">
+    <p>No hay productos disponibles por el momento.</p>
+</div>

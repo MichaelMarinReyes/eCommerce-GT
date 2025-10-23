@@ -9,24 +9,37 @@
 <h1>Bienvenido a eCommerce GT</h1>
 <p>Descubre los mejores artículos y aprovecha nuestras ofertas.</p>
 
-<div class="featured-proucts">
-  <div class="product-card">
-    <img src="https://via.placeholder.com/150" alt="Producto 1">
-    <h3>Producto 1</h3>
-    <p>Q 15.99</p>
+<div class="filters">
+  <input type="text" placeholder="Buscar producto..." [(ngModel)]="searchTerm" (input)="applyFilters()"
+    class="search-box" />
+
+  <select [(ngModel)]="priceOrder" (change)="applyFilters()" class="price-filter">
+    <option value="">Ordenar por precio</option>
+    <option value="asc">Menor a mayor</option>
+    <option value="desc">Mayor a menor</option>
+  </select>
+
+  <select [(ngModel)]="selectedCategory" (change)="applyFilters()" class="price-filter">
+    <option value="">Todas las categorías</option>
+    <option value="Académico">Académico</option>
+    <option value="Decoración">Decoración</option>
+    <option value="Hogar">Hogar</option>
+    <option value="Tecnología">Tecnología</option>
+    <option value="Otros">Otros</option>
+  </select>
+</div>
+
+<div class="featured-products">
+  <div class="product-card" *ngFor="let product of products">
+    <img [src]="product.image || 'https://placehold.co/150x150'" alt="{{product.name}}">
+
+    <h3>{{ product.name }}</h3>
+    <p>Categoría: {{ product.category.categoryName }}</p>
+    <p>Q {{ product.price }}</p>
     <button>Comprar</button>
   </div>
 </div>
-<div class="product-card">
-  <img src="https://via.placeholder.com/150" alt="Producto 2">
-  <h3>Producto 2</h3>
-  <p>Q22.50</p>
-  <button>Comprar</button>
-</div>
 
-<div class="product-card">
-  <img src="https://via.placeholder.com/150" alt="Producto 3">
-  <h3>Producto 3</h3>
-  <p>Q9.99</p>
-  <button>Comprar</button>
+<div *ngIf="products.length === 0" class="no-products">
+  <p>No hay productos disponibles por el momento.</p>
 </div>
