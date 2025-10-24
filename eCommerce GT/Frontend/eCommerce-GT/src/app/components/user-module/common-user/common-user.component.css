@@ -25,22 +25,23 @@ body {
 
 .menu-list {
     list-style: none;
-    display: flex;
     margin: 0;
     padding: 0;
-    gap: 15px;
+    display: flex;
+    align-items: center;
 }
 
-.menu-list > li {
+.menu-list li {
     position: relative;
 }
 
-.menu-list a {
+.menu-list a,
+.menu-item {
+    display: block;
+    padding: 10px 15px;
     color: white;
     text-decoration: none;
     font-weight: bold;
-    padding: 5px 10px;
-    display: block;
     border-radius: 5px;
 }
 
@@ -52,7 +53,8 @@ body {
     display: none;
     position: absolute;
     top: 100%;
-    left: 0;
+    left: 50%;
+    transform: translateX(-50%);
     list-style: none;
     background-color: #fa8541;
     padding: 0;
@@ -64,15 +66,28 @@ body {
 }
 
 .submenu li a {
+    display: block;
     padding: 10px;
+    color: white;
+    text-decoration: none;
 }
 
 .submenu li a:hover {
     background-color: #e6762c;
 }
 
-.menu-list li:hover .submenu {
+.menu-list li:hover > .submenu,
+.user-menu:hover > .submenu {
     display: block;
+}
+
+.user-menu {
+    position: relative;
+}
+
+.user-menu > .menu-item {
+    cursor: pointer;
+    display: inline-block;
 }
 
 .main {

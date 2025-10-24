@@ -8,8 +8,10 @@ import backend.models.users.User;
 import backend.repository.users.RoleRepository;
 import backend.repository.users.UserRepository;
 import backend.utils.Jwt;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class AuthenticationService {
@@ -17,7 +19,7 @@ public class AuthenticationService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final Jwt jwtUtils;
-    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(6);
 
     public AuthenticationService(UserRepository userRepository, RoleRepository roleRepository, Jwt jwtUtils) {
         this.userRepository = userRepository;
@@ -68,9 +70,7 @@ public class AuthenticationService {
         User user = userOpt.get();
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            return AuthResponseDTO.builder()
-                    .message("Contraseña incorrecta.")
-                    .build();
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Contraseña incorrecta");
         }
 
         if (!user.isStatus()) {
@@ -83,9 +83,10 @@ public class AuthenticationService {
 
         return AuthResponseDTO.builder()
                 .token(token)
+                .message("Inicio de sesión exitoso.")
                 .name(user.getName())
                 .email(user.getEmail())
-                .message("Inicio de sesión exitoso.")
+                .dpi(user.getDpi())
                 .build();
     }
 

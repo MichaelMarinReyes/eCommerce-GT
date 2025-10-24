@@ -18,4 +18,9 @@ export class ProductService {
   createProduct(product: Product, userDpi: string): Observable<Product> {
     return this.http.post<Product>(`${this.apiUrl}/create/${userDpi}`, product);
   }
+
+  getProductByUser(userDpi: string): Observable<Product[]> {
+    console.log('getProductByUser',userDpi)
+    return this.http.get<Product[]>(`${this.apiUrl}/user/${userDpi}`);
+  }
 }

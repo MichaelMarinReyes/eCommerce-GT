@@ -6,6 +6,7 @@ import { CommonUserComponent } from './components/user-module/common-user/common
 import { ProductListComponent } from './components/user-module/product-list/product-list.component';
 import { ProductCreateComponent } from './components/user-module/product-create/product-create.component';
 import { AuthGuard } from './guards/auth.guard';
+import { MyProductsComponent } from './components/user-module/my-products/my-products.component';
 
 export const routes: Routes = [
     { path: '', title: 'eCommerce-GT', component: MainPageComponent },
@@ -20,7 +21,8 @@ export const routes: Routes = [
         children: [
             { path: '', redirectTo: 'product-list', pathMatch: 'full' },
             { path: 'product-list', title: 'Productos', component: ProductListComponent },
-            { path: 'product-create', title: 'Vender producto', component: ProductCreateComponent }
+            { path: 'product-create', title: 'Vender producto', component: ProductCreateComponent },
+            { path: 'my-products', title: 'Mis productos', component: MyProductsComponent }
         ]
     },
     {

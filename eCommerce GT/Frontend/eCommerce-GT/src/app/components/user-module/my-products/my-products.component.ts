@@ -1,34 +1,46 @@
-import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
 import { ProductService } from '../../../services/product.service';
+import { AuthenticationService } from '../../../services/authentication.service';
 import { Product } from '../../../models/product.model';
+import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-product-list',
+  selector: 'app-my-products',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './product-list.component.html',
-  styleUrls: ['./product-list.component.css']
+  templateUrl: './my-products.component.html',
+  styleUrl: './my-products.component.css'
 })
-export class ProductListComponent implements OnInit {
+
+export class MyProductsComponent implements OnInit {
   products: Product[] = [];
+  userDpi: string = '';
   filteredProducts: Product[] = [];
   searchTerm: string = '';
   priceOrder: string = '';
   selectedCategory: string = '';
 
-  constructor(private productService: ProductService) { }
+  constructor(
+    private productService: ProductService,
+    private authenticationService: AuthenticationService
+  ) { }
 
   ngOnInit(): void {
-    this.productService.getProducts().subscribe({
-      next: (data) => {
-        this.products = data;
-      },
-      error: (err) => {
-        console.error('Error al cargar productos:', err);
-      }
-    });
+    const currentUser = this.authenticationService.getCurrentUser();
+    this.userDpi = currentUser?.dpi || '';
+    console.log('entrando', this.userDpi)
+    if (this.userDpi) {
+      this.productService.getProductByUser(this.userDpi).subscribe({
+        next: (data) => {
+          this.products = data;
+        },
+
+        error: (err) => {
+          console.error('Error al obtener productos del usuario:', err);
+        }
+      });
+    }
   }
 
   applyFilters(): void {

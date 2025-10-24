@@ -14,7 +14,7 @@ import java.util.Set;
 
 @Component
 public class Jwt {
-    private final String SECRET_KEY = "ClaveDePruebaSegura987654321";
+    private final String SECRET_KEY = "ClaveDePruebaSegura9876543210abcd";
     private final Set<String> blacklist = new HashSet<>();
 
     private Key getSigningKey() {

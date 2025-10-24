@@ -10,8 +10,16 @@ import { AuthenticationService } from '../../../services/authentication.service'
   styleUrl: './common-user.component.css'
 })
 export class CommonUserComponent {
-  
-  constructor(private authService: AuthenticationService, private router: Router) {}
+  userName: string = '';
+
+  constructor(private authService: AuthenticationService, private router: Router) { }
+
+  ngOnInit(): void {
+    const currentUser = this.authService.getCurrentUser();
+    if (currentUser) {
+      this.userName = currentUser.name;
+    }
+  }
 
   logout() {
     this.authService.logout();
