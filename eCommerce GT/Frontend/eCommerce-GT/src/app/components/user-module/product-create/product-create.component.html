@@ -1,1 +1,95 @@
-<p>product-create works!</p>
+<h1>Vender un producto</h1>
+
+<form (ngSubmit)="onSubmit()">
+
+  <div class="form-group">
+    <label for="productName">Nombre del producto</label>
+    <input
+      id="productName"
+      type="text"
+      [(ngModel)]="product.name"
+      name="name"
+      required
+    />
+  </div>
+
+  <div class="form-group">
+    <label for="productDescription">Descripción</label>
+    <textarea
+      id="productDescription"
+      [(ngModel)]="product.description"
+      name="description"
+      rows="3"
+      required
+    ></textarea>
+  </div>
+
+  <div class="form-group">
+    <label for="productImage">Imagen</label>
+    <input
+      id="productImage"
+      type="file"
+      (change)="onFileSelected($event)"
+      accept="image/*"
+      required
+    />
+    <small>Tamaño máximo recomendado: <strong>2 MB</strong></small>
+
+    <div *ngIf="product.image" class="preview">
+      <p>Vista previa:</p>
+      <img
+        [src]="product.image"
+        alt="Vista previa del producto"
+        style="max-width: 200px; border-radius: 8px; margin-top: 10px;"
+      />
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="productPrice">Precio (Q)</label>
+    <input
+      id="productPrice"
+      type="number"
+      min="0.01"
+      step="0.01"
+      [(ngModel)]="product.price"
+      name="price"
+      required
+    />
+  </div>
+
+  <div class="form-group">
+    <label for="productStock">Stock (mínimo 1)</label>
+    <input
+      id="productStock"
+      type="number"
+      min="1"
+      [(ngModel)]="product.stock"
+      name="stock"
+      required
+    />
+  </div>
+
+  <div class="form-group">
+    <label for="productCategory">Categoría</label>
+    <select
+      id="productCategory"
+      [(ngModel)]="product.category"
+      name="category"
+      [ngModelOptions]="{ standalone: true }"
+      required
+    >
+      <option
+        [ngValue]="{ idCategory: 0, categoryName: '', description: '' }"
+        disabled
+      >
+        Seleccione una categoría
+      </option>
+      <option *ngFor="let c of categories" [ngValue]="c">
+        {{ c.categoryName }}
+      </option>
+    </select>
+  </div>
+
+  <button type="submit">Publicar producto</button>
+</form>

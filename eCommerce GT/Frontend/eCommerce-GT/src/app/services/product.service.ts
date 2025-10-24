@@ -7,11 +7,15 @@ import { Product } from '../models/product.model';
   providedIn: 'root'
 })
 export class ProductService {
-  private apiUrl = 'http://localhost:8080/products/active';
+  private apiUrl = 'http://localhost:8080/products';
 
   constructor(private http: HttpClient) {}
 
   getProducts(): Observable<Product[]> {
-    return this.http.get<Product[]>(this.apiUrl);
+    return this.http.get<Product[]>(`${this.apiUrl}/active`);
+  }
+
+  createProduct(product: Product, userDpi: string): Observable<Product> {
+    return this.http.post<Product>(`${this.apiUrl}/create/${userDpi}`, product);
   }
 }

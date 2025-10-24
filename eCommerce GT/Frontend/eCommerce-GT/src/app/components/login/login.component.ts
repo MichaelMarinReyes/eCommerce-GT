@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { NgIf } from '@angular/common';
+import { AuthenticationService, LoginRequest, AuthResponse } from '../../services/authentication.service';
 
 @Component({
   selector: 'login',
@@ -17,10 +18,10 @@ export class LoginComponent {
   password: string = '';
   passwordVisible = false;
 
-  constructor(private router: Router) { }
-  ngOnInit(): void {
-    
-  }
+  constructor(
+    private router: Router,
+    private authService: AuthenticationService
+  ) { }
 
   login() {
     if (!this.email?.trim() || !this.password?.trim()) {
@@ -28,8 +29,23 @@ export class LoginComponent {
       return;
     }
 
-    //alert(`Bienvenido, ${this.email}`);
-    this.router.navigate(['/common-user']);
+    const loginData: LoginRequest = {
+      email: this.email,
+      password: this.password
+    };
+
+    this.authService.login(loginData).subscribe({
+      next: (response: AuthResponse) => {
+        console.log('Login exitoso:', response);
+        // Guardar token si tu backend lo devuelve
+        localStorage.setItem('token', response.token);
+        this.router.navigate(['/common-user']);
+      },
+      error: (err) => {
+        console.error('Error en login:', err);
+        alert('Correo o contraseña incorrectos');
+      }
+    });
   }
 
   togglePasswordVisibility() {

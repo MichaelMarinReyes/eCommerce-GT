@@ -1,0 +1,36 @@
+<header class="header">
+  <div class="logo">eCommerce GT</div>
+  <nav class="menu">
+    <ul class="menu-list">
+      <li>
+        <a routerLink="#" class="menu-item">Productos</a>
+        <ul class="submenu">
+          <li><a routerLink="product-list">Ver todos los productos</a></li>
+          <li><a routerLink="product-create">Vender un producto</a></li>
+        </ul>
+      </li>
+
+      <li>
+        <a routerLink="#" class="menu-item">Carrito</a>
+        <ul class="submenu">
+          <li><a routerLink="cart">Carrito de compras</a></li>
+          <li><a routerLink="orders">Seguimiento de pedidos</a></li>
+        </ul>
+      </li>
+
+      <li>
+        <a routerLink="#" class="menu-item">Opiniones</a>
+        <ul class="submenu">
+          <li><a routerLink="reviews">Rating y comentarios</a></li>
+        </ul>
+      </li>
+
+      <li><a routerLink="edit-profile" class="menu-item">Editar información</a></li>
+      <li><a (click)="logout()" class="menu-item">Cerrar Sesión</a></li>
+    </ul>
+  </nav>
+</header>
+
+<div class="content">
+  <router-outlet></router-outlet>
+</div>

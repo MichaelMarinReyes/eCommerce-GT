@@ -1,6 +1,6 @@
 package backend.service;
 
-import backend.dto.loginregister.AuthResponse;
+import backend.dto.loginregister.AuthResponseDTO;
 import backend.dto.users.UserLoginDTO;
 import backend.dto.users.UserRegisterDTO;
 import backend.models.users.Role;
@@ -24,9 +24,9 @@ public class AuthenticationService {
         this.roleRepository = roleRepository;
         this.jwtUtils = jwtUtils;
     }
-    public AuthResponse register(UserRegisterDTO request) {
+    public AuthResponseDTO register(UserRegisterDTO request) {
         if (userRepository.findByEmail(request.getEmail()).isPresent()) {
-            return AuthResponse.builder()
+            return AuthResponseDTO.builder()
                     .message("El correo ya está registrado.")
                     .build();
         }
@@ -48,7 +48,7 @@ public class AuthenticationService {
 
         String token = jwtUtils.generateToken(user.getEmail());
 
-        return AuthResponse.builder()
+        return AuthResponseDTO.builder()
                 .token(token)
                 .name(user.getName())
                 .email(user.getEmail())
@@ -56,11 +56,11 @@ public class AuthenticationService {
                 .build();
     }
 
-    public AuthResponse login(UserLoginDTO request) {
+    public AuthResponseDTO login(UserLoginDTO request) {
         var userOpt = userRepository.findByEmail(request.getEmail());
 
         if (userOpt.isEmpty()) {
-            return AuthResponse.builder()
+            return AuthResponseDTO.builder()
                     .message("Usuario no encontrado.")
                     .build();
         }
@@ -68,20 +68,20 @@ public class AuthenticationService {
         User user = userOpt.get();
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            return AuthResponse.builder()
+            return AuthResponseDTO.builder()
                     .message("Contraseña incorrecta.")
                     .build();
         }
 
         if (!user.isStatus()) {
-            return AuthResponse.builder()
+            return AuthResponseDTO.builder()
                     .message("Usuario suspendido.")
                     .build();
         }
 
         String token = jwtUtils.generateToken(user.getEmail());
 
-        return AuthResponse.builder()
+        return AuthResponseDTO.builder()
                 .token(token)
                 .name(user.getName())
                 .email(user.getEmail())
@@ -94,11 +94,11 @@ public class AuthenticationService {
         jwtUtils.addToBlacklist(cleanToken);
     }
 
-    public AuthResponse verifyToken(String token) {
+    public AuthResponseDTO verifyToken(String token) {
         String cleanToken = token.replace("Bearer ", "");
 
         if (!jwtUtils.validateToken(cleanToken)) {
-            return AuthResponse.builder()
+            return AuthResponseDTO.builder()
                     .token(null)
                     .message("Token inválido o expirado.")
                     .build();
@@ -108,7 +108,7 @@ public class AuthenticationService {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado."));
 
-        return AuthResponse.builder()
+        return AuthResponseDTO.builder()
                 .token(cleanToken)
                 .name(user.getName())
                 .email(user.getEmail())
