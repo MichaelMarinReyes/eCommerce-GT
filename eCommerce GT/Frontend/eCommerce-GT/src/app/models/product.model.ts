@@ -11,7 +11,7 @@ export interface Product {
   price: number;
   stock: number;
   condition: boolean;
-  image?: string;
-  averageRating?: number;
   category: Category;
+  image: string;
+  averageRating?: number;
 }

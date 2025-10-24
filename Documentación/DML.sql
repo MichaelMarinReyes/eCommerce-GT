@@ -1,3 +1,4 @@
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
 DELETE FROM users;
 DELETE FROM roles;
 DELETE FROM products;
@@ -19,28 +20,28 @@ INSERT INTO categories (category_name, description) VALUES
 
 INSERT INTO users(user_dpi, address, email, name, password, status, id_role) VALUES
 --ADMINISTRADOR
-('2789456730901', 'Quetzaltenango, Quetzaltenango', 'admin@gmail.com', 'Mario Rodríguez', 'admin123', TRUE, (SELECT id_role FROM roles WHERE name_role = 'ADMINISTRADOR')),
+('2789456730901', 'Quetzaltenango, Quetzaltenango', 'admin@gmail.com', 'Mario Rodríguez', crypt('admin123', gen_salt('bf')), TRUE, (SELECT id_role FROM roles WHERE name_role = 'ADMINISTRADOR')),
 --MODERADORES
-('1987543620302', 'Zona 4, Quetzaltenango', 'mod1@gmail.com', 'Moderador 1', 'mod123', TRUE, (SELECT id_role FROM roles WHERE name_role = 'MODERADOR')),
-('2458967130403', 'Zona 3, Ciudad de Guatemala', 'mod2@gmail.com', 'Moderador 2', 'mod123', TRUE, (SELECT id_role FROM roles WHERE name_role = 'MODERADOR')),
-('3124576890504', 'Zona 10, Jutiapa', 'mod3@gmail.com', 'Moderador 3', 'mod123', TRUE, (SELECT id_role FROM roles WHERE name_role = 'MODERADOR')),
-('1894765320605', 'Zona 5, San Marcos', 'mod4@gmail.com', 'Moderador 4', 'mod123', TRUE, (SELECT id_role FROM roles WHERE name_role = 'MODERADOR')),
-('2056847910706', 'Zona 6, Petén', 'mod5@gmail.com', 'Moderador 5', 'mod123', TRUE, (SELECT id_role FROM roles WHERE name_role = 'MODERADOR')),
+('1987543620302', 'Zona 4, Quetzaltenango', 'mod1@gmail.com', 'Moderador 1', crypt('mod123', gen_salt('bf')), TRUE, (SELECT id_role FROM roles WHERE name_role = 'MODERADOR')),
+('2458967130403', 'Zona 3, Ciudad de Guatemala', 'mod2@gmail.com', 'Moderador 2', crypt('mod123', gen_salt('bf')), TRUE, (SELECT id_role FROM roles WHERE name_role = 'MODERADOR')),
+('3124576890504', 'Zona 10, Jutiapa', 'mod3@gmail.com', 'Moderador 3', crypt('mod123', gen_salt('bf')), TRUE, (SELECT id_role FROM roles WHERE name_role = 'MODERADOR')),
+('1894765320605', 'Zona 5, San Marcos', 'mod4@gmail.com', 'Moderador 4', crypt('mod123', gen_salt('bf')), TRUE, (SELECT id_role FROM roles WHERE name_role = 'MODERADOR')),
+('2056847910706', 'Zona 6, Petén', 'mod5@gmail.com', 'Moderador 5', crypt('mod123', gen_salt('bf')), TRUE, (SELECT id_role FROM roles WHERE name_role = 'MODERADOR')),
 --LOGÍSTICA
-('2547896310807', 'Zona 1, Quetzaltenango', 'log1@gmail.com', 'Logística 1', 'log123', TRUE, (SELECT id_role FROM roles WHERE name_role = 'LOGÍSTICA')),
-('2986457310908', 'Zona 8, Quetzaltenango', 'log2@gmail.com', 'Logística 2', 'log123', TRUE, (SELECT id_role FROM roles WHERE name_role = 'LOGÍSTICA')),
-('3158792461009', 'Zona 9, Quetzaltenango', 'log3@gmail.com', 'Logística 3', 'log123', TRUE, (SELECT id_role FROM roles WHERE name_role = 'LOGÍSTICA')),
+('2547896310807', 'Zona 1, Quetzaltenango', 'log1@gmail.com', 'Logística 1', crypt('log123', gen_salt('bf')), TRUE, (SELECT id_role FROM roles WHERE name_role = 'LOGÍSTICA')),
+('2986457310908', 'Zona 8, Quetzaltenango', 'log2@gmail.com', 'Logística 2', crypt('log123', gen_salt('bf')), TRUE, (SELECT id_role FROM roles WHERE name_role = 'LOGÍSTICA')),
+('3158792461009', 'Zona 9, Quetzaltenango', 'log3@gmail.com', 'Logística 3', crypt('log123', gen_salt('bf')), TRUE, (SELECT id_role FROM roles WHERE name_role = 'LOGÍSTICA')),
 --USUARIOS COMUNES
-('2879654311101', 'Zona 10, Ciudad de Guatemala', 'user1@gmail.com', 'Usuario 1', 'user123', TRUE, (SELECT id_role FROM roles WHERE name_role = 'USUARIO COMÚN')),
-('3147852691202', 'Zona 11, Ciudad de Guatemala', 'user2@gmail.com', 'Usuario 2', 'user123', TRUE, (SELECT id_role FROM roles WHERE name_role = 'USUARIO COMÚN')),
-('2689457311303', 'Zona 12, Ciudad de Guatemala', 'user3@gmail.com', 'Usuario 3', 'user123', TRUE, (SELECT id_role FROM roles WHERE name_role = 'USUARIO COMÚN')),
-('2896541731404', 'Zona 13, Ciudad de Guatemala', 'user4@gmail.com', 'Usuario 4', 'user123', TRUE, (SELECT id_role FROM roles WHERE name_role = 'USUARIO COMÚN')),
-('3125798641505', 'Zona 14, Ciudad de Guatemala', 'user5@gmail.com', 'Usuario 5', 'user123', TRUE, (SELECT id_role FROM roles WHERE name_role = 'USUARIO COMÚN')),
-('2458796311606', 'Zona 15, Ciudad de Guatemala', 'user6@gmail.com', 'Usuario 6', 'user123', TRUE, (SELECT id_role FROM roles WHERE name_role = 'USUARIO COMÚN')),
-('1987645321707', 'Zona 16, Ciudad de Guatemala', 'user7@gmail.com', 'Usuario 7', 'user123', TRUE, (SELECT id_role FROM roles WHERE name_role = 'USUARIO COMÚN')),
-('2765894311808', 'Zona 17, Ciudad de Guatemala', 'user8@gmail.com', 'Usuario 8', 'user123', TRUE, (SELECT id_role FROM roles WHERE name_role = 'USUARIO COMÚN')),
-('3098746151909', 'Zona 18, Ciudad de Guatemala', 'user9@gmail.com', 'Usuario 9', 'user123', TRUE, (SELECT id_role FROM roles WHERE name_role = 'USUARIO COMÚN')),
-('2549871362001', 'Zona 19, Ciudad de Guatemala', 'user10@gmail.com', 'Usuario 10', 'user123', TRUE, (SELECT id_role FROM roles WHERE name_role = 'USUARIO COMÚN'));
+('2879654311101', 'Zona 10, Ciudad de Guatemala', 'user1@gmail.com', 'Usuario 1', crypt('user123', gen_salt('bf')), TRUE, (SELECT id_role FROM roles WHERE name_role = 'USUARIO COMÚN')),
+('3147852691202', 'Zona 11, Ciudad de Guatemala', 'user2@gmail.com', 'Usuario 2', crypt('user123', gen_salt('bf')), TRUE, (SELECT id_role FROM roles WHERE name_role = 'USUARIO COMÚN')),
+('2689457311303', 'Zona 12, Ciudad de Guatemala', 'user3@gmail.com', 'Usuario 3', crypt('user123', gen_salt('bf')), TRUE, (SELECT id_role FROM roles WHERE name_role = 'USUARIO COMÚN')),
+('2896541731404', 'Zona 13, Ciudad de Guatemala', 'user4@gmail.com', 'Usuario 4', crypt('user123', gen_salt('bf')), TRUE, (SELECT id_role FROM roles WHERE name_role = 'USUARIO COMÚN')),
+('3125798641505', 'Zona 14, Ciudad de Guatemala', 'user5@gmail.com', 'Usuario 5', crypt('user123', gen_salt('bf')), TRUE, (SELECT id_role FROM roles WHERE name_role = 'USUARIO COMÚN')),
+('2458796311606', 'Zona 15, Ciudad de Guatemala', 'user6@gmail.com', 'Usuario 6', crypt('user123', gen_salt('bf')), TRUE, (SELECT id_role FROM roles WHERE name_role = 'USUARIO COMÚN')),
+('1987645321707', 'Zona 16, Ciudad de Guatemala', 'user7@gmail.com', 'Usuario 7', crypt('user123', gen_salt('bf')), TRUE, (SELECT id_role FROM roles WHERE name_role = 'USUARIO COMÚN')),
+('2765894311808', 'Zona 17, Ciudad de Guatemala', 'user8@gmail.com', 'Usuario 8', crypt('user123', gen_salt('bf')), TRUE, (SELECT id_role FROM roles WHERE name_role = 'USUARIO COMÚN')),
+('3098746151909', 'Zona 18, Ciudad de Guatemala', 'user9@gmail.com', 'Usuario 9', crypt('user123', gen_salt('bf')), TRUE, (SELECT id_role FROM roles WHERE name_role = 'USUARIO COMÚN')),
+('2549871362001', 'Zona 19, Ciudad de Guatemala', 'user10@gmail.com', 'Usuario 10', crypt('user123', gen_salt('bf')), TRUE, (SELECT id_role FROM roles WHERE name_role = 'USUARIO COMÚN'));
 
 -- Productos
 INSERT INTO products (product_name, description, image, price, stock, condition, id_category, user_dpi, created_at, updated_at) VALUES

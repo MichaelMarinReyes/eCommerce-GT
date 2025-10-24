@@ -1,0 +1,54 @@
+<h1>Mis productos</h1>
+
+<div class="filters">
+    <input type="text" placeholder="Buscar producto..." [(ngModel)]="searchTerm" (input)="applyFilters()"
+        class="search-box" />
+
+    <select [(ngModel)]="priceOrder" (change)="applyFilters()" class="price-filter">
+        <option value="">Ordenar por precio</option>
+        <option value="asc">Menor a mayor</option>
+        <option value="desc">Mayor a menor</option>
+    </select>
+
+    <select [(ngModel)]="selectedCategory" (change)="applyFilters()" class="price-filter">
+        <option value="">Todas las categorías</option>
+        <option value="Académico">Académico</option>
+        <option value="Decoración">Decoración</option>
+        <option value="Hogar">Hogar</option>
+        <option value="Tecnología">Tecnología</option>
+        <option value="Otros">Otros</option>
+    </select>
+</div>
+<table>
+    <thead>
+        <tr>
+            <th>No.</th>
+            <th>ID</th>
+            <th>Imagen</th>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Categoría</th>
+            <th>Precio</th>
+            <th>Stock</th>
+            <th>Opciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let product of products; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>{{ product.id }}</td>
+            <td>
+                <img [src]="'assets/images/' + product.image" alt="Imagen" width="80">
+            </td>
+            <td>{{ product.name }}</td>
+            <td>{{ product.description }}</td>
+            <td>{{ product.category.categoryName }}</td>
+            <td>Q. {{ product.price }}</td>
+            <td>{{ product.stock }}</td>
+            <td>
+                <button>Editar</button>
+                <button>Eliminar</button>
+            </td>
+        </tr>
+    </tbody>
+</table>

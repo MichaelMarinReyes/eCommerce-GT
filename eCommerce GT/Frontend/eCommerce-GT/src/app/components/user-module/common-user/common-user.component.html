@@ -7,6 +7,7 @@
         <ul class="submenu">
           <li><a routerLink="product-list">Ver todos los productos</a></li>
           <li><a routerLink="product-create">Vender un producto</a></li>
+          <li><a routerLink="my-products">Mis productos</a></li>
         </ul>
       </li>
 
@@ -25,8 +26,13 @@
         </ul>
       </li>
 
-      <li><a routerLink="edit-profile" class="menu-item">Editar información</a></li>
-      <li><a (click)="logout()" class="menu-item">Cerrar Sesión</a></li>
+      <li class="user-menu">
+        <span class="menu-item">{{ userName }}</span>
+        <ul class="submenu">
+          <li><a routerLink="edit-profile">Editar información</a></li>
+          <li><a (click)="logout()">Cerrar sesión</a></li>
+        </ul>
+      </li>
     </ul>
   </nav>
 </header>
