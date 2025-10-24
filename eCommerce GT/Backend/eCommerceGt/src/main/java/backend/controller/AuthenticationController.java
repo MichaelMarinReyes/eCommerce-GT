@@ -1,6 +1,7 @@
 package backend.controller;
 
-import backend.dto.loginregister.AuthResponse;
+import backend.dto.loginregister.AuthResponseDTO;
+import backend.dto.loginregister.LoginRequestDTO;
 import backend.dto.users.UserLoginDTO;
 import backend.dto.users.UserRegisterDTO;
 import backend.service.AuthenticationService;
@@ -8,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/autenticacion")
+@RequestMapping("/authentication")
 public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
@@ -17,13 +18,13 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<AuthResponse> register(@RequestBody UserRegisterDTO request) {
+    public ResponseEntity<AuthResponseDTO> register(@RequestBody UserRegisterDTO request) {
         return ResponseEntity.ok(authenticationService.register(request));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody UserLoginDTO request) {
-        return ResponseEntity.ok(authenticationService.login(request));
+    public ResponseEntity<AuthResponseDTO> login(@RequestBody LoginRequestDTO request) {
+        return ResponseEntity.ok(authenticationService.login(new UserLoginDTO(request.getEmail(), request.getPassword())));
     }
 
     @PostMapping("/logout")
@@ -33,7 +34,7 @@ public class AuthenticationController {
     }
 
     @GetMapping("/verify-token")
-    public ResponseEntity<AuthResponse> verifyToken(@RequestHeader("Authorization") String token) {
+    public ResponseEntity<AuthResponseDTO> verifyToken(@RequestHeader("Authorization") String token) {
         return ResponseEntity.ok(authenticationService.verifyToken(token));
     }
 }
