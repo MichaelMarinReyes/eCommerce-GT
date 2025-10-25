@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ProductService } from '../../../services/product.service';
 import { Product } from '../../../models/product.model';
+import { AuthenticationService } from '../../../services/authentication.service';
 
 @Component({
   selector: 'app-product-list',
@@ -18,12 +19,22 @@ export class ProductListComponent implements OnInit {
   priceOrder: string = '';
   selectedCategory: string = '';
 
-  constructor(private productService: ProductService) { }
+  constructor(
+    private productService: ProductService,
+    private authService: AuthenticationService
+  ) { }
 
   ngOnInit(): void {
-    this.productService.getProducts().subscribe({
+    const dpi = this.authService.getCurrentUser().dpi;
+
+    if (!dpi) {
+      return;
+    }
+
+    this.productService.getProductExcludeById(dpi).subscribe({
       next: (data) => {
         this.products = data;
+        this.filteredProducts = data;
       },
       error: (err) => {
         console.error('Error al cargar productos:', err);
@@ -36,7 +47,7 @@ export class ProductListComponent implements OnInit {
 
     if (this.searchTerm.trim() !== '') {
       filtered = filtered.filter(product =>
-        product.productName.toLowerCase().includes(this.searchTerm.toLowerCase())
+        product.name.toLowerCase().includes(this.searchTerm.toLowerCase())
       );
     }
 

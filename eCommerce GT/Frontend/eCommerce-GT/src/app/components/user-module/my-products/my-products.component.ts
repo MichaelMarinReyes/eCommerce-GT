@@ -29,28 +29,33 @@ export class MyProductsComponent implements OnInit {
     private route: ActivatedRoute
   ) { }
 
-  ngOnInit(): void {
-    const currentUser = this.authenticationService.getCurrentUser();
-    this.userDpi = currentUser?.dpi || '';
-    if (this.userDpi) {
-      this.productService.getProductByUser(this.userDpi).subscribe({
-        next: (data) => {
-          this.products = data;
-        },
-
-        error: (err) => {
-          console.error('Error al obtener productos del usuario:', err);
-        }
-      });
-    }
+ngOnInit(): void {
+  const currentUser = this.authenticationService.getCurrentUser();
+  this.userDpi = currentUser?.dpi || '';
+  if (this.userDpi) {
+    this.productService.getProductByUser(this.userDpi).subscribe({
+      next: (data) => {
+        this.products = data.map(p => ({
+          ...p,
+          status: p.status?.toString() || ''
+        }));
+                console.log('productos del usuario', this.products);
+        this.filteredProducts = [...this.products];
+      },
+      error: (err) => {
+        console.error('Error al obtener productos del usuario:', err);
+      }
+    });
   }
+}
+
 
   applyFilters(): void {
     let filtered = [...this.products];
 
     if (this.searchTerm.trim() !== '') {
       filtered = filtered.filter(product =>
-        product.productName.toLowerCase().includes(this.searchTerm.toLowerCase())
+        product.name.toLowerCase().includes(this.searchTerm.toLowerCase())
       );
     }
 
