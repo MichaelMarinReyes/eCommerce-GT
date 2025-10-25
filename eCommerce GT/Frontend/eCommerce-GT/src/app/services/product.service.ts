@@ -20,7 +20,14 @@ export class ProductService {
   }
 
   getProductByUser(userDpi: string): Observable<Product[]> {
-    console.log('getProductByUser',userDpi)
     return this.http.get<Product[]>(`${this.apiUrl}/user/${userDpi}`);
+  }
+
+  getProductById(id: number): Observable<Product> {
+    return this.http.get<Product>(`${this.apiUrl}/edit/${id}`); 
+  }
+
+  updateProduct(id: number, product: Product) {
+    return this.http.post<Product[]>(`id`, product);
   }
 }

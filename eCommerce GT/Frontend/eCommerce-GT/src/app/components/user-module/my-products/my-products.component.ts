@@ -4,11 +4,12 @@ import { ProductService } from '../../../services/product.service';
 import { AuthenticationService } from '../../../services/authentication.service';
 import { Product } from '../../../models/product.model';
 import { FormsModule } from '@angular/forms';
+import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-my-products',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterOutlet],
   templateUrl: './my-products.component.html',
   styleUrl: './my-products.component.css'
 })
@@ -23,13 +24,14 @@ export class MyProductsComponent implements OnInit {
 
   constructor(
     private productService: ProductService,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    private router: Router,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
     const currentUser = this.authenticationService.getCurrentUser();
     this.userDpi = currentUser?.dpi || '';
-    console.log('entrando', this.userDpi)
     if (this.userDpi) {
       this.productService.getProductByUser(this.userDpi).subscribe({
         next: (data) => {
@@ -48,7 +50,7 @@ export class MyProductsComponent implements OnInit {
 
     if (this.searchTerm.trim() !== '') {
       filtered = filtered.filter(product =>
-        product.name.toLowerCase().includes(this.searchTerm.toLowerCase())
+        product.productName.toLowerCase().includes(this.searchTerm.toLowerCase())
       );
     }
 
@@ -64,5 +66,9 @@ export class MyProductsComponent implements OnInit {
       );
     }
     this.filteredProducts = filtered;
+  }
+
+  editProduct(id: number) {
+    this.router.navigate(['common-user/product-edit/', id]);
   }
 }

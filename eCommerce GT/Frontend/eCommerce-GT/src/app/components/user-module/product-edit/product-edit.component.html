@@ -1,1 +1,22 @@
-<p>product-edit works!</p>
+<h2>Editar Producto</h2>
+
+<form (ngSubmit)="updateProduct()" *ngIf="product">
+    <label>Id del producto: {{ product.id }}</label>
+    
+    <label>Nombre:</label>
+    <input type="text" [(ngModel)]="product.productName" name="name" required />
+
+    <label>Descripción:</label>
+    <textarea [(ngModel)]="product.description" name="description" required></textarea>
+
+    <label>Precio:</label>
+    <input type="number" [(ngModel)]="product.price" name="price" required />
+
+    <label>Stock:</label>
+    <input type="number" [(ngModel)]="product.stock" name="stock" required />
+
+    <label>Imagen:</label>
+    <input type="text" [(ngModel)]="product.image" name="image" />
+
+    <button type="submit">Guardar Cambios</button>
+</form>
