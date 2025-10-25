@@ -47,7 +47,7 @@ export class MainPageComponent {
 
     if (this.searchTerm.trim() !== '') {
       filtered = filtered.filter(product =>
-        product.name.toLowerCase().includes(this.searchTerm.toLowerCase())
+        product.productName.toLowerCase().includes(this.searchTerm.toLowerCase())
       );
     }
 

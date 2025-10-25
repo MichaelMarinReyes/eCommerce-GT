@@ -19,17 +19,17 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "product_id", nullable = false)
     private Long productId;
-    @Column(name = "product_name", nullable = false)
+    @Column(name = "product_name", nullable = false,  length = 100)
     private String productName;
-    @Column(name = "description", nullable = false)
+    @Column(name = "description", nullable = false, length = 1000)
     private String description;
-    @Column(name = "image", nullable = true)
+    @Column(name = "image", nullable = true,  length = 900)
     private String image;
     @Column(name = "price", nullable = false)
     private double price;
     @Column(name = "stock", nullable = false)
     private int stock;
-    @Column(name = "condition", nullable = false) // indica pendiente de aprovación
+    @Column(name = "condition", nullable = false) // indica pendiente de aprobación
     private boolean condition;
     @ManyToOne
     @JoinColumn(name = "id_category", nullable = false)

@@ -31,9 +31,9 @@
 
 <div class="featured-products">
   <div class="product-card" *ngFor="let product of products">
-    <img [src]="product.image || 'https://placehold.co/150x150'" alt="{{product.name}}">
+    <img [src]="product.image || 'https://placehold.co/150x150'" alt="{{product.productName}}">
 
-    <h3>{{ product.name }}</h3>
+    <h3>{{ product.productName }}</h3>
     <p>Categoría: {{ product.category.categoryName }}</p>
     <p>Q {{ product.price }}</p>
     <button>Comprar</button>

@@ -40,15 +40,17 @@
             <td>
                 <img [src]="'assets/images/' + product.image" alt="Imagen" width="80">
             </td>
-            <td>{{ product.name }}</td>
+            <td>{{ product.productName }}</td>
             <td>{{ product.description }}</td>
             <td>{{ product.category.categoryName }}</td>
             <td>Q. {{ product.price }}</td>
             <td>{{ product.stock }}</td>
             <td>
-                <button>Editar</button>
+                <button (click)="editProduct(product.id)">Editar</button>
                 <button>Eliminar</button>
             </td>
         </tr>
     </tbody>
 </table>
+
+<router-outlet></router-outlet>

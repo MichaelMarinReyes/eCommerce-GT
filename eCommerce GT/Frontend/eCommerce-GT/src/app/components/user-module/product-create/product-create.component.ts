@@ -17,7 +17,7 @@ export class ProductCreateComponent {
   userDpi: string = '';
   product: Product = {
     id: 0,
-    name: '',
+    productName: '',
     description: '',
     price: 0,
     stock: 0,
@@ -58,7 +58,7 @@ export class ProductCreateComponent {
 
 onSubmit(): void {
 
-  if (!this.product.name.trim()) {
+  if (!this.product.productName.trim()) {
     alert('El nombre del producto es obligatorio');
     return;
   }
@@ -98,7 +98,7 @@ onSubmit(): void {
       });
       this.product = {
         id: 0,
-        name: '',
+        productName: '',
         description: '',
         price: 0,
         stock: 0,
