@@ -16,7 +16,7 @@ export class ProductEditComponent implements OnInit {
   productId!: number;
   product: Product = {
     id: 0,
-    productName: '',
+    name: '',
     description: '',
     price: 0,
     stock: 0,

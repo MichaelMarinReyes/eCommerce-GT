@@ -21,10 +21,10 @@
 </div>
 
 <div class="featured-products">
-    <div class="product-card" *ngFor="let product of products">
-        <img [src]="product.image || 'https://placehold.co/150x150'" alt="{{product.productName}}">
+    <div class="product-card" *ngFor="let product of filteredProducts">
+        <img [src]="'http://localhost:8080/uploads/images/' + product.image" alt="{{product.name}}">
 
-        <h3>{{ product.productName }}</h3>
+        <h3>{{ product.name }}</h3>
         <p>Categoría: {{ product.category.categoryName }}</p>
         <p>Q {{ product.price }}</p>
         <button>Comprar</button>

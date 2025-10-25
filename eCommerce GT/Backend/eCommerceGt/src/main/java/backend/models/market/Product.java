@@ -29,8 +29,11 @@ public class Product {
     private double price;
     @Column(name = "stock", nullable = false)
     private int stock;
-    @Column(name = "condition", nullable = false) // indica pendiente de aprobación
+    @Column(name = "condition", nullable = false) // indica si es nuevo o usado
     private boolean condition;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false, length = 20) // indica pendiente de aprobación
+    private ProductStatus status;
     @ManyToOne
     @JoinColumn(name = "id_category", nullable = false)
     private Category idCategory;

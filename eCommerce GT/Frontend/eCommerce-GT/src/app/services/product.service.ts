@@ -15,8 +15,8 @@ export class ProductService {
     return this.http.get<Product[]>(`${this.apiUrl}/active`);
   }
 
-  createProduct(product: Product, userDpi: string): Observable<Product> {
-    return this.http.post<Product>(`${this.apiUrl}/create/${userDpi}`, product);
+  createProduct(formData: FormData, userDpi: string): Observable<Product> {
+    return this.http.post<Product>(`${this.apiUrl}/create/${userDpi}`, formData);
   }
 
   getProductByUser(userDpi: string): Observable<Product[]> {
@@ -29,5 +29,9 @@ export class ProductService {
 
   updateProduct(id: number, product: Product) {
     return this.http.post<Product[]>(`id`, product);
+  }
+
+  getProductExcludeById(userDpi: string) {
+    return this.http.get<Product[]>(`${this.apiUrl}/exclude/${userDpi}`);
   }
 }

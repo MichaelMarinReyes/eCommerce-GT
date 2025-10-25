@@ -30,6 +30,8 @@
             <th>Categoría</th>
             <th>Precio</th>
             <th>Stock</th>
+            <th>Condición</th>
+            <th>Estado de venta</th>
             <th>Opciones</th>
         </tr>
     </thead>
@@ -38,13 +40,15 @@
             <td>{{ i + 1 }}</td>
             <td>{{ product.id }}</td>
             <td>
-                <img [src]="'assets/images/' + product.image" alt="Imagen" width="80">
+                <img [src]="'http://localhost:8080/uploads/images/' + product.image" alt="Imagen" width="80">
             </td>
-            <td>{{ product.productName }}</td>
+            <td>{{ product.name }}</td>
             <td>{{ product.description }}</td>
             <td>{{ product.category.categoryName }}</td>
             <td>Q. {{ product.price }}</td>
             <td>{{ product.stock }}</td>
+            <td>{{ product.condition ? 'Nuevo' : 'Usado' }}</td>
+            <td>{{ product.status }}</td>
             <td>
                 <button (click)="editProduct(product.id)">Editar</button>
                 <button>Eliminar</button>

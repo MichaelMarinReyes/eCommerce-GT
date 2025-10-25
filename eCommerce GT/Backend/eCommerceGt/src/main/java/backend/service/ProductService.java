@@ -4,6 +4,7 @@ import backend.dto.market.ProductCreateDTO;
 import backend.dto.market.ProductResponseDTO;
 import backend.dto.market.ProductUpdateDTO;
 import backend.models.market.Product;
+import backend.models.market.ProductStatus;
 import backend.models.users.User;
 import backend.repository.market.ProductRepository;
 import backend.repository.users.UserRepository;
@@ -43,7 +44,8 @@ public class ProductService {
                 .description(productCreateDTO.getDescription())
                 .price(productCreateDTO.getPrice())
                 .stock(productCreateDTO.getStock())
-                .condition(false)
+                .condition(productCreateDTO.isCondition())
+                .status(ProductStatus.PENDING)
                 .idCategory(productCreateDTO.getCategory())
                 .image(imagePath)
                 .userDpi(user)
@@ -63,7 +65,8 @@ public class ProductService {
         product.setDescription(productUpdateDTO.getDescription());
         product.setPrice(productUpdateDTO.getPrice());
         product.setStock(productUpdateDTO.getStock());
-        product.setCondition(false);
+        product.setCondition(product.isCondition());
+        product.setStatus(ProductStatus.PENDING);
         product.setIdCategory(productUpdateDTO.getCategory());
         product.setUpdatedAt(new Date());
 
@@ -100,6 +103,7 @@ public class ProductService {
                 .price(product.getPrice())
                 .stock(product.getStock())
                 .condition(product.isCondition())
+                .status(product.getStatus())
                 .category(product.getIdCategory())
                 .image(product.getImage())
                 .averageRating(product.getRatings() != null ?
@@ -111,5 +115,13 @@ public class ProductService {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
         return mapToResponseDTO(product);
+    }
+
+    public List<ProductResponseDTO> getAllActiveProductsExceptUser(String userDpi) {
+        return productRepository.findByConditionTrue()
+                .stream()
+                .filter(product -> !product.getUserDpi().getDpi().equals(userDpi))
+                .map(this::mapToResponseDTO)
+                .collect(Collectors.toList());
     }
 }

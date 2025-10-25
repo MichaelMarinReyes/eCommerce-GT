@@ -17,4 +17,5 @@ public class ProductCreateDTO {
     private String image;
     private int stock;
     private boolean condition;
+
 }

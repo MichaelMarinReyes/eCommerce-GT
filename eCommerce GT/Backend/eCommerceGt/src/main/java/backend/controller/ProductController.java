@@ -69,4 +69,9 @@ public class ProductController {
         ProductResponseDTO productResponseDTO = productService.getProductById(id);
         return ResponseEntity.ok(productResponseDTO);
     }
+
+    @GetMapping("/exclude/{userDpi}")
+    public ResponseEntity<List<ProductResponseDTO>> getActiveProductsExludingUser(@PathVariable String userDpi) {
+        return ResponseEntity.ok(productService.getAllActiveProductsExceptUser(userDpi));
+    }
 }
