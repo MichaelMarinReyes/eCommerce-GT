@@ -1,3 +1,5 @@
+import { Rating } from "./rating.model";
+
 export interface Category {
   idCategory: number;
   categoryName: string;
@@ -15,4 +17,5 @@ export interface Product {
   category: Category;
   image: string;
   averageRating?: number;
+  ratings?: Rating[];
 }

@@ -5,6 +5,9 @@ import { ProductService } from '../../../services/product.service';
 import { Product } from '../../../models/product.model';
 import { AuthenticationService } from '../../../services/authentication.service';
 import { environment } from '../../../../environments/environment.prod';
+import { Router } from '@angular/router';
+import { CartService } from '../../../services/cart.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-product-list',
@@ -23,7 +26,9 @@ export class ProductListComponent implements OnInit {
 
   constructor(
     private productService: ProductService,
-    private authService: AuthenticationService
+    private authService: AuthenticationService,
+    private router: Router,
+    private cartService: CartService
   ) { }
 
   ngOnInit(): void {
@@ -66,4 +71,19 @@ export class ProductListComponent implements OnInit {
     }
     this.filteredProducts = filtered;
   }
+
+  goToDetail(id: number): void {
+    this.router.navigate(['/common-user/product-detail/', id]);
+  }
+
+buyProduct(product: Product): void {
+  const userDpi = this.authService.getCurrentUser().dpi;
+  if (!userDpi) return;
+
+  this.cartService.addToCart(userDpi, product.id, 1).subscribe({
+    next: (res) => Swal.fire('Carrito', res, 'success'),
+    error: (err) => Swal.fire('Error', 'No se pudo agregar el producto', 'error')
+  });
+}
+
 }

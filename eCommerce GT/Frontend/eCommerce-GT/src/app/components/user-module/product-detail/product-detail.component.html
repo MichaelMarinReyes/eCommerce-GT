@@ -1,1 +1,56 @@
-<p>product-detail works!</p>
+<div class="main" *ngIf="product">
+  <div class="left-column">
+    <div class="product-detail-card">
+      <img [src]="apiUrl + '/uploads/images/' + product.image" 
+           alt="{{ product.name }}">
+      <h1>{{ product.name }}</h1>
+
+      <p><span class="highlight">Categoría:</span> {{ product.category.categoryName }}</p>
+      <p><span class="highlight">Precio:</span> Q {{ product.price }}</p>
+      <p><span class="highlight">Stock:</span> {{ product.stock }}</p>
+      <p><span class="highlight">Condición:</span> {{ product.condition ? 'Nuevo' : 'Usado' }}</p>
+
+      <p *ngIf="product.averageRating !== undefined">
+        <span class="highlight">Puntaje:</span>
+        <span class="stars">
+          <ng-container *ngFor="let star of [1,2,3,4,5]; let i = index">
+            <ng-container *ngIf="i + 0.5 < product.averageRating; else emptyStar">
+              <span class="filled">★</span>
+            </ng-container>
+            <ng-template #emptyStar>
+              <span>★</span>
+            </ng-template>
+          </ng-container>
+        </span>
+      </p>
+
+      <p><span class="highlight">Descripción:</span> {{ product.description }}</p>
+      <button (click)="buyProduct(product.id)">Comprar</button>
+    </div>
+  </div>
+
+  <div class="right-column">
+    <div class="product-comments">
+      <h3>Comentarios de clientes</h3>
+      <div *ngIf="product.ratings?.length; else noComments">
+        <div *ngFor="let rating of product.ratings" class="comment">
+          <strong>{{ rating.user.name }}</strong>
+          <span class="stars">
+            <ng-container *ngFor="let star of [1,2,3,4,5]; let i = index">
+              <span [class.filled]="i < rating.stars">★</span>
+            </ng-container>
+          </span>
+          <p>{{ rating.comment }}</p>
+          <small>{{ rating.createdAt | date:'short' }}</small>
+        </div>
+      </div>
+      <ng-template #noComments>
+        <p>No hay comentarios aún.</p>
+      </ng-template>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="!product" class="main">
+  <p>Cargando producto...</p>
+</div>

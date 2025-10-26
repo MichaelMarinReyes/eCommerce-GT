@@ -28,25 +28,6 @@ public class ShoppingCart {
     private Date createdAt;
     @Column(name = "update_at", nullable = false)
     private Date updateAt;
-    @OneToMany(mappedBy = "idCart")
+    @OneToMany(mappedBy = "cart")
     private List<CartProduct> products;
-
-    public void addProduct(Product product) {
-
-    }
-
-    public void removeProduct(Product product) {
-    }
-
-    public void updateCart() {
-
-    }
-
-    public void deleteCart() {
-
-    }
-
-    public void payCart() {
-
-    }
 }

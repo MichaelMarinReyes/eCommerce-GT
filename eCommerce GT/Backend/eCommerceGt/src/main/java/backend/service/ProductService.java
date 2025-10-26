@@ -3,9 +3,11 @@ package backend.service;
 import backend.dto.market.ProductCreateDTO;
 import backend.dto.market.ProductResponseDTO;
 import backend.dto.market.ProductUpdateDTO;
+import backend.dto.rating.RatingDTO;
 import backend.models.market.Category;
 import backend.models.market.Product;
 import backend.models.market.ProductStatus;
+import backend.models.market.Rating;
 import backend.models.users.User;
 import backend.repository.market.CategoryRepository;
 import backend.repository.market.ProductRepository;
@@ -34,6 +36,15 @@ public class ProductService {
         this.categoryRepository = categoryRepository;
     }
 
+    /**
+     * Sirve para crear un producto, valida los campos necesarios y posteriormente al dto correspondiente.
+     *
+     * @param productCreateDTO es un objeto que contiene los datos del producto recibido del controlador.
+     * @param userDpi          es el dpi del usuario que creará el producto.
+     * @param image            es la imagen del producto con la que se venderá.
+     * @return un ProductResponseDTO indicando los datos guardados.
+     * @throws IOException ocurre en caso de que image no pueda ser guardado.
+     */
     @Transactional
     public ProductResponseDTO createProduct(ProductCreateDTO productCreateDTO, String userDpi, MultipartFile image) throws IOException {
         User user = userRepository.findByDpi(userDpi)
@@ -68,6 +79,17 @@ public class ProductService {
         return mapToResponseDTO(product);
     }
 
+    /**
+     * Sirve para actualizar los datos de un producto.
+     *
+     * @param productId        es el identificador del producto que se va a modificar sus datos.
+     * @param productUpdateDTO es el producto que contiene los datos actualizados.
+     * @param image            es la imagen del producto.
+     * @param userDpi          es el dpi del usuario el cuál se utiliza para validar que sea el que creó el producto
+     *                         y no otro usuario el que vaya a modificar el producto.
+     * @return un ProductResponseDTO con los datos actualizados.
+     * @throws IOException en caso que la imagen no pueda ser guardada.
+     */
     @Transactional
     public ProductResponseDTO updateProduct(Long productId, ProductUpdateDTO productUpdateDTO, MultipartFile image, String userDpi) throws IOException {
         Product product = productRepository.findById(productId)
@@ -98,6 +120,14 @@ public class ProductService {
         return mapToResponseDTO(product);
     }
 
+    /**
+     * Se utiliza para eliminar un producto del sistema, elimina también su stock.
+     *
+     * @param productId es el identificador del producto que se eliminará.
+     * @param userDpi   es el dpi del usuario el cual se utiliza para verificar que el usuario que creó el producto
+     *                  sea el que lo elimine.
+     * @return true si el producto fue eliminado correctamente, false de lo contrario.
+     */
     @Transactional
     public boolean deleteProduct(Long productId, String userDpi) {
         Product product = productRepository.findById(productId).orElse(null);
@@ -120,6 +150,12 @@ public class ProductService {
         return true;
     }
 
+    /**
+     * Sirve para obtener un listado de productos según el usuario que esté relacionado.
+     *
+     * @param userDpi es el dpi del usuario que se usará para buscar los productos.
+     * @return el listado de los productos encontrados.
+     */
     public List<ProductResponseDTO> getProductsByUser(String userDpi) {
         return productRepository.findByUserDpiDpi(userDpi)
                 .stream()
@@ -127,6 +163,11 @@ public class ProductService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Se usa para obtener todos los productos que hayan sido aprobados por un moderador.
+     *
+     * @return el listado de todos los productos aprobados.
+     */
     public List<ProductResponseDTO> getAllActiveProducts() {
         return productRepository.findByConditionTrue()
                 .stream()
@@ -134,6 +175,12 @@ public class ProductService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Sirve para mapear un producto a un ProductResponseDTO.
+     *
+     * @param product es el producto que contiene los datos de un producto.
+     * @return un ProductResponseDTO.
+     */
     private ProductResponseDTO mapToResponseDTO(Product product) {
         return ProductResponseDTO.builder()
                 .id(product.getProductId())
@@ -150,17 +197,73 @@ public class ProductService {
                 .build();
     }
 
+    /**
+     * Sirve para obtener un producto en específico según su identificador.
+     *
+     * @param productId es el identificador del producto que se buscará.
+     * @return un ProductResponseDTO con los datos del producto encontrado.
+     */
     public ProductResponseDTO getProductById(Long productId) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
         return mapToResponseDTO(product);
     }
 
+    /**
+     * Sirve para devolver los productos excepto los de un dpi en específico, se utiliza para que el usuario logueado
+     * no vea los productos que él vende.
+     *
+     * @param userDpi es el dpi del usuario logueado en el sistema.
+     * @return un listado de productos exlcuyendo los que coinciden con el dpi ingresado.
+     */
     public List<ProductResponseDTO> getAllActiveProductsExceptUser(String userDpi) {
         return productRepository.findByConditionTrue()
                 .stream()
                 .filter(product -> !product.getUserDpi().getDpi().equals(userDpi))
                 .map(this::mapToResponseDTO)
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * Sirve para obtener un producto con su promedio de calificaciones y lista de comentarios.
+     *
+     * @param productId es el identificador del producto que se obtendrán los datos.
+     * @return un ProductResponseDTO con los datos completos.
+     */
+    public ProductResponseDTO getProductWithRatings(Long productId) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+
+        double avg = product.getRatings().stream()
+                .mapToInt(Rating::getStarts)
+                .average()
+                .orElse(0.0);
+
+        List<RatingDTO> ratingDTOs = product.getRatings().stream()
+                .map(r -> {
+                    RatingDTO dto = new RatingDTO();
+                    dto.setIdRating(r.getIdRating());
+                    dto.setUserName(r.getUserDpi().getName());
+                    dto.setStars(r.getStarts());
+                    dto.setComment(r.getComment());
+                    dto.setCreatedAt(r.getProductId().getCreatedAt());
+                    return dto;
+                })
+                .collect(Collectors.toList());
+
+        ProductResponseDTO dto = new ProductResponseDTO();
+        dto.setId(product.getProductId());
+        dto.setName(product.getProductName());
+        dto.setDescription(product.getDescription());
+        dto.setPrice(product.getPrice());
+        dto.setStock(product.getStock());
+        dto.setCondition(product.isCondition());
+        dto.setStatus(product.getStatus());
+        dto.setCategory(product.getIdCategory());
+        dto.setImage(product.getImage());
+        dto.setAverageRating(avg);
+        dto.setRatings(ratingDTOs);
+
+        return dto;
     }
 }

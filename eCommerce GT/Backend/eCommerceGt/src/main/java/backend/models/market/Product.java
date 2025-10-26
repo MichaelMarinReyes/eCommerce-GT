@@ -44,7 +44,7 @@ public class Product {
     private Date createdAt;
     @Column(name = "updated_at", nullable = false)
     private Date updatedAt;
-    @OneToMany(mappedBy = "productId")
+    @OneToMany(mappedBy = "product")
     private List<CartProduct> cartProducts;
     @OneToMany(mappedBy = "productId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Rating> ratings;

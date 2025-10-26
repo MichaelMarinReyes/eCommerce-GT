@@ -21,13 +21,13 @@
 </div>
 
 <div class="featured-products">
-    <div class="product-card" *ngFor="let product of filteredProducts">
+    <div class="product-card" *ngFor="let product of filteredProducts" (click)="goToDetail(product.id)">
         <img [src]="apiUrl + '/uploads/images/' + product.image" alt="{{product.name}}">
 
         <h3>{{ product.name }}</h3>
         <p>Categoría: {{ product.category.categoryName }}</p>
         <p>Q {{ product.price }}</p>
-        <button>Comprar</button>
+        <button (click)="buyProduct(product); $event.stopPropagation()">Comprar</button>
     </div>
 </div>
 

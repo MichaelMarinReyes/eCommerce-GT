@@ -55,7 +55,7 @@ export class ProductEditComponent implements OnInit {
       next: (data) => {
         this.product = data;
         if (this.product.image) {
-          this.previewImage = `${environment.apiUrl}/uploads/images/${this.product.image}`;
+          this.previewImage = `${environment.apiUrl}/uploads/images/${this.product.image}?t=${new Date().getTime()}`;
         }
       },
       error: (err) => {

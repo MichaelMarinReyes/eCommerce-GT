@@ -1,8 +1,11 @@
 package backend.dto.market;
 
+import backend.dto.rating.RatingDTO;
 import backend.models.market.Category;
 import backend.models.market.ProductStatus;
 import lombok.*;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -20,4 +23,5 @@ public class ProductResponseDTO {
     private Category category;
     private String image;
     private double averageRating;
+    private List<RatingDTO>  ratings;
 }

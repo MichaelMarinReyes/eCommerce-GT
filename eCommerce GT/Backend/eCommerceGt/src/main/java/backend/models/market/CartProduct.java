@@ -19,10 +19,10 @@ public class CartProduct {
     private Long idCartProduct;
     @ManyToOne
     @JoinColumn(name = "id_cart", nullable = false)
-    private ShoppingCart idCart;
+    private ShoppingCart cart;
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
-    private Product productId;
+    private Product product;
     @Column(name = "quatity",  nullable = false)
     private int quatity;
     @Column(name = "price",  nullable = false)
