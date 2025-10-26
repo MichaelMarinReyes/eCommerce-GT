@@ -15,9 +15,14 @@ public class FileStorageService {
     @Value("${file.upload-dir}")
     private String uploadDir;
 
-    public String saveFile(MultipartFile file) throws IOException {
-        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+    public String saveFile(MultipartFile file, String productName) throws IOException {
+        String cleanProductName = productName.trim().replaceAll("[^a-zA-Z0-9\\-]", "_");
+        String fileName = cleanProductName + ".jpg";
         Path fileStorage = Paths.get(uploadDir).toAbsolutePath().normalize();
+
+        if (file == null || file.isEmpty()) {
+            throw new IllegalArgumentException("No se recibió ningún archivo o está vacío");
+        }
 
         if (!Files.exists(fileStorage)) {
             Files.createDirectories(fileStorage);
@@ -25,6 +30,7 @@ public class FileStorageService {
 
         Path targetLocation = fileStorage.resolve(fileName);
         file.transferTo(targetLocation.toFile());
-        return "uploads/images/" + fileName;
+
+        return fileName;
     }
 }

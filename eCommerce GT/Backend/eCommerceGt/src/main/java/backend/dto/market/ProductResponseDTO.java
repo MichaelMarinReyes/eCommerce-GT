@@ -2,13 +2,13 @@ package backend.dto.market;
 
 import backend.models.market.Category;
 import backend.models.market.ProductStatus;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ProductResponseDTO {
     private Long id;
     private String name;

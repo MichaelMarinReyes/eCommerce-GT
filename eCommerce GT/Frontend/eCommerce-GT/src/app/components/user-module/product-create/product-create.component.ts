@@ -48,13 +48,13 @@ export class ProductCreateComponent {
 
     const validExtension = file.name.toLowerCase().endsWith('.jpg');
     if (!validExtension) {
-      alert('Solo se permiten imágenes en formato JPG.');
+      Swal.fire('Error', 'Solo se permiten imágenes en formato JPG.', 'error');
       event.target.value = '';
       return;
     }
 
     if (file.size > 5 * 1024 * 1024) {
-      alert('La imagen supera el tamaño máximo permitido (5MB)');
+      Swal.fire('Límite de imágen superado', 'La imagen supera el tamaño máximo permitido (5MB)', 'warning');
       event.target.value = '';
       return;
     }
@@ -68,7 +68,6 @@ export class ProductCreateComponent {
     reader.readAsDataURL(file);
   }
 
-
   onSubmit(): void {
     if (!this.validateProduct()) return;
 
@@ -78,6 +77,7 @@ export class ProductCreateComponent {
     formData.append('price', this.product.price.toString());
     formData.append('stock', this.product.stock.toString());
     formData.append('condition', this.product.condition.toString());
+    formData.append('categoryName', this.product.category.categoryName);
 
     if (this.selectedFile) {
       formData.append('image', this.selectedFile, this.selectedFile.name);
@@ -85,8 +85,9 @@ export class ProductCreateComponent {
 
     this.productService.createProduct(formData, this.userDpi).subscribe({
       next: (response) => {
-        Swal.fire('Producto creado', 'El producto se ha creado correctamente', 'success');
+        Swal.fire('Producto creado', 'El producto se ha creado correctamente, espere a que un moderador autorice la venta', 'success');
         this.resetForm();
+
       },
       error: (error) => {
         console.error('Error al crear el producto:', error);
@@ -117,48 +118,47 @@ export class ProductCreateComponent {
 
   validateProduct(): boolean {
     if (!this.product.name.trim()) {
-      alert('El nombre del producto es obligatorio');
+      Swal.fire('Error', 'El nombre del producto es obligatorio', 'error');
       return false;
     }
 
     if (!this.product.description.trim()) {
-      alert('La descripción del producto es obligatoria');
+      Swal.fire('Error', 'La descripción del producto es obligatoria', 'error');
       return false;
     }
 
     if (!this.selectedFile) {
-      alert('Debes seleccionar una imagen del producto');
+      Swal.fire('Error', 'Debes seleccionar una imagen del producto', 'error');
       return false;
     }
 
     if (!this.product.price || this.product.price <= 0) {
-      alert('El precio debe ser mayor a 0');
+      Swal.fire('Error', 'El precio debe ser mayor a 0', 'error');
       return false;
     }
 
     if (!this.product.stock || this.product.stock < 1) {
-      alert('El stock debe ser al menos 1');
+      Swal.fire('Error', 'El stock debe ser al menos 1', 'error');
       return false;
     }
 
     if (!this.product.category || this.product.category.idCategory === 0) {
-      alert('Debes seleccionar una categoría válida');
+      Swal.fire('Error', 'Debes seleccionar una categoría válida', 'error');
       return false;
     }
 
     if (this.selectedFile) {
       const validExtension = this.selectedFile.name.toLowerCase().endsWith('.jpg');
       if (!validExtension) {
-        alert('Solo se permiten imágenes en formato JPG.');
+        Swal.fire('Error', 'Solo se permiten imágenes en formato JPG.', 'error');
         return false;
       }
 
       if (this.selectedFile.size > 5 * 1024 * 1024) {
-        alert('La imagen supera el tamaño máximo permitido (5MB)');
+        Swal.fire('Error', 'La imagen supera el tamaño máximo permitido (5MB)', 'error');
         return false;
       }
     }
-
     return true;
   }
 }

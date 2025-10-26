@@ -37,7 +37,6 @@ export class LoginComponent {
     this.authService.login(loginData).subscribe({
       next: (response: AuthResponse) => {
         console.log('Login exitoso:', response);
-        // Guardar token si tu backend lo devuelve
         localStorage.setItem('token', response.token);
         this.router.navigate(['/common-user']);
       },

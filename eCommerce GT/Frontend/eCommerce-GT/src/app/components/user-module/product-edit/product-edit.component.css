@@ -5,13 +5,14 @@ h2 {
 }
 
 form {
-    width: 90%;
     max-width: 600px;
-    margin: 20px auto;
-    background-color: #fff;
+    width: 90%;
+    margin: 40px auto;
+    background-color: white;
     padding: 25px 30px;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -20,12 +21,14 @@ form {
 form label {
     font-weight: bold;
     color: #333;
-    margin-bottom: 5px;
+    margin-bottom: 6px;
 }
 
-form input,
-form textarea {
-    padding: 8px 12px;
+form input[type="text"],
+form input[type="number"],
+form textarea,
+form select {
+    padding: 10px 12px;
     border-radius: 6px;
     border: 1px solid #ccc;
     font-size: 14px;
@@ -35,7 +38,8 @@ form textarea {
 }
 
 form input:focus,
-form textarea:focus {
+form textarea:focus,
+form select:focus {
     border-color: #fa8541;
     outline: none;
     box-shadow: 0 0 5px rgba(250, 133, 65, 0.3);
@@ -46,26 +50,42 @@ form textarea {
     min-height: 80px;
 }
 
-form button {
-    background-color: #fa8541;
-    color: #fff;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 6px;
+form input[type="file"] {
     cursor: pointer;
-    font-size: 14px;
+}
+
+.preview {
+    margin-top: 10px;
+    text-align: center;
+}
+
+.preview img {
+    max-width: 200px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+form button {
+    width: 100%;
+    background-color: #fa8541;
+    color: white;
     font-weight: bold;
+    padding: 10px 0;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
     transition: background-color 0.2s ease, transform 0.2s ease;
-    align-self: flex-start;
 }
 
 form button:hover {
-    background-color: #e67330;
+    background-color: #e6762c;
     transform: translateY(-1px);
 }
 
-form label+label {
-    font-weight: normal;
-    margin-bottom: 10px;
-    color: #555;
+@media (max-width: 550px) {
+    form {
+        margin: 20px;
+        padding: 20px;
+    }
 }

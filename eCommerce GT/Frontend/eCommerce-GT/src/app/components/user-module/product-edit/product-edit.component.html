@@ -1,22 +1,65 @@
 <h2>Editar Producto</h2>
 
-<form (ngSubmit)="updateProduct()" *ngIf="product">
+<form (ngSubmit)="updateProduct()" *ngIf="product" enctype="multipart/form-data">
+
+  <div class="form-group">
     <label>Id del producto: {{ product.id }}</label>
-    
-    <label>Nombre:</label>
-    <input type="text" [(ngModel)]="product.name" name="name" required />
+  </div>
 
-    <label>Descripción:</label>
-    <textarea [(ngModel)]="product.description" name="description" required></textarea>
+  <div class="form-group">
+    <label for="productName">Nombre del producto</label>
+    <input id="productName" type="text" [(ngModel)]="product.name" name="name" required />
+  </div>
 
-    <label>Precio:</label>
-    <input type="number" [(ngModel)]="product.price" name="price" required />
+  <div class="form-group">
+    <label for="productDescription">Descripción</label>
+    <textarea id="productDescription" [(ngModel)]="product.description" name="description" rows="3" required></textarea>
+  </div>
 
-    <label>Stock:</label>
-    <input type="number" [(ngModel)]="product.stock" name="stock" required />
+  <div class="form-group">
+    <label for="productImage">Imagen</label>
+    <input id="productImage" type="file" (change)="onFileSelected($event)" accept="image/jpg" />
+    <small><br>La imagen debe ser en jpg.<br></small>
+    <small>Tamaño máximo recomendado: <strong>5 MB</strong></small>
 
-    <label>Imagen:</label>
-    <input type="text" [(ngModel)]="product.image" name="image" />
+    <div *ngIf="previewImage" class="preview">
+      <p>Vista previa:</p>
+      <img [src]="previewImage" alt="Vista previa del producto"
+        style="max-width: 200px; border-radius: 8px; margin-top: 10px;" />
+    </div>
+  </div>
 
-    <button type="submit">Guardar Cambios</button>
+  <div class="form-group">
+    <label>Condición</label>
+    <select [(ngModel)]="product.condition" name="condition" required>
+      <option [ngValue]="true">Nuevo</option>
+      <option [ngValue]="false">Usado</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="productPrice">Precio (Q)</label>
+    <input id="productPrice" type="number" min="0.01" step="0.01" [(ngModel)]="product.price" name="price" required />
+  </div>
+
+  <div class="form-group">
+    <label for="productStock">Stock (mínimo 1)</label>
+    <input id="productStock" type="number" min="1" [(ngModel)]="product.stock" name="stock" required />
+  </div>
+
+  <div class="form-group">
+    <label for="productCategory">Categoría</label>
+    <select id="productCategory" [(ngModel)]="product.category" name="category" [ngModelOptions]="{ standalone: true }"
+      [compareWith]="compareCategories" required>
+      <option [ngValue]="{ idCategory: 0, categoryName: '', description: '' }" disabled>
+        Seleccione una categoría
+      </option>
+      <option *ngFor="let c of categories" [ngValue]="c">
+        {{ c.categoryName }}
+      </option>
+    </select>
+
+  </div>
+
+  <button type="submit">Guardar Cambios</button>
 </form>

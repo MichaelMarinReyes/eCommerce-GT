@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ProductService } from '../../../services/product.service';
 import { Product } from '../../../models/product.model';
 import { AuthenticationService } from '../../../services/authentication.service';
+import { environment } from '../../../../environments/environment.prod';
 
 @Component({
   selector: 'app-product-list',
@@ -13,6 +14,7 @@ import { AuthenticationService } from '../../../services/authentication.service'
   styleUrls: ['./product-list.component.css']
 })
 export class ProductListComponent implements OnInit {
+  apiUrl = environment.apiUrl;
   products: Product[] = [];
   filteredProducts: Product[] = [];
   searchTerm: string = '';

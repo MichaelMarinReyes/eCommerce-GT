@@ -5,6 +5,7 @@ import { Router, NavigationEnd, RouterLink } from '@angular/router';
 import { filter } from 'rxjs';
 import { ProductService } from '../../services/product.service';
 import { Product } from '../../models/product.model';
+import { environment } from '../../../environments/environment.prod';
 
 @Component({
   selector: 'main-page',
@@ -14,6 +15,7 @@ import { Product } from '../../models/product.model';
   styleUrl: './main-page.component.css'
 })
 export class MainPageComponent {
+  apiUrl = environment.apiUrl;
   title: string = 'eCommerce-Gt';
   currentRoute: string = '';
   products: Product[] = [];
