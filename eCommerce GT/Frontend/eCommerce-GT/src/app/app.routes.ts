@@ -10,6 +10,7 @@ import { MyProductsComponent } from './components/user-module/my-products/my-pro
 import { ProductEditComponent } from './components/user-module/product-edit/product-edit.component';
 import { ProductDetailComponent } from './components/user-module/product-detail/product-detail.component';
 import { CartItemComponent } from './components/user-module/cart-item/cart-item.component';
+import { CheckoutComponent } from './components/user-module/checkout/checkout.component';
 
 export const routes: Routes = [
     { path: '', title: 'eCommerce-GT', component: MainPageComponent },
@@ -28,7 +29,8 @@ export const routes: Routes = [
             { path: 'my-products', title: 'Mis productos', component: MyProductsComponent },
             { path: 'product-edit/:id', title: 'Editar producto', component: ProductEditComponent },
             { path: 'product-detail/:id', title: 'Detalle del producto', component: ProductDetailComponent },
-            { path: 'cart', title: 'Carrito de compras', component: CartItemComponent}
+            { path: 'cart', title: 'Carrito de compras', component: CartItemComponent},
+            { path: 'checkout/:idCart', title: 'Pagar', component: CheckoutComponent}
         ]
     },
     { path: 'product-create', title: 'Vender Producto', component: ProductCreateComponent, canActivate: [AuthGuard]}

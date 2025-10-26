@@ -48,6 +48,7 @@ export class ProductDetailComponent {
       }
     })
   }
+
   buyProduct(id: number): void {
     const userDpi = this.authService.getCurrentUser()?.dpi;
     if (!userDpi) {
@@ -57,7 +58,17 @@ export class ProductDetailComponent {
 
     if (this.product && this.product.id === id) {
       this.cartService.addToCart(userDpi, id, 1).subscribe({
-        next: (res) => Swal.fire('Carrito', res, 'success'),
+        next: (cartItem) => {
+          Swal.fire({
+            title: 'Producto agregado al carrito',
+            html: `
+            <strong>${cartItem.product.name}</strong> <br>
+            Cantidad: ${cartItem.quatity} <br>
+            Precio: Q ${cartItem.price}
+          `,
+            icon: 'success'
+          });
+        },
         error: () => Swal.fire('Error', 'No se pudo agregar el producto', 'error')
       });
     } else {

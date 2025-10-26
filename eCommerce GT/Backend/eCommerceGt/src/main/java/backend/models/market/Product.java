@@ -1,6 +1,7 @@
 package backend.models.market;
 
 import backend.models.users.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -45,7 +46,9 @@ public class Product {
     @Column(name = "updated_at", nullable = false)
     private Date updatedAt;
     @OneToMany(mappedBy = "product")
+    @JsonIgnore
     private List<CartProduct> cartProducts;
     @OneToMany(mappedBy = "productId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Rating> ratings;
 }

@@ -1,5 +1,6 @@
 package backend.models.users;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,5 +23,6 @@ public class Role {
     @Column(name = "description", nullable = false, unique = true)
     private String description;
     @OneToMany(mappedBy = "role")
+    @JsonIgnore
     List<User> users;
 }

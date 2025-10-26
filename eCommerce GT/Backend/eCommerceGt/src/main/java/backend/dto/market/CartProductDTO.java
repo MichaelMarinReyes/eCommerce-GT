@@ -1,7 +1,7 @@
 package backend.dto.market;
 
+import backend.models.market.Category;
 import backend.models.market.Product;
-import backend.models.market.ShoppingCart;
 import lombok.*;
 
 @Getter
@@ -9,11 +9,10 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CartResponseDTO {
-    private Long idCartProduct;
-    private Long cartId;
-    private String userName;
-    private ProductDTO product;
+public class CartProductDTO {
+    private Long id;
+    private Long idCart;
+    private ProductCartDTO product;
     private int quantity;
     private double price;
 }

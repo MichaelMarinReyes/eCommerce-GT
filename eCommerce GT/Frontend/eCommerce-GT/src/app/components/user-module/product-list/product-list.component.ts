@@ -76,14 +76,28 @@ export class ProductListComponent implements OnInit {
     this.router.navigate(['/common-user/product-detail/', id]);
   }
 
-buyProduct(product: Product): void {
-  const userDpi = this.authService.getCurrentUser().dpi;
-  if (!userDpi) return;
+  buyProduct(product: Product): void {
+    const userDpi = this.authService.getCurrentUser()?.dpi;
+    if (!userDpi) {
+      Swal.fire('Error', 'Usuario no autenticado', 'error');
+      return;
+    }
 
-  this.cartService.addToCart(userDpi, product.id, 1).subscribe({
-    next: (res) => Swal.fire('Carrito', res, 'success'),
-    error: (err) => Swal.fire('Error', 'No se pudo agregar el producto', 'error')
-  });
-}
+    this.cartService.addToCart(userDpi, product.id, 1).subscribe({
+      next: (cartItem) => {
+        Swal.fire({
+          title: 'Producto agregado al carrito',
+          html: `
+          <strong>${cartItem.product.name}</strong> <br>
+          Cantidad: ${cartItem.quatity} <br>
+          Precio: Q ${cartItem.price}
+        `,
+          icon: 'success'
+        });
+      },
+      error: () => Swal.fire('Error', 'No se pudo agregar el producto', 'error')
+    });
+  }
+
 
 }

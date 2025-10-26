@@ -1,1 +1,54 @@
-<p>checkout works!</p>
+<div class="checkout-container">
+  <h2>Checkout</h2>
+
+  <div *ngIf="cartItems.length === 0" class="no-products">
+    <p>No hay productos en el carrito.</p>
+  </div>
+
+  <div *ngIf="cartItems.length > 0">
+    <table class="checkout-table">
+      <thead>
+        <tr>
+          <th>No.</th>
+          <th>Producto</th>
+          <th>Cantidad</th>
+          <th>Subtotal</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of cartItems; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ item.product.name }}</td>
+          <td>{{ item.quantity }}</td>
+          <td>Q {{ item.product.price * item.quantity }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p class="total">Total: Q {{ getTotal() }}</p>
+
+    <form #paymentForm="ngForm" (ngSubmit)="processPayment(paymentForm)">
+      <div>
+        <label>Nombre en la tarjeta</label>
+        <input type="text" name="cardName" [(ngModel)]="payment.cardName" required />
+      </div>
+
+      <div>
+        <label>Número de tarjeta</label>
+        <input type="text" name="cardNumber" [(ngModel)]="payment.cardNumber" required pattern="[0-9]{16}" />
+      </div>
+
+      <div>
+        <label>Fecha de expiración</label>
+        <input type="month" name="expiry" [(ngModel)]="payment.expiry" required />
+      </div>
+
+      <div>
+        <label>CVV</label>
+        <input type="text" name="cvv" [(ngModel)]="payment.cvv" required pattern="[0-9]{3}" />
+      </div>
+
+      <button type="submit">Pagar</button>
+    </form>
+  </div>
+</div>

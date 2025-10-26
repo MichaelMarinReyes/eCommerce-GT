@@ -1,6 +1,7 @@
 package backend.models.users;
 
 import backend.models.market.Product;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -33,9 +34,11 @@ public class User {
     private boolean status;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_role")
+    @JsonIgnore
     private Role role;
     @OneToMany(mappedBy = "userDpi", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<UserCard> userCards;
     @OneToMany(mappedBy = "userDpi", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @JsonIgnore
     private List<Product> products;
 }

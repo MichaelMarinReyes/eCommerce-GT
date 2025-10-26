@@ -30,13 +30,13 @@
 </div>
 
 <div class="featured-products">
-  <div class="product-card" *ngFor="let product of products">
+  <div class="product-card" *ngFor="let product of products" (click)="goToDetail(product.id)">
     <img [src]="apiUrl + '/uploads/images/' + product.image" alt="{{product.name}}">
 
     <h3>{{ product.name }}</h3>
     <p>Categoría: {{ product.category.categoryName }}</p>
     <p>Q {{ product.price }}</p>
-    <button>Comprar</button>
+    <button (click)="login()">Comprar</button>
   </div>
 </div>
 

@@ -6,6 +6,8 @@ import { filter } from 'rxjs';
 import { ProductService } from '../../services/product.service';
 import { Product } from '../../models/product.model';
 import { environment } from '../../../environments/environment.prod';
+import Swal from 'sweetalert2';
+import { AuthenticationService } from '../../services/authentication.service';
 
 @Component({
   selector: 'main-page',
@@ -24,7 +26,11 @@ export class MainPageComponent {
   priceOrder: string = '';
   selectedCategory: string = '';
 
-  constructor(private router: Router, private productService: ProductService) {
+  constructor(
+    private router: Router,
+    private productService: ProductService,
+    private authService: AuthenticationService
+  ) {
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: NavigationEnd) => {
@@ -36,7 +42,6 @@ export class MainPageComponent {
     this.productService.getProducts().subscribe({
       next: (data) => {
         this.products = data;
-        console.log('Productos cargados:', this.products);
       },
       error: (err) => {
         console.error('Error al cargar productos:', err);
@@ -65,6 +70,36 @@ export class MainPageComponent {
       );
     }
     this.filteredProducts = filtered;
+  }
 
+  login(): void {
+    const user = this.authService.getCurrentUser();
+
+    if (!user || !user.dpi) {
+      Swal.fire({
+        title: 'Debes iniciar sesión',
+        text: 'Para poder comprar, inicia sesión o regístrate.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Iniciar sesión',
+        cancelButtonText: 'Cancelar',
+        confirmButtonColor: '#fa8541',
+        cancelButtonColor: '#d33'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.router.navigate(['/login']);
+        }
+      });
+    } else {
+      Swal.fire({
+        title: 'Ya estás autenticado',
+        text: `Bienvenido, ${user.name || 'usuario'}`,
+        icon: 'success'
+      });
+    }
+  }
+
+  goToDetail(id: number): void {
+    this.router.navigate(['/common-user/product-detail/', id]);
   }
 }

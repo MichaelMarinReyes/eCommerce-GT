@@ -1,6 +1,7 @@
 package backend.models.market;
 
 import backend.models.users.User;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -29,5 +30,6 @@ public class ShoppingCart {
     @Column(name = "update_at", nullable = false)
     private Date updateAt;
     @OneToMany(mappedBy = "cart")
+    @JsonManagedReference
     private List<CartProduct> products;
 }

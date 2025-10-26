@@ -11,5 +11,7 @@ import java.util.Optional;
 public interface ShoppingCartRepository extends JpaRepository<ShoppingCart, Long> {
     Optional<ShoppingCart> findByUserDpi(User userDpi);
 
+    Optional<ShoppingCart> findByUserDpi_Dpi(String dpi);
+
     Optional<ShoppingCart> findByUserDpiAndStatus(User userDpi, boolean status);
 }

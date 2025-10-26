@@ -1,5 +1,7 @@
 package backend.service;
 
+import backend.dto.market.CartProductDTO;
+import backend.dto.market.ShoppingCartResponseDTO;
 import backend.models.market.CartProduct;
 import backend.models.market.Product;
 import backend.models.market.ShoppingCart;
@@ -8,7 +10,10 @@ import backend.repository.market.CartProductRepository;
 import backend.repository.market.ProductRepository;
 import backend.repository.market.ShoppingCartRepository;
 import backend.repository.users.UserRepository;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -16,16 +21,16 @@ import java.util.Optional;
 
 @Service
 public class CartService {
-    private final ShoppingCartRepository shoppingCartRepo;
-    private final CartProductRepository cartProductRepo;
-    private final ProductRepository productRepo;
-    private final UserRepository userRepo;
+    private final ShoppingCartRepository shoppingCartRepository;
+    private final CartProductRepository cartProductRepository;
+    private final ProductRepository productRepository;
+    private final UserRepository userRepository;
 
     public CartService(ShoppingCartRepository shoppingCartRepo, CartProductRepository cartProductRepo, ProductRepository productRepo, UserRepository userRepo) {
-        this.shoppingCartRepo = shoppingCartRepo;
-        this.cartProductRepo = cartProductRepo;
-        this.productRepo = productRepo;
-        this.userRepo = userRepo;
+        this.shoppingCartRepository = shoppingCartRepo;
+        this.cartProductRepository = cartProductRepo;
+        this.productRepository = productRepo;
+        this.userRepository = userRepo;
     }
 
     /**
@@ -35,37 +40,41 @@ public class CartService {
      * @param productId es el identificador del producto que va a comprar.
      * @param quantity  es la cantidad del producto que compra.
      */
-    public void addProductToCart(String userDpi, Long productId, int quantity) {
-        User user = userRepo.findById(userDpi)
+    public CartProduct addProductToCart(String userDpi, Long productId, int quantity) {
+        User user = userRepository.findById(userDpi)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-        Product product = productRepo.findById(productId)
+        Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
 
-        ShoppingCart cart = shoppingCartRepo.findByUserDpi(user)
+        ShoppingCart cart = shoppingCartRepository.findByUserDpi(user)
                 .orElseGet(() -> {
                     ShoppingCart newCart = new ShoppingCart();
                     newCart.setUserDpi(user);
-                    newCart.setStatus(true); // carrito activo
+                    newCart.setStatus(true);
                     newCart.setCreatedAt(new Date());
                     newCart.setUpdateAt(new Date());
-                    return shoppingCartRepo.save(newCart);
+                    return shoppingCartRepository.save(newCart);
                 });
+
+        cart.setUpdateAt(new Date());
+        shoppingCartRepository.save(cart);
 
         Optional<CartProduct> existing = cart.getProducts().stream()
                 .filter(cp -> cp.getProduct().getProductId().equals(productId))
                 .findFirst();
 
         if (existing.isPresent()) {
-            existing.get().setQuatity(existing.get().getQuatity() + quantity);
-            cartProductRepo.save(existing.get());
+            CartProduct cp = existing.get();
+            cp.setQuantity(cp.getQuantity() + quantity);
+            return cartProductRepository.save(cp);
         } else {
             CartProduct cp = new CartProduct();
             cp.setCart(cart);
             cp.setProduct(product);
-            cp.setQuatity(quantity);
+            cp.setQuantity(quantity);
             cp.setPrice(product.getPrice());
-            cartProductRepo.save(cp);
+            return cartProductRepository.save(cp);
         }
     }
 
@@ -76,10 +85,10 @@ public class CartService {
      * @return un listado con todos los productos en el carrito.
      */
     public List<CartProduct> getCartByUser(String userDpi) {
-        User user = userRepo.findById(userDpi)
+        User user = userRepository.findById(userDpi)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-        ShoppingCart cart = shoppingCartRepo.findByUserDpi(user)
+        ShoppingCart cart = shoppingCartRepository.findByUserDpi(user)
                 .orElseThrow(() -> new RuntimeException("Carrito vacío"));
 
         return cart.getProducts();
@@ -92,16 +101,16 @@ public class CartService {
      * @param productId es el identificador del producto.
      */
     public void removeProductFromCart(String userDpi, Long productId) {
-        User user = userRepo.findById(userDpi)
+        User user = userRepository.findById(userDpi)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-        ShoppingCart cart = shoppingCartRepo.findByUserDpi(user)
+        ShoppingCart cart = shoppingCartRepository.findByUserDpi(user)
                 .orElseThrow(() -> new RuntimeException("Carrito vacío"));
 
         cart.getProducts().stream()
                 .filter(cp -> cp.getProduct().getProductId().equals(productId))
                 .findFirst()
-                .ifPresent(cartProductRepo::delete);
+                .ifPresent(cartProductRepository::delete);
     }
 
     /**
@@ -110,28 +119,55 @@ public class CartService {
      * @param userDpi es el dpi del usuario del que se limpiará el carrito.
      */
     public void clearCart(String userDpi) {
-        User user = userRepo.findById(userDpi)
+        User user = userRepository.findById(userDpi)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-        ShoppingCart cart = shoppingCartRepo.findByUserDpi(user)
+        ShoppingCart cart = shoppingCartRepository.findByUserDpi(user)
                 .orElseThrow(() -> new RuntimeException("Carrito vacío"));
 
-        cartProductRepo.deleteAll(cart.getProducts());
+        cartProductRepository.deleteAll(cart.getProducts());
     }
 
     /**
      * Srive para marcar el carrtio como pagado.
+     *
      * @param userDpi indica el dpi del usuario para pagar.
      */
     public void checkout(String userDpi) {
-        User user = userRepo.findById(userDpi)
+        User user = userRepository.findById(userDpi)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-        ShoppingCart cart = shoppingCartRepo.findByUserDpi(user)
+        ShoppingCart cart = shoppingCartRepository.findByUserDpi(user)
                 .orElseThrow(() -> new RuntimeException("Carrito vacío"));
 
         cart.setStatus(false);
         cart.setUpdateAt(new Date());
-        shoppingCartRepo.save(cart);
+        shoppingCartRepository.save(cart);
     }
+
+    /**
+     * Sirve para actualizar la cantidad de un mismo producto.
+     *
+     * @param userDpi   es el dpi del usuario que compra.
+     * @param productId es el identificador del producto.
+     * @param quantity  es la cantidad del producto
+     * @return un carrito de compras actualizado.
+     */
+    @Transactional
+    public CartProduct updateProductQuantity(String userDpi, Long productId, int quantity) {
+        ShoppingCart cart = shoppingCartRepository.findByUserDpi_Dpi(userDpi)
+                .orElseThrow(() -> new RuntimeException("Carrito no encontrado"));
+
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+
+        CartProduct cartProduct = cartProductRepository.findByCartAndProduct(cart, product)
+                .orElseThrow(() -> new RuntimeException("Producto no está en el carrito"));
+
+        cartProduct.setQuantity(quantity);
+        cartProduct.setPrice(product.getPrice() * quantity);
+
+        return cartProductRepository.save(cartProduct);
+    }
+
 }

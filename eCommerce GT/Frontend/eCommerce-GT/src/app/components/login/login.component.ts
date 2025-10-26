@@ -21,7 +21,12 @@ export class LoginComponent {
   constructor(
     private router: Router,
     private authService: AuthenticationService
-  ) { }
+  ) {
+    const currentuser = this.authService.getCurrentUser();
+    if (currentuser) {
+      this.router.navigate(['/common-user']);
+    }
+  }
 
   login() {
     if (!this.email?.trim() || !this.password?.trim()) {

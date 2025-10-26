@@ -1,5 +1,6 @@
 package backend.models.market;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,12 +20,13 @@ public class CartProduct {
     private Long idCartProduct;
     @ManyToOne
     @JoinColumn(name = "id_cart", nullable = false)
+    @JsonBackReference
     private ShoppingCart cart;
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
     @Column(name = "quatity",  nullable = false)
-    private int quatity;
+    private int quantity;
     @Column(name = "price",  nullable = false)
     private double price;
 }
