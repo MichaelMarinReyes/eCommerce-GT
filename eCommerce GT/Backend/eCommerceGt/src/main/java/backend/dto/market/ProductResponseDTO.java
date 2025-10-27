@@ -5,6 +5,7 @@ import backend.models.market.Category;
 import backend.models.market.ProductStatus;
 import lombok.*;
 
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -24,4 +25,7 @@ public class ProductResponseDTO {
     private String image;
     private double averageRating;
     private List<RatingDTO>  ratings;
+    private String sellerName;
+    private Date createdAt;
+    private Date updatedAt;
 }

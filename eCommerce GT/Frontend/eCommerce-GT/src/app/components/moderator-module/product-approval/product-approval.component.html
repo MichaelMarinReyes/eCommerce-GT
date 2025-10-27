@@ -16,6 +16,7 @@
           <th>Precio</th>
           <th>Vendedor</th>
           <th>Fecha de creación</th>
+          <th>Fecha de modificación</th>
           <th>Acciones</th>
         </tr>
       </thead>
@@ -30,6 +31,7 @@
           <td>Q {{ product.price }}</td>
           <td>{{ product.sellerName }}</td>
           <td>{{ product.createdAt | date:'short' }}</td>
+          <td>{{ product.updatedAt | date: 'short' }}</td>
           <td class="actions">
             <button (click)="approveProduct(product.id)" class="approve-btn">Aprobar</button>
             <button (click)="rejectProduct(product.id)" class="reject-btn">Rechazar</button>

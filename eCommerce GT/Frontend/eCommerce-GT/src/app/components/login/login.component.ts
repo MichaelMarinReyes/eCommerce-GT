@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { NgIf } from '@angular/common';
 import { AuthenticationService, LoginRequest, AuthResponse } from '../../services/authentication.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'login',
@@ -63,7 +64,7 @@ export class LoginComponent {
       },
       error: (err) => {
         console.error('Error en login:', err);
-        alert('Correo o contraseña incorrectos');
+        Swal.fire('Credenciales inválidas', 'Correo o contraseña incorrectos', 'error');
       }
     });
   }

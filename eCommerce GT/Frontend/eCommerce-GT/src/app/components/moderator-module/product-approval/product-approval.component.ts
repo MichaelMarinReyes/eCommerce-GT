@@ -24,16 +24,22 @@ export class ProductApprovalComponent implements OnInit {
 
   loadPendingProducts(): void {
     this.productService.getPendingProducts().subscribe({
-      next: (products: Product[]) => this.pendingProducts = products,
-      error: (err) => console.log('error cargando productos pendientes', err)
+      next: (products: Product[]) => {
+        console.log('Productos pendientes recibidos:', products);
+        this.pendingProducts = products;
+      },
+      error: (err) => console.log('Error cargando productos pendientes', err)
     });
+
   } approveProduct(productId: number): void {
     Swal.fire({
       title: '¿Aprobar producto?',
       icon: 'question',
       showCancelButton: true,
       confirmButtonText: 'Sí, aprobar',
-      cancelButtonText: 'Cancelar'
+      cancelButtonText: 'Cancelar',
+      confirmButtonColor: '#fa8541',
+      cancelButtonColor: '#d33'
     }).then(result => {
       if (result.isConfirmed) {
         this.productService.approveProduct(productId).subscribe({
@@ -56,7 +62,9 @@ export class ProductApprovalComponent implements OnInit {
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Sí, rechazar',
-      cancelButtonText: 'Cancelar'
+      cancelButtonText: 'Cancelar',
+      confirmButtonColor: '#fa8541',
+      cancelButtonColor: '#d33'
     }).then(result => {
       if (result.isConfirmed) {
         this.productService.rejectProduct(productId).subscribe({

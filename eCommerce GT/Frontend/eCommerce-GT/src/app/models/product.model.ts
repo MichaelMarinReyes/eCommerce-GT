@@ -20,4 +20,5 @@ export interface Product {
   ratings?: Rating[];
   sellerName?: string;
   createdAt?: string;
+  updatedAt?: string;
 }

@@ -22,14 +22,15 @@ public class ProductController {
 
     /**
      * Es un endpoint que contiene los datos para crear un producto nuevo.
-     * @param productName es el nombre del producto nuevo.
-     * @param description es la descripción del producto nuevo.
-     * @param price es el precio al que se pondrá en venta el producto nuevo.
-     * @param stock es la cantidad del mismo producto que habrá.
-     * @param condition indica si el producto es nuevo o usado, true = nuevo, false = usado.
+     *
+     * @param productName  es el nombre del producto nuevo.
+     * @param description  es la descripción del producto nuevo.
+     * @param price        es el precio al que se pondrá en venta el producto nuevo.
+     * @param stock        es la cantidad del mismo producto que habrá.
+     * @param condition    indica si el producto es nuevo o usado, true = nuevo, false = usado.
      * @param categoryName indica la categoría a la que pertenece el producto.
-     * @param userDpi es el dpi del usuario que venderá el producto.
-     * @param image es la imagen que se verá para vender el producto.
+     * @param userDpi      es el dpi del usuario que venderá el producto.
+     * @param image        es la imagen que se verá para vender el producto.
      * @return una respuesta para el frontend.
      * @throws IOException en caso de que la imagen no pueda ser guardada.
      */
@@ -57,15 +58,16 @@ public class ProductController {
 
     /**
      * Es un endpoint para actualizar los datos de un producto.
-     * @param productId es el identificador del producto que se modificará.
-     * @param productName es el nombre del producto que se modificará.
-     * @param description es la descripción del producto que se modificará.
-     * @param price es el precio actualizado del producto.
-     * @param stock es la nueva cantidad del producto.
-     * @param condition indica si es nuevo o usado el producto.
+     *
+     * @param productId    es el identificador del producto que se modificará.
+     * @param productName  es el nombre del producto que se modificará.
+     * @param description  es la descripción del producto que se modificará.
+     * @param price        es el precio actualizado del producto.
+     * @param stock        es la nueva cantidad del producto.
+     * @param condition    indica si es nuevo o usado el producto.
      * @param categoryName indica la categoría a la que pertenece.
-     * @param userDpi es el dpi del usuario que modifica el producto.
-     * @param image es la imagen del producto.
+     * @param userDpi      es el dpi del usuario que modifica el producto.
+     * @param image        es la imagen del producto.
      * @return una respuesta para el frontend.
      * @throws IOException en caso de que la imagen no pueda ser guardada.
      */
@@ -95,6 +97,7 @@ public class ProductController {
 
     /**
      * Es un endpoint para obtener un producto según el usuario que lo creó.
+     *
      * @param userDpi es el dpi del usuario.
      * @return una respuesta para el frontend.
      */
@@ -105,6 +108,7 @@ public class ProductController {
 
     /**
      * Es un endpoint que contiene todos los productos aprobados y pueden ser vendidos.
+     *
      * @return un json con todos los productos con estado aprobados.
      */
     @GetMapping("/approved")
@@ -114,6 +118,7 @@ public class ProductController {
 
     /**
      * Es un endpoint para obtener un producto según su id.
+     *
      * @param id es el identificador del producto.
      * @return un json con los datos del producto
      */
@@ -125,6 +130,7 @@ public class ProductController {
 
     /**
      * Es un endpoint que obtiene los productos exceptuando los que coinciden con el dpi ingresado.
+     *
      * @param userDpi es el dpi del usuario.
      * @return un json con los productos.
      */
@@ -135,7 +141,8 @@ public class ProductController {
 
     /**
      * Es un endpoint para eliminar un producto y su stock.
-     * @param id es el identificador del producto.
+     *
+     * @param id      es el identificador del producto.
      * @param userDpi es el dpi del usuario que va a eliminar el producto.
      * @return un mensaje al frontend.
      */
@@ -154,6 +161,7 @@ public class ProductController {
 
     /**
      * Es un endpoint para obtener los comentarios y raiting de un producto.
+     *
      * @param id es el identificador del producto del cual se obtendrán los comentarios y raiting.
      * @return un json con los datos.
      */
@@ -163,5 +171,38 @@ public class ProductController {
         return ResponseEntity.ok(productResponseDTO);
     }
 
+    /**
+     * Obtener todos los productos pendientes de aprobación.
+     *
+     * @return Lista de productos con estado PENDING.
+     */
+    @GetMapping("/pending")
+    public ResponseEntity<List<ProductResponseDTO>> getPendingProducts() {
+        List<ProductResponseDTO> pendingProducts = productService.getPendingProducts();
+        return ResponseEntity.ok(pendingProducts);
+    }
 
+    /**
+     * Aprobar un producto pendiente.
+     *
+     * @param productId ID del producto a aprobar.
+     * @return Producto actualizado.
+     */
+    @PutMapping("/approve/{productId}")
+    public ResponseEntity<ProductResponseDTO> approveProduct(@PathVariable Long productId) {
+        ProductResponseDTO approvedProduct = productService.approveProduct(productId);
+        return ResponseEntity.ok(approvedProduct);
+    }
+
+    /**
+     * Rechazar un producto pendiente.
+     *
+     * @param productId ID del producto a rechazar.
+     * @return Producto actualizado.
+     */
+    @PutMapping("/reject/{productId}")
+    public ResponseEntity<ProductResponseDTO> rejectProduct(@PathVariable Long productId) {
+        ProductResponseDTO rejectedProduct = productService.rejectProduct(productId);
+        return ResponseEntity.ok(rejectedProduct);
+    }
 }

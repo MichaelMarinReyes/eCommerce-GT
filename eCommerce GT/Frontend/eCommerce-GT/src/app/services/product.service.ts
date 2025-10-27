@@ -59,11 +59,11 @@ export class ProductService {
   }
 
   approveProduct(id: number): Observable<void> {
-    return this.http.post<void>(`${this.apiUrl}/approve/${id}`, {});
+    return this.http.put<void>(`${this.apiUrl}/approve/${id}`, {});
   }
 
   rejectProduct(id: number): Observable<void> {
-    return this.http.post<void>(`${this.apiUrl}/reject/${id}`, {});
+    return this.http.put<void>(`${this.apiUrl}/reject/${id}`, {});
   }
 
 }

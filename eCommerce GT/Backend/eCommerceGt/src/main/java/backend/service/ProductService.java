@@ -194,6 +194,9 @@ public class ProductService {
                 .image(product.getImage())
                 .averageRating(product.getRatings() != null ?
                         product.getRatings().stream().mapToInt(r -> r.getStarts()).average().orElse(0.0) : 0.0)
+                .sellerName(product.getUserDpi().getName())
+                .createdAt(product.getCreatedAt())
+                .updatedAt(product.getUpdatedAt())
                 .build();
     }
 
@@ -265,5 +268,49 @@ public class ProductService {
         dto.setRatings(ratingDTOs);
 
         return dto;
+    }
+
+    /**
+     * Obtener todos los productos pendientes de aprobación.
+     * @return lista de productos con estado PENDING.
+     */
+    public List<ProductResponseDTO> getPendingProducts() {
+        return productRepository.findByStatus(ProductStatus.PENDING)
+                .stream()
+                .map(this::mapToResponseDTO)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Aprobar un producto pendiente.
+     * @param productId ID del producto a aprobar.
+     * @return Producto aprobado en formato DTO.
+     */
+    @Transactional
+    public ProductResponseDTO approveProduct(Long productId) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+
+        product.setStatus(ProductStatus.APPROVED);
+        product.setUpdatedAt(new Date());
+        productRepository.save(product);
+
+        return mapToResponseDTO(product);
+    }
+
+    /**
+     * Rechazar un producto pendiente.
+     * @param productId ID del producto a rechazar.
+     * @return Producto rechazado en formato DTO.
+     */
+    @Transactional
+    public ProductResponseDTO rejectProduct(Long productId) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+
+        product.setStatus(ProductStatus.REJECTED);
+        productRepository.save(product);
+
+        return mapToResponseDTO(product);
     }
 }
