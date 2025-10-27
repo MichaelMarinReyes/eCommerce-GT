@@ -18,4 +18,6 @@ export interface Product {
   image: string;
   averageRating?: number;
   ratings?: Rating[];
+  sellerName?: string;
+  createdAt?: string;
 }

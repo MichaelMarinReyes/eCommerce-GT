@@ -54,4 +54,16 @@ export class ProductService {
     return this.http.post<Rating>(`${this.apiUrl}/${productId}/rating`, { userDpi, stars, comment });
   }
 
+  getPendingProducts(): Observable<Product[]> {
+    return this.http.get<Product[]>(`${this.apiUrl}/pending`);
+  }
+
+  approveProduct(id: number): Observable<void> {
+    return this.http.post<void>(`${this.apiUrl}/approve/${id}`, {});
+  }
+
+  rejectProduct(id: number): Observable<void> {
+    return this.http.post<void>(`${this.apiUrl}/reject/${id}`, {});
+  }
+
 }

@@ -162,4 +162,6 @@ public class ProductController {
         ProductResponseDTO productResponseDTO = productService.getProductWithRatings(id);
         return ResponseEntity.ok(productResponseDTO);
     }
+
+
 }

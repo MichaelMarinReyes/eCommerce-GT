@@ -12,6 +12,13 @@ import { ProductDetailComponent } from './components/user-module/product-detail/
 import { CartItemComponent } from './components/user-module/cart-item/cart-item.component';
 import { CheckoutComponent } from './components/user-module/checkout/checkout.component';
 import { OrderListComponent } from './components/user-module/order-list/order-list.component';
+import { ModeratorComponent } from './components/moderator-module/moderator/moderator.component';
+import { AdminComponent } from './components/admin-module/admin/admin.component';
+import { SanctionCreateComponent } from './components/moderator-module/sanction-create/sanction-create.component';
+import { SanctionsListComponent } from './components/moderator-module/sanctions-list/sanctions-list.component';
+import { LogisticsComponent } from './components/logistics-module/logistics/logistics.component';
+import { ProductApprovalComponent } from './components/moderator-module/product-approval/product-approval.component';
+import { OrderDeliveryComponent } from './components/logistics-module/order-delivery/order-delivery.component';
 
 export const routes: Routes = [
     { path: '', title: 'eCommerce-GT', component: MainPageComponent },
@@ -23,6 +30,7 @@ export const routes: Routes = [
         title: 'eCommerce-GT',
         component: CommonUserComponent,
         canActivate: [AuthGuard],
+        data: { role: 'USUARIO COMÚN'},
         children: [
             { path: '', redirectTo: 'product-list', pathMatch: 'full' },
             { path: 'product-list', title: 'Productos', component: ProductListComponent },
@@ -35,5 +43,40 @@ export const routes: Routes = [
             { path: 'orders', title: 'Ordenes', component: OrderListComponent }
         ]
     },
-    { path: 'product-create', title: 'Vender Producto', component: ProductCreateComponent, canActivate: [AuthGuard] }
+    {
+        path: 'admin',
+        title: 'eCommerce-GT',
+        component: AdminComponent,
+        canActivate: [AuthGuard],
+        data: { role: 'ADMINISTRADOR'},
+        children: [
+            { path: '', redirectTo: 'product-approval', pathMatch: 'full' }
+
+        ]
+    },
+    {
+        path: 'moderator',
+        title: 'eCommerce-GT',
+        component: ModeratorComponent,
+        canActivate: [AuthGuard],
+        data: { role: 'MODERADOR'},
+        children: [
+            { path: '', redirectTo: 'product-approval', pathMatch: 'full' },
+            { path: 'product-approval', title: 'Productos', component: ProductApprovalComponent },
+            { path: 'sanction-create', title: 'Crear sanción', component: SanctionCreateComponent },
+            { path: 'sanction-list', title: 'Lista de sanciones', component: SanctionsListComponent }
+        ]
+    },
+    {
+        path: 'logistics',
+        title: 'eCommerce-GT',
+        component: LogisticsComponent,
+        canActivate: [AuthGuard],
+        data: { role: 'LOGÍSTICA'},
+        children: [
+            { path: '', redirectTo: 'order-delivery', pathMatch: 'full' },
+            { path: 'order-delivery', title: 'Entrega de pedido', component: OrderDeliveryComponent },
+            { path: 'order-list', title: 'Lista de pedidos', component: OrderListComponent }
+        ]
+    }
 ];

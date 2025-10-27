@@ -23,9 +23,7 @@ export class LoginComponent {
     private authService: AuthenticationService
   ) {
     const currentuser = this.authService.getCurrentUser();
-    if (currentuser) {
-      this.router.navigate(['/common-user']);
-    }
+    
   }
 
   login() {
@@ -41,9 +39,27 @@ export class LoginComponent {
 
     this.authService.login(loginData).subscribe({
       next: (response: AuthResponse) => {
-        console.log('Login exitoso:', response);
+        //console.log('Login exitoso:', response);
         localStorage.setItem('token', response.token);
-        this.router.navigate(['/common-user']);
+        localStorage.setItem('role', response.role);
+
+        switch (response.role) {
+          case 'ADMINISTRADOR':
+            this.router.navigate(['/admin']);
+            break;
+          case 'MODERADOR':
+            this.router.navigate(['/moderator']);
+            break;
+          case 'LOGÍSTICA':
+            this.router.navigate(['/logistics']);
+            break;
+          case 'USUARIO COMÚN':
+            this.router.navigate(['/common-user']);
+            break;
+          default:
+            this.router.navigate(['/no-access']);
+            break;
+        }
       },
       error: (err) => {
         console.error('Error en login:', err);

@@ -87,6 +87,7 @@ public class AuthenticationService {
                 .name(user.getName())
                 .email(user.getEmail())
                 .dpi(user.getDpi())
+                .role(user.getRole().getNameRole())
                 .build();
     }
 

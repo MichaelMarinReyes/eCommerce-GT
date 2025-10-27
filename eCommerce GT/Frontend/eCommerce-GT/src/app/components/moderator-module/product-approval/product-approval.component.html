@@ -1,1 +1,41 @@
-<p>product-approval works!</p>
+<div class="moderator-container">
+  <h2>Productos pendientes de aprobación</h2>
+
+  <div *ngIf="pendingProducts.length === 0" class="no-products">
+    <p>No hay productos pendientes de aprobación.</p>
+  </div>
+
+  <div *ngIf="pendingProducts.length > 0" class="table-container">
+    <table class="pending-products-table">
+      <thead>
+        <tr>
+          <th>No.</th>
+          <th>Imagen</th>
+          <th>Nombre</th>
+          <th>Descripción</th>
+          <th>Precio</th>
+          <th>Vendedor</th>
+          <th>Fecha de creación</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let product of pendingProducts; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>
+            <img [src]="apiUrl + '/uploads/images/' + product.image" alt="{{ product.name }}" width="80">
+          </td>
+          <td>{{ product.name }}</td>
+          <td>{{ product.description }}</td>
+          <td>Q {{ product.price }}</td>
+          <td>{{ product.sellerName }}</td>
+          <td>{{ product.createdAt | date:'short' }}</td>
+          <td class="actions">
+            <button (click)="approveProduct(product.id)" class="approve-btn">Aprobar</button>
+            <button (click)="rejectProduct(product.id)" class="reject-btn">Rechazar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

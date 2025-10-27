@@ -1,0 +1,29 @@
+<header class="header">
+  <div class="logo">eCommerce GT</div>
+  <nav class="menu">
+    <ul class="menu-list">
+      <a routerLink="#" class="menu-item">Solicitudes de venta</a>
+      <li>
+        <a routerLink="#" class="menu-item">Sanciones</a>
+        <ul class="submenu">
+          <li><a routerLink="manage-suspensions">Gestionar sanciones</a></li>
+        </ul>
+      </li>
+
+      <a routerLink="#">Resumen de ventas</a>
+
+      <li class="user-menu">
+        <span class="menu-item">{{ userName }}</span>
+        <ul class="submenu">
+          <li><a routerLink="edit-profile">Editar información</a></li>
+          <li><a (click)="logout()">Cerrar sesión</a></li>
+        </ul>
+      </li>
+
+    </ul>
+  </nav>
+</header>
+
+<div class="content">
+  <router-outlet></router-outlet>
+</div>

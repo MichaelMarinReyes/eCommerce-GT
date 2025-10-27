@@ -9,6 +9,7 @@ export interface AuthResponse {
   dpi: string;
   name: string;
   email: string;
+  role: string;
 }
 
 export interface LoginRequest {
@@ -29,7 +30,7 @@ export interface RegisterRequest {
 })
 export class AuthenticationService {
   private baseUrl = `${environment.apiUrl}/authentication`;
-  private currentUser: { token: string; name: string; email: string; dpi?: string } | null = null;
+  private currentUser: { token: string; name: string; email: string; dpi?: string, role?: string } | null = null;
 
   constructor(private http: HttpClient) { }
 
@@ -42,12 +43,14 @@ export class AuthenticationService {
           localStorage.setItem('name', res.name);
           localStorage.setItem('email', res.email);
           if (res.dpi) localStorage.setItem('dpi', res.dpi);
+          if (res.role) localStorage.setItem('role', res.role);
 
           this.currentUser = {
             token: res.token,
             name: res.name,
             email: res.email,
-            dpi: res.dpi
+            dpi: res.dpi,
+            role: res.role
           };
 
           observer.next(res);
@@ -78,7 +81,8 @@ export class AuthenticationService {
       const name = localStorage.getItem('name') || '';
       const email = localStorage.getItem('email') || '';
       const dpi = localStorage.getItem('dpi') || '';
-      this.currentUser = { token, name, email, dpi };
+      const role = localStorage.getItem('role') || '';
+      this.currentUser = { token, name, email, dpi, role };
     }
     return this.currentUser;
   }
