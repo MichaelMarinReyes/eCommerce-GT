@@ -1,6 +1,7 @@
 export interface User {
   dpi: string;
   name: string;
+  password?: string
   email?: string;
   address?: string;
   status?: boolean;

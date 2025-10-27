@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { NgIf } from '@angular/common';
+import Swal from 'sweetalert2';
+import { User } from '../../models/user.model';
+import { RegisterService } from '../../services/register.service';
 
 @Component({
   selector: 'register',
@@ -15,12 +18,13 @@ export class RegisterComponent {
   dpi: string = ''
   userName: string = '';
   email: string = '';
+  address: string = '';
   password: string = '';
   passwordConfirm: string = '';
   passwordVisible = false;
   passwordVisibleConfirm = false;
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private registerService: RegisterService) { }
 
   ngOnInit(): void {
     throw new Error("No implemntado");
@@ -40,19 +44,19 @@ export class RegisterComponent {
   }
 
   validDpi(dpi: string): boolean {
-    const cleanDpi = this.dpi.replace(/\s+/g,  '');
+    const cleanDpi = this.dpi.replace(/\s+/g, '');
 
     if (!/^\d{13}$/.test(cleanDpi)) {
-      alert("El DPI que ha ingresado es incorrecto");
+      Swal.fire('Identificación inválida', 'El DPI que ha ingresado es incorrecto', 'error');
       return false;
     }
     return true;
   }
 
   register() {
-    if (!this.validDpi(this.dpi)) {
-      return;
-    }
+    if (!this.validDpi(this.dpi)) return;
+    if (!this.validEmail(this.email)) return;
+
     const campos = [
       { valor: this.dpi, mensaje: "Debe ingresar su número de DPI" },
       { valor: this.userName, mensaje: "Debe ingresar un nombre de usuario" },
@@ -63,17 +67,42 @@ export class RegisterComponent {
 
     for (const campo of campos) {
       if (!campo.valor || campo.valor.trim() === '') {
-        alert(campo.mensaje);
+        Swal.fire({
+          icon: 'warning',
+          title: 'Campos incompletos',
+          text: campo.mensaje
+        });
         return;
       }
     }
 
     if (this.password !== this.passwordConfirm) {
-      alert("Las contraseñas no coinciden");
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Las contraseñas no coinciden'
+      });
       return;
     }
 
-    alert("Registrado");
+    const newUser: User = {
+      dpi: this.dpi.replace(/\s+/g, ''),
+      name: this.userName,
+      email: this.email,
+      address: this.address,
+      password: this.password
+    };
+
+    this.registerService.registerUser(newUser).subscribe({
+      next: (user) => {
+        this.registerService.showSuccess('Usuario registrado correctamente');
+        this.router.navigate(['/login']);
+      },
+      error: (err) => {
+        console.error(err);
+        this.registerService.showError('No se pudo registrar el usuario');
+      }
+    });
   }
 
   togglePasswordVisibility() {
@@ -82,5 +111,14 @@ export class RegisterComponent {
 
   togglePasswordVisibilityConfirm() {
     this.passwordVisibleConfirm = !this.passwordVisibleConfirm;
+  }
+
+  validEmail(email: string): boolean {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!re.test(email)) {
+      alert("El correo electrónico no es válido.");
+      return false;
+    }
+    return true;
   }
 }

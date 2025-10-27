@@ -1,4 +1,4 @@
 package backend.repository.market;
 
-public class RatingRepository {
+public interface RatingRepository {
 }

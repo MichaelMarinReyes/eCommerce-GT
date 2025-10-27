@@ -28,12 +28,14 @@ public class ProductService {
     private final UserRepository userRepository;
     private final FileStorageService fileStorageService;
     private final CategoryRepository categoryRepository;
+    private final EmailService emailService;
 
-    public ProductService(ProductRepository productRepository, UserRepository userRepository, FileStorageService fileStorageService, CategoryRepository categoryRepository) {
+    public ProductService(ProductRepository productRepository, UserRepository userRepository, FileStorageService fileStorageService, CategoryRepository categoryRepository, EmailService emailService) {
         this.productRepository = productRepository;
         this.userRepository = userRepository;
         this.fileStorageService = fileStorageService;
         this.categoryRepository = categoryRepository;
+        this.emailService = emailService;
     }
 
     /**
@@ -272,6 +274,7 @@ public class ProductService {
 
     /**
      * Obtener todos los productos pendientes de aprobación.
+     *
      * @return lista de productos con estado PENDING.
      */
     public List<ProductResponseDTO> getPendingProducts() {
@@ -283,6 +286,7 @@ public class ProductService {
 
     /**
      * Aprobar un producto pendiente.
+     *
      * @param productId ID del producto a aprobar.
      * @return Producto aprobado en formato DTO.
      */
@@ -295,11 +299,18 @@ public class ProductService {
         product.setUpdatedAt(new Date());
         productRepository.save(product);
 
+        String to = product.getUserDpi().getEmail(); // suponiendo que Product tiene un User
+        String subject = "Producto aprobado";
+        String text = "Hola " + product.getUserDpi().getName() +
+                ", tu producto '" + product.getProductName() + "' ha sido aprobado.";
+        emailService.sendEmail(to, subject, text);
+
         return mapToResponseDTO(product);
     }
 
     /**
      * Rechazar un producto pendiente.
+     *
      * @param productId ID del producto a rechazar.
      * @return Producto rechazado en formato DTO.
      */
@@ -310,7 +321,11 @@ public class ProductService {
 
         product.setStatus(ProductStatus.REJECTED);
         productRepository.save(product);
-
+        String to = product.getUserDpi().getEmail();
+        String subject = "Producto rechazado";
+        String text = "Hola " + product.getUserDpi().getName() +
+                ", tu producto '" + product.getProductName() + "' ha sido rechazado.";
+        emailService.sendEmail(to, subject, text);
         return mapToResponseDTO(product);
     }
 }

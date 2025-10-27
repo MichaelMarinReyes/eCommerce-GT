@@ -1,10 +1,349 @@
 @startuml eCommerce GT
 package backend {
     package controller {
+        class AuthenticationController {
+            - authenticationService: AuthenticationService
+            + AuthenticationController(AuthenticationService authenticationService)
+            + register(UserRegisterDTO): ResponseEntity<AuthResponseDTO>
+            + login(LoginRequestDTO): ResponseEntity<AuthResponseDTO>
+            + logoutSesion(String): ResponseEntity<String>
+            + verify(String): ResponseEntity(AuthResponseDTO)
+        }
 
+        class CartController {
+            - cartService: CartService
+            + CartController(CartService)
+            + getCart(String): ResponseEntity<List<CartProductDTO>>
+            + addToCArt(String, Long): ResponseEntity<CartProductDTO>
+            + removeFromCart(String, Long): ResponseEntity<Map<String, String>>
+            + clearCart(String): ResponseEntity<Map<String, String>>
+            + checkout(String): ResponseEntity<String>
+            + updateQuantity(String, Long, int): ResponseEntity<CartProductDTO>
+            + getCartByIdAndUser(Long, User): List<CartProductDTO>
+            - convertToDTO(CartProduct): CartProductDTO
+        }
+
+        class EmailController {
+            - emailService: EmailService
+            + EmailController(EmailService)
+            + sendEmail(String): String
+        }
+
+        class OrderController {
+            - orderService: OrderService
+            + checkout(Long, String): ResponseEntity<OrderResponseDTO>
+            + getOrdersByUser(String): ResponseEntity<List<OrderResponseDTO>
+        }
+
+        class ProductController {
+            - productService: ProductService
+            + ProductController(ProductService)
+            + createProdut(String, String, double, int, boolean, String, String, MultipartFile): ResponseEntity<ProductoResponse>
+            + updateProduct(Long, String, String, double, int, boolean, String, String, MultipartFile): ResponseEntity<ProductoResponse>
+            + getProductByUser(String): ResponseEntity<ProductResponseDTO>
+            + getActiveProducts(): ResponseEntity<List<ProductResponseDTO>
+            + getProductById(Long): ResponseEntity<ProductResponseDTO>
+            + getActiveProductsExcludingUser(String): ResponseEntity<List<ProductResponseDTO>>
+            + deleteProduct(Long, String): ResponseEntity<ProductResponseDTO>
+            + getProduct(long): ResponseEntity<ProductResponseDTO>
+            + getPendingProducts(): ResponseEntity<List<ProductResponseDTO>
+            + approveProduct(Long): ResponseEntity<ProductResponseDTO>
+            + rejectProduct(Long): ResponseEntity<ProductResponseDTO>
+        }
+    }
+
+    package dto {
+        package loginregister {
+            class AuthResponseDTO {
+                - token: String
+                - message: String
+                - name: String
+                - email: String
+                - dpi: String
+                - role: String
+                + AuthResponseDTO(String, String, String, String, String, String)
+                + getter(): String
+                + setter(String): void
+            }
+
+            class LoginRequestDTO {
+                - email: String
+                - password: String
+                + getEmail(): String
+                + setSemail(String): void
+                + getPassword(): String
+                + setPassword(String9: void)
+            }
+
+            class RegisterRequestDTO {
+                - dpi: String
+                - name: String
+                - email: String
+                - password: String
+                - addresss: String
+                + getter(): String
+                + setter(String): void
+            }
+        }
+
+        package market {
+            class CartProductDTO {
+                - id: Long
+                - idCart: Long
+                - product: ProductDTO
+                - quantity: int
+                - price: double
+                + CartProductDTO(Long, Long, ProductDTO, int, double)
+                + getter()
+                + setter()
+            }
+
+            class CategoryDTO {
+                - idCategory: Long
+                - categoryName: String
+                - description: String
+                + CategoryDTO(Long, String, String)
+                + getter()
+                + setter()
+            }
+
+            class OrderProductDTO {
+                - productId: Long
+                - name: String
+                - image: String
+                - price: double
+                - quantity: int
+                - categoryName: String
+                + OrderProductDTO(Long, String, String, double, int, String)
+                + getter()
+                + setter()
+            }
+
+            class OrderResponseDTO {
+                - orderId: Long
+                - totalAmount: double
+                - delivered: String
+                - userDpi: String
+                - createAt: Date
+                - deliveryDate: Date
+                - products: List<OrderProductDTO>
+                + OrderResponseDTO(Long, double, String, String, Date, Date, List)
+                + getter()
+                + setter()
+            }
+
+            class ProductCartDTO {
+                - id: Long
+                - name: String
+                - description: String
+                - image: String
+                - price: double
+                - stock: int
+                - condition: boolean
+                - status: String
+                - category: CategoryDTO
+                - userName: String
+                + ProductCartDTO(Long, String, String, String, double, int, boolean, String, CategoryDTO, String)
+                + getter()
+                + setter()
+            }
+
+            class ProductCreateDTO {
+                -  productId: Long
+                -  productName: String
+                -  description: String
+                -  category: String
+                -  price: double
+                -  image: String
+                -  stock: int
+                -  condition: boolean
+                + ProductCreateDTO(Long, String, String, String, double, String, int, boolean)
+                + getter()
+                + setter()
+            }
+
+            class ProductResponseDTO {
+                -  id: Long
+                -  name: String
+                -  description: String
+                -  price: double
+                -  stock: int
+                -  condition: boolean
+                -  status: ProductStatus
+                -  category: Category
+                -  image: String
+                -  averageRating: double
+                -  ratings: List<RatingDTO>
+                -  sellerName: String
+                -  createAt: Date
+                -  updateAt: Date
+                + ProductResponseDTO(Long, String, String, double, int boolean, ProductStatus, Category, String, double, List, String, Date, Date)
+                + getter()
+                + setter()
+            }
+
+            class ProductUpdateDTO {
+                - productId Long
+                - productName String
+                - description String
+                - category String
+                - price double
+                - image String
+                - stock int
+                - condition boolean
+                + ProductUpdateDTO(Long, String, String, String, double, String, int, boolean)
+                + getter()
+                + setter()
+            }
+
+            class ShppingCartResponseDTO {
+                - idCart: Long
+                - userDpi: String
+                - products: List<CartProduct>
+                - total: double
+                - createAt: Date
+                + ShoppingCartResponseDTO(Long, String, List, double, Date)
+                + getter()
+                + setter()
+            }
+        }
+
+        package rating {
+            class RatingDTO {
+                - idRating: Long
+                - userName: String
+                - stars: int
+                - comment: String
+                - createAt: Date
+                + RatingDTO(Long, String, int, String, Date)
+                + getter()
+                + setter()
+            }
+        }
+
+        package users {
+            class UserLoginDTO {
+                - email: String
+                - password: String
+                + UserLoginDTO(String, String)
+                + getter()
+                + setter()
+            }
+
+            class UserRegisterDTO {
+                - dpi: String
+                - name: String
+                - email: String
+                - password: String
+                - address: String
+                + UserRegisterDTO(String, String, String, String, String)
+                + getter()
+                + setter()
+            }
+        }
     }
 
     package model {
+        package management {
+            class Notification {
+                - idNotification: Long
+                - userDpi: User
+                - type: String
+                - subject: String
+                - message: String
+                - emailSent: String
+                - sendAt: Date
+                - createAt: Date
+                - deliveryDate: Date
+            }
+
+            class Sanctions {
+                - idSanction: Long
+                - userDpi: String
+                - moderatorDpi: String
+                - reason: String
+                - status: boolean
+                - startDate: Date
+                - endDate: Date
+            }
+        }
+
+        package market {
+            class CartProduct {
+                - idCartProduct: Long
+                - cart: ShoppingCart
+                - produt: Product
+                - quantity: int
+                - price: price
+            }
+
+            class Category {
+                - idCategory: Long
+                - categoryName: String
+                - description: String
+                - products: List<Product>
+            }
+
+            class Order {
+                - orderId: Long
+                - user: User
+                - shoppingCart: ShoppingCart
+                - totalAmount: double
+                - delivered: boolean
+                - createAt: Date
+                - deliveryDate: Date
+                - products: List<OrderProduct>
+            }
+
+            class OrderProduct {
+                - idOrderProduct: Long
+                - idOrder: Order
+                - product: Product
+                - quantity: int
+                - price: double
+            }
+
+            class Product {
+                - productId: Long
+                - productName: String
+                - description: String
+                - image: String
+                - price: Double
+                - stock: int
+                - condition: boolean
+                - status: boolean
+                - idCategory: Category
+                - userDpi: User
+                - createAt: Date
+                - updateAt: Date
+                - cartProducts: List<CartProduct>
+                - ratings: List<Rating>
+            }
+
+            enum ProductStatus {
+                PENDING,
+                APPROVED,
+                REJECTED
+            }
+
+            class Rating {
+                - idRating: Long
+                - userDpi: User
+                - productId: Product
+                - starts: int
+                - comment: String
+                - createAt: Date
+            }
+
+            class ShoppingCart {
+                - idCart: Long
+                - userDpi: User
+                - status: boolean
+                - createAt: Date
+                - updateAt: Date
+                - products: List<CartProduct>
+            }
+        }
         package users {
             class AdminUser {
                 + newEmployee(): void
@@ -29,12 +368,11 @@ package backend {
                 + reviewProduct(): void
             }
 
-            enum Role {
-                Administrator,
-                CommonUser,
-                LogisticsUser,
-                Moderator
-                {static} mapRole(String role): Role
+            class Role {
+                - idRole: Long
+                - nameRole: String
+                - description: String
+                - users: List<User>
             }
 
             class User {
@@ -43,105 +381,165 @@ package backend {
                 - password: String
                 - email: String
                 - role: Role
-                + getDpi(): String
-                + getName(): String
-                + getPassword(): String
-                + setDpi(String dpi): void
-                + setName(String name): void
-                + setPassword(String password): void
-                + getEmail(): String
-                + setEmail(String email): String
-            }
-        }
-
-        package market {
-            class Product {
-                - productId: UUID
-                - productName: String
-                - description: String
-                - image: Image
-                - price: Double
-                - stock: int
-                - state: String
-                - category: Category
-                - qualification: int
-                - comment: String
+                - address: String
+                - status: boolean
+                - userCards: List<UserCard>
+                - products: List<Product>
             }
 
-            enum Category {
-                Technology,
-                Home,
-                Academic,
-                Personal,
-                Decoration,
-                Other
-                {static} mapCatgory(String category): Category
-            }
-
-            class ShoppingCart {
-                - user: CommonUser
-                - productsList: ArrayList<Product>
-                + getUser(): CommonUser
-                + getProductList(): ArrayList<Product>
-                + setUser(CommonUser user): void
-                + addProduct(Product product): void
-                + removeProduct(Product product): void
-                + updateCart(): void
-                + deleteCart(): void
-                + payCart(): void
-            }
-
-            class Order {
-                - sellerUser: CommonUser
-                - buyerUser: CommonUser
-                - products: ArrayList<Product>
-                - statusOrder: String
-                - orderDate: Date
-                - deliveryDate: Date
-            }
-
-            class NotificationHistory {
-                - userDpi: String
-                - userEmail: String
-                - notificationDate: Date
-                - description: String
-            }
-
-            Product *-- Category
-            ShoppingCart o-- Product
-        }
-
-        package objects {
             class UserCard {
+                - idCard: Long
+                - userDpi: User
                 - cardNumber: String
                 - cardHolder: String
                 - expirationDate: String
                 - cardType: String
                 - securityCode: String
-                + getCardNumber(): String
-                + getCardHolder(): String
-                + getExpirtarionDate(): String
-                + getCardType(): String
-                + getSecurityCode(): String
-                + setCardNumber(String cardNumber): void
-                + setCardHolder(String cardHolder): void
-                + setExpirationDate(String expirationDate): void
-                + setCardType(String cardType): void
-                + setSecurityCode(String securityCode): void
             }
         }
     }
 
     package repository {
+        package management {
+            interface NotificationRepository {
+            }
 
+            interface SanctionRepository {
+            }
+        }
+
+        package market {
+            interface CartProductRepository {
+                + findbyCartAndProduct(ShoppingCart, Product): Optional<CartProduct>
+            }
+
+            interface CategoryRepository {
+                + findByCategoryName(String): Optional<Category>
+            }
+
+            interface OrderProductRepository {
+
+            }
+
+            interface OrderRepository {
+                + findbyUserDpi(String): List<Order>
+            }
+
+            interface ProductRepository {
+                + findByConditionTrue(): List<Product>
+                + findbyUserDpiDpi(String): List<Product>
+                + findByStatus(ProductStatus): List<Product>
+            }
+
+            interface RatingRepository {
+
+            }
+
+            interface ShoppingCartRepository {
+                + findbyUserDpi(User): Optional<ShoppingCart>
+                + findByUserDpi_Dpi(String): Optional<ShoppingCart>
+            }
+        }
+
+        package users {
+            interface RoleRepository {
+                + findByNameRole(String)
+            }
+
+            interface UserRepository {
+                + findbyDpi(String): Optional<User>
+                + findByEmail(String): Optional<User>
+            }
+        }
     }
 
     package service {
+        class AuthenticationService {
+            - userRepository: UserRepository
+            - roleRepository: RoleRepository
+            - jwtUtils: Jwt
+            - passwordEncoder: BCryptPaswordEncoder
+            + AuthenticationService(UserRepository, RoleRepository, Jwt)
+            + register(UserRepositoryDTO): AuthResponseDTO
+            + login(UserLoginDTO): AuthResponseDTO
+            + logout(String): void
+            + verifyToken(String): AuthResponseDTO
+        }
 
+        class CartService {
+            - shoppingCartRepository: ShoppingCartRepository
+            - cartProductRepository: CartProductRepository
+            - productRepository: ProductRepository
+            - userRepository: UserRepository
+            + CartService(ShoppingCartRepository, CartProductRepository, ProductRepository, UserRepository)
+            + addProductToCart(String, Long, int): CartProductDTO
+            + getCartByUser(String): List<CartProductDTO>
+            + removeproductFromart(String, Long): void
+            + clearCart(String): void
+            + checkout(String): void
+            + updateProductQuantity(String, Long, int): CartProdutDTO
+            + getCartByIdAndUser(Long, String): List<CartProductDTO
+        }
+
+        class EmailService {
+            - mailSender: JavaMailSender
+            + EmailService(JavaMailSender)
+            + sendEmail(String, String, String): void
+        }
+
+        class FileStorageService {
+            - uploadDir: String
+            + saveFile(Multiparte, String): String
+        }
+
+        class OrderService {
+            - userRepository: UserRepository
+            - shoppingCartRepository: ShoppingCartRepository
+            - cartProductRepository: CartProductRepository
+            - orderRepository: OrderRepository
+            - orderProductRepository: OrderProductRepository
+            + OrderService(UserRepository, ShoppingCartRepository, CartProductRepository, OrderRepository, OrderProductRepository)
+            + checkout(Long, String): ResponseEntity<OrderResponseDTO>
+            + getOrdersByUser(String): List<OrderResponseDTO>
+        }
+
+        class ProductService {
+            - productRepository: ProductRepository
+            - userRepository: UserRepository
+            - fileStorageService: FileStorageService
+            - categoryRepository: CategoryRepository
+            - emailService: EmailService
+            + ProductService(ProductRespository, UserRepository, FileStorageService, CategoryRepository, EmailService)
+            + createProduct(ProductCreateDTO, Stirng, MultipartFile): ProdutResponseDTO
+            + updateProduct(Long, ProductUpateDTO, MultipartFile, Strin): ProductResponseDTO
+            + deleteProduct(Long, String): boolean
+            + getProductsByUser(String): List<ProductResponseDTO>
+            + getAllActiveProducts(): List<productResponseDTO>
+            - mapToResponseDTO(Product): ProductResponseDTO
+            + getProductById(Long): ProductResponseDTO
+            + getAllActiveProductsExeptUser(String): List<ProductResponseDTO>
+            + getProductWithRatings(Long): ProductResponseDTO
+            + getPendingProducts(): ist<ProductResponseDTO>
+            + approveProduct(Long): ProductResponseDTO
+            + rejectProduct(Long): ProductResponseDTO
+        }
     }
 
     package utils {
+        class Jwt {
+            - SECRET_KEY: final String
+            - blackList: Set<String>
+            - getSigningKey(): Key
+            + generateToken(String): String
+            + validateToken(String): boolean
+            + extractUsaername(String): String
+            + addToBlacklist(String): void
+        }
 
+        class Validation {
+            + validateuserCard(String): boolean
+            + isValidCVV(String, String): boolean
+        }
     }
 
     class ECommerceGt {
@@ -149,14 +547,476 @@ package backend {
     }
 }
 
+AuthenticationController -down-* AuthenticationService
+AuthenticationController --* AuthResponseDTO
+AuthenticationController --* LoginRequestDTO
+AuthenticationController --* RegisterRequestDTO
+AuthenticationService -down-* UserRepository
+AuthenticationService -down-* RoleRepository
+AuthenticationService --* Jwt
+AuthenticationService --* UserLoginDTO
+AuthenticationService --* UserRegisterDTO
+AuthenticationService --* AuthResponseDTO
+
+CartController -down-* CartService
+CartController --* CartProductDTO
+CartController --* ShppingCartResponseDTO
+
+EmailController -down-* EmailService
+OrderController -down-* OrderService
+OrderController --* OrderResponseDTO
+
+ProductController -down-* ProductService
+ProductController --* ProductResponseDTO
+ProductController --* ProductCreateDTO
+ProductController --* ProductUpdateDTO
+
+
+CartService -down-* ShoppingCartRepository
+CartService -down-* CartProductRepository
+CartService -down-* ProductRepository
+CartService -down-* UserRepository
+CartService --* CartProductDTO
+
+OrderService -down-* UserRepository
+OrderService -down-* ShoppingCartRepository
+OrderService -down-* CartProductRepository
+OrderService -down-* OrderRepository
+OrderService -down-* OrderProductRepository
+OrderService --* OrderResponseDTO
+OrderService --* OrderProductDTO
+
+ProductService -down-* ProductRepository
+ProductService -down-* UserRepository
+ProductService -down-* FileStorageService
+ProductService -down-* CategoryRepository
+ProductService -down-* EmailService
+ProductService --* ProductCreateDTO
+ProductService --* ProductUpdateDTO
+ProductService --* ProductResponseDTO
+EmailService --* JavaMailSender
+
+
 User <|-- CommonUser
 User <|-- ModeratorUser
 User <|-- LogisticsUser
 User <|-- AdminUser
 User *-- Role
 CommonUser o-- UserCard
+User o-- Product
+User o-- ShoppingCart
+Product o-- Category
+Product o-- Rating
+Product o-- CartProduct
+CartProduct --> ShoppingCart
+CartProduct --> Product
+Order --> User
+Order *-- OrderProduct
+OrderProduct --> Product
+ShoppingCart --> User
+ShoppingCart *-- CartProduct
+Notification --> User
+
+UserRepository --* User
+RoleRepository --* Role
+ProductRepository --* Product
+CategoryRepository --* Category
+CartProductRepository --* CartProduct
+ShoppingCartRepository --* ShoppingCart
+OrderRepository --* Order
+OrderProductRepository --* OrderProduct
+RatingRepository --* Rating
+NotificationRepository --* Notification
+SanctionRepository --* Sanctions
+
+CartProductDTO --* ProductDTO
+ProductResponseDTO --* Category
+ProductResponseDTO --* RatingDTO
+OrderResponseDTO --* OrderProductDTO
+ProductCartDTO --* CategoryDTO
+
+ECommerceGt --* AuthenticationController
+ECommerceGt --* ProductController
+ECommerceGt --* CartController
+ECommerceGt --* OrderController
+ECommerceGt --* EmailController
 
 package frontend {
+    package app {
+
+        package components {
+
+            package admin-module {
+                class AdminComponent
+                class EmployeeCreateComponent
+                class EmployeeEditComponent
+                class EmployeeListComponent
+                class ReportDetailComponent
+                class ReportsComponent
+            }
+
+            package moderator-module {
+                class ModeratorComponent {
+                    - userName: string
+                    + constructor(AuthenticationService, Router)
+                    - ngOnInit(): void
+                    - logout(): void
+                }
+
+                class ProductApprovalComponent {
+                    - pendingProductss: Product[]
+                    - paiUrl = environment
+                    + constructor(ProductService)
+                    - ngOnInit(): void
+                    - loadPendingProducts(): void
+                    - rejectProduct(number): void
+                }
+
+                class SanctionCreateComponent
+                class SanctionsListComponent
+            }
+
+            package logistics-module {
+                class LogisticsComponent
+                class OrderDeliveryComponent
+                class OrdersInProgressComponent
+            }
+
+            package notifications-module {
+                class NotificationDetailComponent
+                class NotificationsListComponent
+            }
+
+            package user-module {
+                class CartItemComponent {
+                    - cartItems: CartProduct[]
+                    - idcart: number
+                    - filteredCartItems: CartProduct[]
+                    - userDpi: string
+                    - searchTerm: string
+                    - apiUrl: string
+                    + constructor(CartService, AuthenticationService, Router)
+                    - ngOnInit(): void
+                    - loadCart(): void
+                    - removeItem(number): void
+                    - clearCart(): void
+                    - checkout(): void
+                    - getTotal(): number
+                    - increaseQuantity(CartProduct): void
+                    - decreasequantityt(CartProduct): void
+                    - upadateQuantity(CartProduct): void
+                    - applyCartFilteres(): void
+                }
+
+                class CheckoutComponent {
+                    - userdpi: string
+                    - cartItems: CartProduct[]
+                    - cartId: number
+                    - payment: string[]
+                    - constructor(CartService, ActivatedRoute, AuthenticationService, Router, OrderService)
+                    - ngOnInit(): void
+                    - loadCart(): void
+                    - getTotal(): number
+                    - procesPayment(): void
+                }
+
+                class CommonUserComponent {
+                    - userName: string
+                    + constructor(AuthenticationService, Router)
+                    - ngOnInit(): void
+                    - logout(): void
+                }
+
+                class MyProductsComponent {
+                    - apiUrl: string
+                    - products: Product[]
+                    - userDpi: string
+                    - filteredProducts: Product[]
+                    - searchTerm: string
+                    - priceOrder: string
+                    - selectedCategory: string
+                    + constructor(ProductService, AuthenticationService, Router, ActivatedRoute)
+                    - ngOnInit(): void
+                    - applyFilters: void
+                    - deleteProduct(number): void
+                }
+
+                class OrderDetailComponent {
+
+                }
+
+                class OrderListComponent {
+
+                }
+
+                class ProductCreateComponent {
+                    - userdpi: string
+                    - product: Product
+                    - selectedFile: File
+                    - category: Category[]
+                    + constructor(ProductService, AuthenticationService)
+                    - onFileSelected(File): void
+                    - onSubmit(): void
+                    - resetForm(): void
+                    - validateProduct(): boolean
+                }
+
+                class ProductDetailComponent {
+                    - productId: number
+                    - product: Product
+                    - apiUrl: string
+                    + constructor(ActivatedRoute, ProductService, Router, CartService, AuthenticationService)
+                    - ngOnInit(): void
+                    - loadProduct(): void
+                    - byProduct(number): void
+                }
+
+                class ProductEditComponent {
+                    - productId: number
+                    - selectedFile: File
+                    - previewImage: string
+                    - product: Product
+                    - categories: Category[]
+                    + constructor(ActivatedRoute, Router, ProductService, AuthenticationService)
+                    - ngOnInit(): void
+                    - loadProduct(): void
+                    - onFileSelected(File): void
+                    - updateProduct(): void
+                    - validateProduct(): boolean
+                    - compareCategories(Category, Category): boolean
+                }
+
+                class ProductListComponent {
+                    - apiUrl: string
+                    - products: Product[]
+                    - filteredProducts: Product[]
+                    - searchTerm: string
+                    - priceOrder: string
+                    - selectedCategory: string
+                    + constructor(ProductService, AuthenticationService, Router, CartService):
+                    - ngOnInit(): void
+                    - applyFilters(): void
+                    - gotoDetail(number): void
+                    - buyProduct(Product): void
+                }
+
+                class RatingCommentComponent{
+
+                }
+            }
+
+            class LoginComponent {
+                - userName: string
+                - email: string
+                - password: string
+                - passwordVisible: boolean
+                + constructor(Router, AuthenticationService)
+                + login(): void
+                - togglePsswordVisibility(): void
+            }
+
+            class MainPageComponent {
+                - apiUrl: string
+                - title: string
+                - currentRouter: string
+                - products: Product[]
+                - filteredProducts: Product[]
+                - searchTerm: string
+                - priceOrder: string
+                - selectedCategory: string
+                + constructor(Router, ProductService, AuthenticationService)
+                + ngOnInit(): void
+                - applyFilters(): void
+                - login(): void
+                - gotoDetail(number): void
+            }
+
+            class RegisterComponent {
+                - dpi: string
+                - userName: string
+                - email: string
+                - address: string
+                - password: string
+                - passwordConfirm: string
+                - passwordVisible: boolean
+                - passwordVisibleConfirm: boolean
+                + constructor(Router, RegisterService)
+                - ngOnInit(): void
+                - formatDpi(): void
+                - validDpi(string): boolean
+                - register(): void
+                - togglePsswordVisibility(): void
+                - togglePsswordVisibilityConfirm(): void
+                - validEmail(string): boolean
+            }
+        }
+
+        package guards {
+            class AuthGuard {
+                + constructor(AuthenticationService, Router)
+                - canActivate(ActivateRouteSnapshot): boolean
+            }
+        }
+
+        package models {
+            package cartmodel {
+                interface CartModel {
+                    + idCart: number
+                    + products: CartProduct[]
+                    + total: number
+                    + createAt: string
+                    + userDpi: string
+                }
+
+                interface ShoppingCart {
+                    + idCart: number
+                    + userDpi: string
+                    + status: boolean
+                    + createAt: string
+                    + updateAt: string
+                }
+
+                interface CartProduct {
+                    + idCart: number
+                    + product: Product
+                    + quantity: number
+                    + price: number
+                    + cart: ShoppingCart
+                }
+            }
+
+            package ordermodel {
+                interface OrderProduct {
+                    + productId: number
+                    + name: string
+                    + image: string
+                    + price: number
+                    + quantity: number
+                    + categoryName: string
+                }
+
+                interface OrderResponse {
+                    + orderId: number
+                    + totalAmount: number
+                    + delivered: boolean
+                    + createAt: string
+                    + deliveryDate: string
+                    + products: OrderProduct[]
+                    + userDpi: string
+                }
+            }
+
+            package productmodel {
+                interface Category {
+                    + idCategory: number
+                    + categoryName: string
+                    + description: string
+                }
+
+                interface Product {
+                    + id: number;
+                    + name: string;
+                    + description: string;
+                    + price: number;
+                    + stock: number;
+                    + condition: boolean;
+                    + status: string;
+                    + category: Category;
+                    + image: string;
+                    + averageRating: number;
+                    + ratings: Rating[];
+                    + sellerName: string;
+                    + createdAt: string;
+                    + updatedAt: string;
+                }
+            }
+
+            package ratingmodel {
+                interface Rating {
+                    + idRating: number
+                    + user: User
+                    + stars: number
+                    + comment: string
+                    + createAt: string
+                }
+            }
+
+            package usermodel {
+                interface User {
+                    + dpi: string
+                    + name: string
+                    + password: string
+                    + email: string
+                    + address: string
+                    + status: boolean
+                    + role: Role
+                }
+
+                interface Role {
+                    + idRole: number
+                    + roleName: string
+                    + description: string
+                }
+            }
+        }
+
+        package services {
+            class AdminService
+            class CartService
+            class LogisticsService
+            class ModeratorService
+            class NotificationService
+            class OrderService
+            class PaymentService
+            class ProductService
+            class RatingService
+            class RegisterService
+            class UserService
+        }
+    }
+
+    LoginComponent --> AuthenticationService : usa
+    RegisterComponent --> RegisterService : usa
+    AuthGuard --> AuthenticationService : valida token
+    CommonUserComponent --> AuthenticationService : usa
+    ModeratorComponent --> AuthenticationService : usa
+    MainPageComponent --> AuthenticationService : usa
+
+    ProductListComponent --> ProductService : usa
+    ProductDetailComponent --> ProductService : usa
+    ProductCreateComponent --> ProductService : usa
+    ProductEditComponent --> ProductService : usa
+    MyProductsComponent --> ProductService : usa
+    MainPageComponent --> ProductService : usa
+    ProductApprovalComponent --> ProductService : usa
+
+    CartItemComponent --> CartService : usa
+    ProductDetailComponent --> CartService : agrega producto
+    ProductListComponent --> CartService : agrega producto
+    CheckoutComponent --> CartService : obtiene carrito
+
+    CheckoutComponent --> OrderService : crea orden
+    CheckoutComponent --> PaymentService : procesa pago
+    OrderListComponent --> OrderService : usa
+    OrderDetailComponent --> OrderService : usa
+
+    CommonUserComponent --> Router : navega
+    RegisterComponent --> Router : navega
+    LoginComponent --> Router : navega
+    ModeratorComponent --> Router : navega
+
+    CartModel *-- CartProduct
+    CartProduct --> Product
+    CartProduct --> ShoppingCart
+    OrderResponse *-- OrderProduct
+    Product --> Category
+    Product --> Rating
+    Rating --> User
+    User --> Role
 
 }
+
+AuthenticationServiceuth --* AuthenticationController
+ProductService --* ProductController
+CartService --* ProductController
 @enduml

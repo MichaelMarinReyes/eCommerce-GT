@@ -33,7 +33,7 @@ public class AuthenticationService {
                     .build();
         }
 
-        Role defaultRole = roleRepository.findByNameRole("COMMON_USER")
+        Role defaultRole = roleRepository.findByNameRole("USUARIO COMÚN")
                 .orElseThrow(() -> new RuntimeException("Rol no encontrado."));
 
         User user = User.builder()

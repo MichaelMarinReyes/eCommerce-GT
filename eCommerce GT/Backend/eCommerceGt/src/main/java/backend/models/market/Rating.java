@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -31,5 +31,5 @@ public class Rating {
     @Column(name = "comment", nullable = false)
     private String comment;
     @Column(name = "created_at", nullable = false)
-    private LocalDateTime createdAt;
+    private Date createdAt;
 }
