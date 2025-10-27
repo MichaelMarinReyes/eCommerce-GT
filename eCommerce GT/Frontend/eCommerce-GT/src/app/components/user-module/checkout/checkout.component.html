@@ -1,24 +1,31 @@
 <div class="checkout-container">
-  <h2>Checkout</h2>
+  <h2>Realizar pago</h2>
 
-  <div *ngIf="cartItems.length === 0" class="no-products">
+  <div *ngIf="cartItems?.length === 0" class="no-products">
     <p>No hay productos en el carrito.</p>
   </div>
 
-  <div *ngIf="cartItems.length > 0">
+  <div *ngIf="!cartItems || cartItems?.length === 0" class="no-products">
     <table class="checkout-table">
       <thead>
         <tr>
           <th>No.</th>
+          <th>Imagen</th>
           <th>Producto</th>
+          <th>Precio</th>
           <th>Cantidad</th>
           <th>Subtotal</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let item of cartItems; let i = index">
+        <tr *ngFor="let item of cartItems ?? []; let i = index">
           <td>{{ i + 1 }}</td>
+          <td>
+            <img [src]="'/uploads/images/' + item.product.image" 
+                 alt="{{ item.product.name }}" width="50" />
+          </td>
           <td>{{ item.product.name }}</td>
+          <td>Q {{ item.product.price }}</td>
           <td>{{ item.quantity }}</td>
           <td>Q {{ item.product.price * item.quantity }}</td>
         </tr>
@@ -35,7 +42,8 @@
 
       <div>
         <label>Número de tarjeta</label>
-        <input type="text" name="cardNumber" [(ngModel)]="payment.cardNumber" required pattern="[0-9]{16}" />
+        <input type="text" name="cardNumber" [(ngModel)]="payment.cardNumber" 
+               required pattern="[0-9]{16}" />
       </div>
 
       <div>
@@ -45,7 +53,8 @@
 
       <div>
         <label>CVV</label>
-        <input type="text" name="cvv" [(ngModel)]="payment.cvv" required pattern="[0-9]{3}" />
+        <input type="text" name="cvv" [(ngModel)]="payment.cvv" 
+               required pattern="[0-9]{3}" />
       </div>
 
       <button type="submit">Pagar</button>

@@ -17,6 +17,7 @@ import { Router } from '@angular/router';
 })
 export class CartItemComponent implements OnInit {
   cartItems: CartProduct[] = [];
+  idart!: number;
   filteredCartItems: CartProduct[] = [];
   userDpi: string = '';
   searchTerm: string = '';
@@ -37,7 +38,7 @@ export class CartItemComponent implements OnInit {
 
   loadCart(): void {
     this.cartService.getCart(this.userDpi).subscribe({
-      next: (data) => {
+      next: (data: CartProduct[]) => {
         this.cartItems = data.map(item => ({
           ...item,
           product: {
@@ -55,6 +56,12 @@ export class CartItemComponent implements OnInit {
           }
         }));
         this.filteredCartItems = [...this.cartItems];
+
+        if (this.cartItems.length > 0) {
+          this.idart = this.cartItems[0].idCart;
+        } else {
+          Swal.fire('Error', 'No se encontró el idCart en los productos del carrito', 'error');
+        }
       },
       error: (err) => console.log(err)
     });
@@ -80,14 +87,13 @@ export class CartItemComponent implements OnInit {
     });
   }
 
-checkout(): void {
-  if (this.cartItems.length > 0) {
-    const idCart = this.cartItems[0].cartId;
-    this.router.navigate(['common-user/checkout', idCart]);
-  } else {
-    Swal.fire('Carrito vacío', 'No hay productos en el carrito', 'warning');
+  checkout(): void {
+    if (this.idart) {
+      this.router.navigate(['common-user/checkout', this.idart]);
+    } else {
+      Swal.fire('Carrito vacío', 'No hay productos en el carrito', 'warning');
+    }
   }
-}
 
   getTotal(): number {
     return this.cartItems.reduce((sum, item) => sum + item.product.price * item.quantity, 0);

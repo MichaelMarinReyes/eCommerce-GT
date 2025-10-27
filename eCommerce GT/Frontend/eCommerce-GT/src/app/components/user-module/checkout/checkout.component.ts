@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { CartService } from '../../../services/cart.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CartProduct } from '../../../models/cart.model';
 import Swal from 'sweetalert2';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthenticationService } from '../../../services/authentication.service';
+import { OrderService } from '../../../services/order.service';
 
 @Component({
   selector: 'app-checkout',
@@ -15,10 +16,9 @@ import { AuthenticationService } from '../../../services/authentication.service'
   styleUrl: './checkout.component.css'
 })
 export class CheckoutComponent implements OnInit {
-  idCart: number = 0;
   userDpi: string = '';
   cartItems: CartProduct[] = [];
-
+  cartId!: number;
   payment = {
     cardName: '',
     cardNumber: '',
@@ -29,29 +29,25 @@ export class CheckoutComponent implements OnInit {
   constructor(
     private cartService: CartService,
     private route: ActivatedRoute,
-    private authService: AuthenticationService
-  ) { }
+    private authService: AuthenticationService,
+    private router: Router,
+    private orderService: OrderService
+  ) {
+    this.userDpi = this.authService.getCurrentUser()?.dpi ?? '';
+  }
 
   ngOnInit(): void {
-    this.idCart = Number(this.route.snapshot.paramMap.get('idCart'));
-    this.userDpi = this.authService.getCurrentUser()?.dpi ?? '';
-    if (this.idCart && this.userDpi) {
-      this.loadCart();
-    } else {
-      Swal.fire('Error', 'No se pudo obtener la información del carrito', 'error');
-    }
+    this.cartId = Number(this.route.snapshot.paramMap.get('idCart'));
+    this.loadCart();
   }
 
   loadCart(): void {
-    this.cartService.getCartById(this.idCart, this.userDpi).subscribe({
+    this.cartService.getCartById(this.cartId, this.userDpi).subscribe({
       next: (data) => {
+        console.log(data)
         this.cartItems = data.products;
-        console.log("Carrito cargado:", JSON.stringify(this.cartItems, null, 2));
       },
-      error: (err) => {
-        console.error(err);
-        Swal.fire('Error', 'No se pudo cargar el carrito', 'error');
-      }
+      error: (err: any) => console.log(err)
     });
   }
 
@@ -60,11 +56,21 @@ export class CheckoutComponent implements OnInit {
   }
 
   processPayment(form: any): void {
-    if (form.valid) {
-      Swal.fire('Pago exitoso', 'Tu compra ha sido procesada correctamente', 'success');
-      // Aquí puedes llamar un endpoint que cambie el estado del carrito a “pagado”
-    } else {
-      Swal.fire('Formulario inválido', 'Por favor completa todos los campos correctamente', 'warning');
+    if (form.invalid) {
+      Swal.fire('Error', 'Por favor complete correctamente todos los campos de pago', 'error');
+      return;
     }
+
+    this.orderService.checkout(this.cartId, this.userDpi).subscribe({
+      next: (res: any) => {
+        Swal.fire('Éxito', 'Pago realizado y pedido generado', 'success');
+        this.router.navigate(['/common-user/orders']); // redirigir a historial de pedidos
+      },
+      error: (err: any) => {
+        console.log(err);
+        Swal.fire('Error', 'No se pudo procesar el pago', 'error');
+      }
+    });
   }
+
 }

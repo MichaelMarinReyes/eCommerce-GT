@@ -1,7 +1,5 @@
 package backend.service;
 
-import backend.dto.market.CartProductDTO;
-import backend.dto.market.ShoppingCartResponseDTO;
 import backend.models.market.CartProduct;
 import backend.models.market.Product;
 import backend.models.market.ShoppingCart;
@@ -10,8 +8,6 @@ import backend.repository.market.CartProductRepository;
 import backend.repository.market.ProductRepository;
 import backend.repository.market.ShoppingCartRepository;
 import backend.repository.users.UserRepository;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -170,4 +166,24 @@ public class CartService {
         return cartProductRepository.save(cartProduct);
     }
 
+    /**
+     * Obtiene los productos de un carrito específico asociado a un usuario.
+     *
+     * @param cartId  identificador del carrito.
+     * @param userDpi dpi del usuario propietario del carrito.
+     * @return lista de productos dentro del carrito.
+     */
+    public List<CartProduct> getCartByIdAndUser(Long cartId, String userDpi) {
+        User user = userRepository.findById(userDpi)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        ShoppingCart cart = shoppingCartRepository.findById(cartId)
+                .orElseThrow(() -> new RuntimeException("Carrito no encontrado"));
+
+        if (!cart.getUserDpi().equals(user)) {
+            throw new RuntimeException("El carrito no pertenece al usuario indicado");
+        }
+
+        return cart.getProducts();
+    }
 }

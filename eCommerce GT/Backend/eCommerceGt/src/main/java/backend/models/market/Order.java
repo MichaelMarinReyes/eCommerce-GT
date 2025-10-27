@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Date;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,16 +21,18 @@ public class Order {
     private Long orderId;
     @ManyToOne
     @JoinColumn(name = "user_dpi")
-    private User userDpi;
+    private User user;
     @ManyToOne
     @JoinColumn(name = "id_cart",  nullable = false)
-    private ShoppingCart idCart;
+    private ShoppingCart shoppingCart;
     @Column(name = "total_amount", nullable = false)
     private double totalAmount;
     @Column(name = "status", nullable = false)
-    private boolean status;
+    private boolean delivered;
     @Column(name = "created_at", nullable = false)
     private Date createdAt;
     @Column(name = "delivery_date", nullable = false)
     private Date deliveryDate;
+    @OneToMany(mappedBy = "idOrder", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<OrderProduct> products;
 }

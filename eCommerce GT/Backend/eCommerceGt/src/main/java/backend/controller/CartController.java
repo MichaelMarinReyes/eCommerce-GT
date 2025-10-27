@@ -114,6 +114,21 @@ public class CartController {
         return ResponseEntity.ok(dto);
     }
 
+    /**
+     * Obtiene un carrito específico por idCart y userDpi.
+     *
+     * @param cartId  id del carrito
+     * @param userDpi dpi del usuario
+     * @return json con los productos del carrito
+     */
+    @GetMapping("/get/{cartId}/{userDpi}")
+    public List<CartProductDTO> getCartByIdAndUser(@PathVariable Long cartId, @PathVariable String userDpi) {
+        List<CartProduct> products = cartService.getCartByIdAndUser(cartId, userDpi);
+
+        return products.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
 
     /**
      * Convierte la entidad CartProduct a un DTO.

@@ -7,6 +7,7 @@ import lombok.*;
 @AllArgsConstructor
 @Getter
 @Setter
+@Builder
 @Entity
 @Table(name = "order_products")
 public class OrderProduct {
@@ -19,7 +20,7 @@ public class OrderProduct {
     private Order idOrder;
     @ManyToOne
     @JoinColumn(name = "product_id")
-    private Product productId;
+    private Product product;
     @Column(name = "quantity", nullable = false)
     private int quantity;
     @Column(name = "price", nullable = false)
