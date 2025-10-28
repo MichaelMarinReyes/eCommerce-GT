@@ -30,7 +30,7 @@ export const routes: Routes = [
         title: 'eCommerce-GT',
         component: CommonUserComponent,
         canActivate: [AuthGuard],
-        data: { role: 'USUARIO COMÚN'},
+        data: { role: 'USUARIO COMÚN' },
         children: [
             { path: '', redirectTo: 'product-list', pathMatch: 'full' },
             { path: 'product-list', title: 'Productos', component: ProductListComponent },
@@ -48,7 +48,7 @@ export const routes: Routes = [
         title: 'eCommerce-GT',
         component: AdminComponent,
         canActivate: [AuthGuard],
-        data: { role: 'ADMINISTRADOR'},
+        data: { role: 'ADMINISTRADOR' },
         children: [
             { path: '', redirectTo: 'product-approval', pathMatch: 'full' }
 
@@ -59,12 +59,12 @@ export const routes: Routes = [
         title: 'eCommerce-GT',
         component: ModeratorComponent,
         canActivate: [AuthGuard],
-        data: { role: 'MODERADOR'},
+        data: { role: 'MODERADOR' },
         children: [
             { path: '', redirectTo: 'product-approval', pathMatch: 'full' },
             { path: 'product-approval', title: 'Productos', component: ProductApprovalComponent },
             { path: 'sanction-create', title: 'Crear sanción', component: SanctionCreateComponent },
-            { path: 'sanction-list', title: 'Lista de sanciones', component: SanctionsListComponent }
+            { path: 'all-sanctions', title: 'Lista de sanciones', component: SanctionsListComponent }
         ]
     },
     {
@@ -72,7 +72,7 @@ export const routes: Routes = [
         title: 'eCommerce-GT',
         component: LogisticsComponent,
         canActivate: [AuthGuard],
-        data: { role: 'LOGÍSTICA'},
+        data: { role: 'LOGÍSTICA' },
         children: [
             { path: '', redirectTo: 'order-delivery', pathMatch: 'full' },
             { path: 'order-delivery', title: 'Entrega de pedido', component: OrderDeliveryComponent },

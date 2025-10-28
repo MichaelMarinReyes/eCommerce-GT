@@ -1,1 +1,40 @@
-<p>sanctions-list works!</p>
+<div class="container mt-4">
+  <h2 class="text-center mb-3">Lista de Sanciones</h2>
+
+  <table class="table table-bordered table-striped text-center align-middle">
+    <thead class="table-dark">
+      <tr>
+        <th>No.</th>
+        <th>DPI Usuario</th>
+        <th>Nombre</th>
+        <th>Tipo de infracción</th>
+        <th>Motivo</th>
+        <th>Fecha de inicio</th>
+        <th>Fecha de fin</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let sanction of sanctions; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ sanction.userDpi }}</td>
+        <td>{{ sanction.userName }}</td>
+        <td>{{ sanction.violationType }}</td>
+        <td>{{ sanction.reason }}</td>
+        <td>{{ sanction.startDate | date:'short' }}</td>
+        <td>{{ sanction.endDate ? (sanction.endDate | date:'short') : '—' }}</td>
+        <td>
+          <span [class.text-success]="!sanction.status" [class.text-danger]="sanction.status">
+            {{ sanction.status ? 'Sancionado' : 'Activo' }}
+          </span>
+        </td>
+        <td>
+          <button class="btn btn-success" [disabled]="!sanction.status" (click)="reactivateSanction(sanction)">
+            Reactivar
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

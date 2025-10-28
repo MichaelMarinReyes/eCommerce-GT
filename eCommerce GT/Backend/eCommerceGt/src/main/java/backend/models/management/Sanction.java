@@ -32,6 +32,8 @@ public class Sanction {
     private boolean status; // si está activa la sanción o ya concluyó
     @Column(name = "start_date", nullable = false)
     private Date startDate;
-    @Column(name = "end_date", nullable = false)
+    @Column(name = "end_date")
     private Date endDate;
+    @Column(name = "violation_type", nullable = false)
+    private String violationType;
 }

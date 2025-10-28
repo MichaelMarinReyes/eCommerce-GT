@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Sanción Recibida</title>
+</head>
+<body>
+<p>Hola <span th:text="${userName}"></span>,</p>
+<p>Has recibido una sanción en eCommerce GT.</p>
+<ul>
+    <li><strong>Tipo de infracción:</strong> <span th:text="${violationType}"></span></li>
+    <li><strong>Motivo:</strong> <span th:text="${reason}"></span></li>
+    <li><strong>Fin de sanción:</strong> <span th:text="${endDate}"></span></li>
+</ul>
+<p>Por favor, asegúrate de cumplir con las normas de la plataforma.</p>
+</body>
+</html>

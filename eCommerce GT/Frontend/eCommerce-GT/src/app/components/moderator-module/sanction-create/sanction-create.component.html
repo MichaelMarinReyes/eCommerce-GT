@@ -1,1 +1,31 @@
-<p>sanction-create works!</p>
+<div class="container mt-4">
+  <h2 class="text-center mb-3">Aplicar nueva sanción</h2>
+
+  <table class="table table-bordered table-striped text-center align-middle">
+    <thead class="table-dark">
+      <tr>
+        <th>DPI</th>
+        <th>Nombre</th>
+        <th>Correo</th>
+        <th>Rol</th>
+        <th>Acción</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users">
+        <td>{{ user.dpi }}</td>
+        <td>{{ user.name }}</td>
+        <td>{{ user.email || '—' }}</td>
+        <td>{{ user.role?.nameRole || 'Sin rol' }}</td>
+        <td>
+          <button 
+            class="btn btn-danger"
+            [disabled]="!user.status" 
+            (click)="applySanction(user)">
+            Sancionar
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

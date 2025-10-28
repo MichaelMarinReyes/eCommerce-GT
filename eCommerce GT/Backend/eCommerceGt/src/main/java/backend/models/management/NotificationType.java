@@ -4,7 +4,8 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum NotificationType {
     ORDER("Orden"),
-    PRODUCT("Producto");
+    PRODUCT("Producto"),
+    SANCTION("Sanción");
 
     private final String value;
 

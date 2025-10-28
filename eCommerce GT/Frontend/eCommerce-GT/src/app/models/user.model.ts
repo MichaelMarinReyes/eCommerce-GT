@@ -10,6 +10,6 @@ export interface User {
 
 export interface Role {
   idRole: number;
-  roleName: string;
+  nameRole: string;
   description?: string;
 }
