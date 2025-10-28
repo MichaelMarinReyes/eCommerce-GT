@@ -9,10 +9,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/products")
+@CrossOrigin(origins = {"http://localhost:4200", "https://morris-electrotechnic-dalia.ngrok-free.dev"}, allowedHeaders = "*", allowCredentials = "true")
 public class ProductController {
     private final ProductService productService;
 
@@ -112,8 +115,9 @@ public class ProductController {
      * @return un json con todos los productos con estado aprobados.
      */
     @GetMapping("/approved")
-    public ResponseEntity<List<ProductResponseDTO>> getActiveProducts() {
-        return ResponseEntity.ok(productService.getAllActiveProducts());
+    public ResponseEntity<List<ProductResponseDTO>> getAllApprovedProducts() {
+        List<ProductResponseDTO> products = productService.getAllActiveProducts();
+        return ResponseEntity.ok(products);
     }
 
     /**
@@ -147,8 +151,8 @@ public class ProductController {
      * @return un mensaje al frontend.
      */
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<ProductResponseDTO> deleteProduct(@PathVariable Long id, @RequestParam("userDpi") String userDpi) {
-        boolean deleted = productService.deleteProduct(id, userDpi);
+    public ResponseEntity<Map<String, Object>> deleteProduct(@PathVariable Long id, @RequestParam("userDpi") String userDpi) {
+        /*boolean deleted = productService.deleteProduct(id, userDpi);
 
         ProductResponseDTO response = new ProductResponseDTO();
         if (deleted) {
@@ -156,7 +160,16 @@ public class ProductController {
         } else {
             response.setName("No tienes permiso para eliminar este producto o no existe");
         }
+        return ResponseEntity.ok(response);*/
+        boolean deleted = productService.deleteProduct(id, userDpi);
+        Map<String, Object> response = new HashMap<>();
+        if (deleted) {
+            response.put("message", "Producto eliminado");
+        } else {
+            response.put("message", "No tienes permiso para eliminar este producto o no existe");
+        }
         return ResponseEntity.ok(response);
+
     }
 
     /**
@@ -165,7 +178,7 @@ public class ProductController {
      * @param id es el identificador del producto del cual se obtendrán los comentarios y raiting.
      * @return un json con los datos.
      */
-    @GetMapping("/{id}")
+    @GetMapping("/raiting/{id}")
     public ResponseEntity<ProductResponseDTO> getProduct(@PathVariable Long id) {
         ProductResponseDTO productResponseDTO = productService.getProductWithRatings(id);
         return ResponseEntity.ok(productResponseDTO);
