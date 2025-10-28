@@ -29,17 +29,8 @@ public class NotificationController {
     }
 
     @GetMapping("/admin-notifications")
-    public ResponseEntity<Page<NotificationAdminDTO>> getAdminHistory(
-            @RequestParam(required = false) String userDpi,
-            @RequestParam(required = false) NotificationType type,
-            @RequestParam(required = false) Boolean sent,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Date from,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Date to,
-            Pageable pageable) {
-        Page<NotificationAdminDTO> page = reportService.getAdminReport(
-                userDpi, type, sent, from, to, pageable
-        );
-
+    public ResponseEntity<Page<NotificationAdminDTO>> getAllAdminNotifications(Pageable pageable) {
+        Page<NotificationAdminDTO> page = reportService.getAllAdminNotifications(pageable);
         return ResponseEntity.ok(page);
     }
 

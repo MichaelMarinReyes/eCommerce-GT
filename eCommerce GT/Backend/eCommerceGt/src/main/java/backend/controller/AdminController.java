@@ -9,8 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/admin")
-@CrossOrigin(origins = {"http://localhost:4200", "https://morris-electrotechnic-dalia.ngrok-free.dev"}, allowedHeaders = "*", allowCredentials = "true")
-public class AdminController {
+@CrossOrigin(origins = {"http://localhost:4200",  "https://*.ngrok-free.app", "https://*.ngrok-free.dev", "https://e-comgt.netlify.app"}, allowedHeaders = "*", allowCredentials = "true")public class AdminController {
     private final AdminService adminService;
 
     public AdminController(AdminService adminService) {

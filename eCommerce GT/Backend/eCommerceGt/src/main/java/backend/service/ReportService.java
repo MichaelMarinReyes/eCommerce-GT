@@ -21,17 +21,8 @@ public class ReportService {
 
     private final NotificationRepository notificationRepository;
 
-    public Page<NotificationAdminDTO> getAdminReport(
-            String userDpi,
-            NotificationType type,
-            Boolean sent,
-            Date from,
-            Date to,
-            Pageable pageable) {
-        Page<Notification> page = notificationRepository.findWithFilters(
-                userDpi, type, sent, from, to, pageable
-        );
-
+    public Page<NotificationAdminDTO> getAllAdminNotifications(Pageable pageable) {
+        Page<Notification> page = notificationRepository.findAllNotifications(pageable);
         return page.map(this::toAdminDTO);
     }
 

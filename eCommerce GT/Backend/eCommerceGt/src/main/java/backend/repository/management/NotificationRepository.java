@@ -55,4 +55,10 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
             @Param("startDate") Date startDate,
             @Param("endDate") Date endDate,
             Pageable pageable);
+
+    @Query("SELECT n FROM Notification n ORDER BY n.sendAt DESC")
+    Page<Notification> findAllNotifications(Pageable pageable);
+
+    @Query("SELECT n FROM Notification n ORDER BY n.sendAt DESC")
+    List<Notification> findAllNotifications();
 }

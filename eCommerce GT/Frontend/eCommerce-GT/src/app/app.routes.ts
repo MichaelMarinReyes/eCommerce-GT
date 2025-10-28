@@ -20,6 +20,7 @@ import { LogisticsComponent } from './components/logistics-module/logistics/logi
 import { ProductApprovalComponent } from './components/moderator-module/product-approval/product-approval.component';
 import { OrderDeliveryComponent } from './components/logistics-module/order-delivery/order-delivery.component';
 import { EmployeeListComponent } from './components/admin-module/employee-list/employee-list.component';
+import { NotificationsListComponent } from './components/notifications-module/notifications-list/notifications-list.component';
 
 export const routes: Routes = [
     { path: '', title: 'eCommerce-GT', component: MainPageComponent },
@@ -52,7 +53,8 @@ export const routes: Routes = [
         data: { role: 'ADMINISTRADOR' },
         children: [
             { path: '', redirectTo: 'all-employees', pathMatch: 'full' },
-            { path: 'all-employees', title: "eCommerce-GT", component: EmployeeListComponent}
+            { path: 'all-employees', title: "eCommerce-GT", component: EmployeeListComponent },
+            { path: 'notification-history', title: 'Historial de notificaciones', component: NotificationsListComponent }
         ]
     },
     {

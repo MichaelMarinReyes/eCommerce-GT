@@ -36,3 +36,6 @@ build/
 ### llave ###
 /eCommerce GT/Backend/eCommerceGT/.env
 
+
+# Local Netlify folder
+.netlify

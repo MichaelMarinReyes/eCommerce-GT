@@ -15,7 +15,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/products")
-@CrossOrigin(origins = {"http://localhost:4200", "https://morris-electrotechnic-dalia.ngrok-free.dev"}, allowedHeaders = "*", allowCredentials = "true")
+@CrossOrigin(origins = {"http://localhost:4200",  "https://*.ngrok-free.app", "https://*.ngrok-free.dev", "https://e-comgt.netlify.app"}, allowedHeaders = "*", allowCredentials = "true")
 public class ProductController {
     private final ProductService productService;
 

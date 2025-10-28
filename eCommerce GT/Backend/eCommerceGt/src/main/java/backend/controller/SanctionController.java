@@ -10,8 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/sanctions")
-@CrossOrigin(origins = {"http://localhost:4200", "https://morris-electrotechnic-dalia.ngrok-free.dev"}, allowedHeaders = "*", allowCredentials = "true")
-public class SanctionController {
+@CrossOrigin(origins = {"http://localhost:4200",  "https://*.ngrok-free.app", "https://*.ngrok-free.dev", "https://e-comgt.netlify.app"}, allowedHeaders = "*", allowCredentials = "true")public class SanctionController {
     private final SanctionService sanctionService;
 
     public SanctionController(SanctionService sanctionService) {
