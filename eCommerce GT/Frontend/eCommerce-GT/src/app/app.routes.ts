@@ -19,6 +19,7 @@ import { SanctionsListComponent } from './components/moderator-module/sanctions-
 import { LogisticsComponent } from './components/logistics-module/logistics/logistics.component';
 import { ProductApprovalComponent } from './components/moderator-module/product-approval/product-approval.component';
 import { OrderDeliveryComponent } from './components/logistics-module/order-delivery/order-delivery.component';
+import { EmployeeListComponent } from './components/admin-module/employee-list/employee-list.component';
 
 export const routes: Routes = [
     { path: '', title: 'eCommerce-GT', component: MainPageComponent },
@@ -50,8 +51,8 @@ export const routes: Routes = [
         canActivate: [AuthGuard],
         data: { role: 'ADMINISTRADOR' },
         children: [
-            { path: '', redirectTo: 'product-approval', pathMatch: 'full' }
-
+            { path: '', redirectTo: 'all-employees', pathMatch: 'full' },
+            { path: 'all-employees', title: "eCommerce-GT", component: EmployeeListComponent}
         ]
     },
     {

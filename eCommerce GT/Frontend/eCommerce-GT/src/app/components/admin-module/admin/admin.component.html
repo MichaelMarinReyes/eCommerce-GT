@@ -1,1 +1,27 @@
-<p>view-admin works!</p>
+<header class="header">
+  <div class="logo">eCommerce GT</div>
+  <nav class="menu">
+    <ul class="menu-list">
+      <li>
+        <a routerLink="#" class="menu-item">Empleados</a>
+        <ul class="submenu">
+          <li><a routerLink="employee-add">Agregar nuevos empleados</a></li>
+          <li><a routerLink="employee-update">Actualizar información de empleados</a></li>
+          <li><a routerLink="employee-history">Visualizar historial de empleados</a></li>
+        </ul>
+      </li>
+
+      <li class="user-menu">
+        <span class="menu-item">{{ userName }}</span>
+        <ul class="submenu">
+          <li><a routerLink="edit-profile">Editar información</a></li>
+          <li><a (click)="logout()">Cerrar sesión</a></li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+<div class="content">
+  <router-outlet></router-outlet>
+</div>

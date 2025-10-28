@@ -13,3 +13,12 @@ export interface Role {
   nameRole: string;
   description?: string;
 }
+
+export interface UserDTO {
+  dpi: string;
+  name: string;
+  email: string;
+  address: string;
+  status: boolean;
+  roleName: string;
+}
