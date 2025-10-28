@@ -15,7 +15,7 @@ public class EmailController {
 
     @GetMapping("/send-email")
     public String sendEmail(@RequestParam String to) {
-        emailService.sendEmail(to, "Prueba de correo", "Hola, este es un correo de prueba!");
+        //emailService.(to, "Prueba de correo", "Hola, este es un correo de prueba!");
         return "Correo enviado a " + to;
     }
 }

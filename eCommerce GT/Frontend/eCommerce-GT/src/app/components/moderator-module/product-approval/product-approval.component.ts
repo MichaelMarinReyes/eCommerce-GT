@@ -25,13 +25,14 @@ export class ProductApprovalComponent implements OnInit {
   loadPendingProducts(): void {
     this.productService.getPendingProducts().subscribe({
       next: (products: Product[]) => {
-        console.log('Productos pendientes recibidos:', products);
         this.pendingProducts = products;
       },
       error: (err) => console.log('Error cargando productos pendientes', err)
     });
 
-  } approveProduct(productId: number): void {
+  }
+
+  approveProduct(productId: number): void {
     Swal.fire({
       title: '¿Aprobar producto?',
       icon: 'question',

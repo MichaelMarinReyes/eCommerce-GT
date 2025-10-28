@@ -32,7 +32,6 @@ export class ProductService {
   }
 
   updateProduct(id: number, formData: FormData, userDpi: string): Observable<Product> {
-    // Agregamos userDpi dentro del FormData
     formData.append('userDpi', userDpi);
     return this.http.put<Product>(`${this.apiUrl}/update/${id}`, formData);
   }

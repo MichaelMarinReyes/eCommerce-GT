@@ -40,7 +40,6 @@ export class LoginComponent {
 
     this.authService.login(loginData).subscribe({
       next: (response: AuthResponse) => {
-        //console.log('Login exitoso:', response);
         localStorage.setItem('token', response.token);
         localStorage.setItem('role', response.role);
 
@@ -58,7 +57,8 @@ export class LoginComponent {
             this.router.navigate(['/common-user']);
             break;
           default:
-            this.router.navigate(['/no-access']);
+            Swal.fire('Credenciales inválidas', 'Correo o contraseña incorrectos', 'error');
+            this.router.navigate(['#']);
             break;
         }
       },

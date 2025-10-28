@@ -299,11 +299,7 @@ public class ProductService {
         product.setUpdatedAt(new Date());
         productRepository.save(product);
 
-        String to = product.getUserDpi().getEmail(); // suponiendo que Product tiene un User
-        String subject = "Producto aprobado";
-        String text = "Hola " + product.getUserDpi().getName() +
-                ", tu producto '" + product.getProductName() + "' ha sido aprobado.";
-        emailService.sendEmail(to, subject, text);
+        emailService.sendProductStatusEmail(product.getUserDpi(), product.getProductName(), true);
 
         return mapToResponseDTO(product);
     }
@@ -321,11 +317,8 @@ public class ProductService {
 
         product.setStatus(ProductStatus.REJECTED);
         productRepository.save(product);
-        String to = product.getUserDpi().getEmail();
-        String subject = "Producto rechazado";
-        String text = "Hola " + product.getUserDpi().getName() +
-                ", tu producto '" + product.getProductName() + "' ha sido rechazado.";
-        emailService.sendEmail(to, subject, text);
+
+        emailService.sendProductStatusEmail(product.getUserDpi(), product.getProductName(), false);
         return mapToResponseDTO(product);
     }
 }

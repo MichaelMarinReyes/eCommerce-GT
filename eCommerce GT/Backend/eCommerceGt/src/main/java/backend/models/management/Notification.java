@@ -20,12 +20,13 @@ public class Notification {
     private Long idNotification;
     @ManyToOne
     @JoinColumn(name = "user_dpi", nullable = false)
-    private User userDpi;
+    private User user;
+    @Enumerated(EnumType.STRING)
     @Column(name = "type", nullable = false)
-    private String type; // Tipo si correo, pedido o producto
+    private NotificationType type;
     @Column(name = "subject", nullable = false)
     private String subject;
-    @Column(name = "message", nullable = false)
+    @Column(name = "message", nullable = false, length = 2000)
     private String message;
     @Column(name = "email_sent", nullable = false)
     private boolean emailSent;
@@ -33,6 +34,8 @@ public class Notification {
     private Date sendAt;
     @Column(name = "created_at", nullable = false)
     private Date createdAt;
-    @Column(name = "delivery_date", nullable = false)
+    @Column(name = "delivery_date")
     private Date deliveryDate;
+    @Column(name = "error_message")
+    private String errorMessage;
 }
