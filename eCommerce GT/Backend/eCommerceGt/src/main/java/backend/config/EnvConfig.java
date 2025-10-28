@@ -6,13 +6,12 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class EnvConfig {
     static {
-        // IMPRIME RUTA ACTUAL
         String currentDir = System.getProperty("user.dir");
         System.out.println("Directorio actual: " + currentDir);
 
         try {
             Dotenv dotenv = Dotenv.configure()
-                    .directory("./")   // ← BUSCA EN LA RAÍZ DEL PROYECTO
+                    .directory("./")
                     .filename(".env")
                     .ignoreIfMissing()
                     .load();
