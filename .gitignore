@@ -1,0 +1,7 @@
+# Ignorar archivos sensibles
+.env
+application.properties
+*.log
+target/
+.idea/
+*.iml
