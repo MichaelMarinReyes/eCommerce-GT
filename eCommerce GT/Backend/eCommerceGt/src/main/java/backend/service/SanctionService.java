@@ -68,7 +68,7 @@ public class SanctionService {
         User user = sanction.getUserDpi();
         user.setStatus(!status);
         userRepository.save(user);
-        sanctionEmailService.sendSanctionEmail(sanction.getUserDpi(), "Activado", "Su cuenta ha sido reactivada", endDate);
+        sanctionEmailService.sendSanctionRemovedEmail(sanction.getUserDpi(), "Ha cumplido con las sanciones correspondientes", endDate);
         return toDTO(sanction);
     }
 

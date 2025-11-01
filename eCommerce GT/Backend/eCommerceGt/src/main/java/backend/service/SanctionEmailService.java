@@ -30,4 +30,18 @@ public class SanctionEmailService {
 
         emailService.sendTemplatedEmail(user, NotificationType.SANCTION, subject, template, model, endDate);
     }
+
+    @Async
+    public void sendSanctionRemovedEmail(User user, String reason, Date date) {
+        String template = "sanction-removed-notification";
+        String subject = "Se ha levantado tu sanción en eCommerce GT";
+
+        Map<String, Object> model = Map.of(
+                "userName", user.getName(),
+                "reason", reason != null ? reason : "No especificado",
+                "removedDate", new Date().toString()
+        );
+
+        emailService.sendTemplatedEmail(user, NotificationType.REMOVE_SANCTION, subject, template, model, date);
+    }
 }
