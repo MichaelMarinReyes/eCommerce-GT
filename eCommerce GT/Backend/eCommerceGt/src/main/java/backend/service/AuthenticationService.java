@@ -7,7 +7,7 @@ import backend.models.users.Role;
 import backend.models.users.User;
 import backend.repository.users.RoleRepository;
 import backend.repository.users.UserRepository;
-import backend.utils.Jwt;
+import backend.security.Jwt;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -48,7 +48,7 @@ public class AuthenticationService {
 
         userRepository.save(user);
 
-        String token = jwtUtils.generateToken(user.getEmail());
+        String token = jwtUtils.generateToken(user.getEmail(), user.getRole().getNameRole());
 
         return AuthResponseDTO.builder()
                 .token(token)
@@ -79,7 +79,7 @@ public class AuthenticationService {
                     .build();
         }
 
-        String token = jwtUtils.generateToken(user.getEmail());
+        String token = jwtUtils.generateToken(user.getEmail(), user.getRole().getNameRole());
 
         return AuthResponseDTO.builder()
                 .token(token)

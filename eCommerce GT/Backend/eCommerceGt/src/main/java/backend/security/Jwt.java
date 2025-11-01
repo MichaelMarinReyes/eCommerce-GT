@@ -1,4 +1,4 @@
-package backend.utils;
+package backend.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
@@ -21,9 +21,10 @@ public class Jwt {
         return Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
     }
 
-    public String generateToken(String email) {
+    public String generateToken(String email, String role) {
         return Jwts.builder()
                 .setSubject(email)
+                .claim("role", role)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
@@ -31,6 +32,7 @@ public class Jwt {
     }
 
     public boolean validateToken(String token) {
+
         if (blacklist.contains(token)) {
             return false;
         }
@@ -54,5 +56,14 @@ public class Jwt {
 
     public void addToBlacklist(String token) {
         blacklist.add(token);
+    }
+
+    public String extractRole(String token) {
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(getSigningKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+        return claims.get("role", String.class);
     }
 }

@@ -16,7 +16,7 @@ INSERT INTO categories (category_name, description) VALUES
 ('Académico', 'Material de estudio, libros, papelería y artículos escolares.'),
 ('Personal', 'Productos de uso personal como ropa, calzado, higiene y belleza.'),
 ('Decoración', 'Objetos decorativos para el hogar u oficina.'),
-('Otro', 'Productos varios que no encajan en otras categorías.');
+('Otros', 'Productos varios que no encajan en otras categorías.');
 
 INSERT INTO users(user_dpi, address, email, name, password, status, id_role) VALUES
 --ADMINISTRADOR
@@ -118,16 +118,16 @@ INSERT INTO products (product_name, description, image, price, stock, condition,
 ('Cesto de basura metálico', 'Cesto negro con diseño moderno.', 'Cesto de basura metálico.jpg', 85.00, 20, TRUE, 'APPROVED', (SELECT id_category FROM categories WHERE category_name = 'Personal'), '2458796311606', NOW(), NOW()),
 
 -- Usuario 7
-('Taladro inalámbrico Bosch', 'Taladro 12V con batería extra.', 'Taladro inalámbrico Bosch.jpg', 980.00, 5, TRUE, 'APPROVED', (SELECT id_category FROM categories WHERE category_name = 'Otro'), '1987645321707', NOW(), NOW()),
-('Caja de herramientas', 'Caja metálica de 50 piezas.', 'Caja de herramientas.jpg', 450.00, 7, TRUE, 'APPROVED', (SELECT id_category FROM categories WHERE category_name = 'Otro'), '1987645321707', NOW(), NOW()),
-('Destornilladores Stanley', 'Set de 10 piezas.', 'Destornilladores Stanley.jpg', 250.00, 15, TRUE, 'APPROVED', (SELECT id_category FROM categories WHERE category_name = 'Otro'), '1987645321707', NOW(), NOW()),
-('Martillo de carpintero', 'Cabeza de acero templado.', 'Martillo de carpintero.jpg', 125.00, 20, TRUE, 'APPROVED', (SELECT id_category FROM categories WHERE category_name = 'Otro'), '1987645321707', NOW(), NOW()),
-('Sierra eléctrica', 'Sierra circular 7 1/4”.', 'Sierra eléctrica.jpg', 1150.00, 3, TRUE, 'APPROVED', (SELECT id_category FROM categories WHERE category_name = 'Otro'), '1987645321707', NOW(), NOW()),
-('Nivel láser', 'Nivel de precisión con trípode.', 'Nivel láser.jpg', 875.00, 2, TRUE, 'APPROVED', (SELECT id_category FROM categories WHERE category_name = 'Otro'), '1987645321707', NOW(), NOW()),
-('Llave inglesa', 'Llave ajustable 12”.', 'Llave inglesa.jpg', 95.00, 30, TRUE, 'APPROVED', (SELECT id_category FROM categories WHERE category_name = 'Otro'), '1987645321707', NOW(), NOW()),
-('Guantes de trabajo', 'Guantes resistentes de cuero.', 'Guantes de trabajo.jpg', 70.00, 25, TRUE, 'APPROVED', (SELECT id_category FROM categories WHERE category_name = 'Otro'), '1987645321707', NOW(), NOW()),
-('Escalera plegable', 'Escalera de aluminio 3m.', 'Escalera plegable.jpg', 650.00, 4, TRUE, 'APPROVED', (SELECT id_category FROM categories WHERE category_name = 'Otro'), '1987645321707', NOW(), NOW()),
-('Cinta métrica 5m', 'Cinta de medición profesional.', 'Cinta métrica 5m.jpg', 60.00, 40, TRUE, 'APPROVED', (SELECT id_category FROM categories WHERE category_name = 'Otro'), '1987645321707', NOW(), NOW()),
+('Taladro inalámbrico Bosch', 'Taladro 12V con batería extra.', 'Taladro inalámbrico Bosch.jpg', 980.00, 5, TRUE, 'APPROVED', (SELECT id_category FROM categories WHERE category_name = 'Otros'), '1987645321707', NOW(), NOW()),
+('Caja de herramientas', 'Caja metálica de 50 piezas.', 'Caja de herramientas.jpg', 450.00, 7, TRUE, 'APPROVED', (SELECT id_category FROM categories WHERE category_name = 'Otros'), '1987645321707', NOW(), NOW()),
+('Destornilladores Stanley', 'Set de 10 piezas.', 'Destornilladores Stanley.jpg', 250.00, 15, TRUE, 'APPROVED', (SELECT id_category FROM categories WHERE category_name = 'Otros'), '1987645321707', NOW(), NOW()),
+('Martillo de carpintero', 'Cabeza de acero templado.', 'Martillo de carpintero.jpg', 125.00, 20, TRUE, 'APPROVED', (SELECT id_category FROM categories WHERE category_name = 'Otros'), '1987645321707', NOW(), NOW()),
+('Sierra eléctrica', 'Sierra circular 7 1/4”.', 'Sierra eléctrica.jpg', 1150.00, 3, TRUE, 'APPROVED', (SELECT id_category FROM categories WHERE category_name = 'Otros'), '1987645321707', NOW(), NOW()),
+('Nivel láser', 'Nivel de precisión con trípode.', 'Nivel láser.jpg', 875.00, 2, TRUE, 'APPROVED', (SELECT id_category FROM categories WHERE category_name = 'Otros'), '1987645321707', NOW(), NOW()),
+('Llave inglesa', 'Llave ajustable 12”.', 'Llave inglesa.jpg', 95.00, 30, TRUE, 'APPROVED', (SELECT id_category FROM categories WHERE category_name = 'Otros'), '1987645321707', NOW(), NOW()),
+('Guantes de trabajo', 'Guantes resistentes de cuero.', 'Guantes de trabajo.jpg', 70.00, 25, TRUE, 'APPROVED', (SELECT id_category FROM categories WHERE category_name = 'Otros'), '1987645321707', NOW(), NOW()),
+('Escalera plegable', 'Escalera de aluminio 3m.', 'Escalera plegable.jpg', 650.00, 4, TRUE, 'APPROVED', (SELECT id_category FROM categories WHERE category_name = 'Otros'), '1987645321707', NOW(), NOW()),
+('Cinta métrica 5m', 'Cinta de medición profesional.', 'Cinta métrica 5m.jpg', 60.00, 40, TRUE, 'APPROVED', (SELECT id_category FROM categories WHERE category_name = 'Otros'), '1987645321707', NOW(), NOW()),
 
 -- Usuario 8
 ('Collar de plata', 'Collar con dije de corazón.', 'Collar de plata.jpg', 450.00, 6, TRUE, 'APPROVED', (SELECT id_category FROM categories WHERE category_name = 'Personal'), '2765894311808', NOW(), NOW()),
@@ -154,14 +154,14 @@ INSERT INTO products (product_name, description, image, price, stock, condition,
 ('Cuadro con frase motivacional', 'Marco negro 30x40cm.', 'Cuadro con frase motivacional.jpg', 180.00, 9, TRUE, 'APPROVED', (SELECT id_category FROM categories WHERE category_name = 'Decoración'), '3098746151909', NOW(), NOW()),
 
 -- Usuario 10
-('Balón de fútbol Adidas', 'Balón oficial tamaño 5.', 'Balón de fútbol Adidas.jpg', 350.00, 12, TRUE, 'APPROVED', (SELECT id_category FROM categories WHERE category_name = 'Otro'), '2549871362001', NOW(), NOW()),
-('Raqueta de tenis Wilson', 'Raqueta ligera de grafito.', 'Raqueta de tenis Wilson.jpg', 890.00, 5, TRUE, 'APPROVED', (SELECT id_category FROM categories WHERE category_name = 'Otro'), '2549871362001', NOW(), NOW()),
-('Guantes de portero', 'Guantes talla M con agarre Pro.', 'Guantes de portero.jpg', 425.00, 8, TRUE, 'APPROVED', (SELECT id_category FROM categories WHERE category_name = 'Otro'), '2549871362001', NOW(), NOW()),
-('Camisola del Real Madrid', 'Original temporada 2024/2025.', 'Camisola del Real Madrid.jpg', 950.00, 6, TRUE, 'APPROVED', (SELECT id_category FROM categories WHERE category_name = 'Otro'), '2549871362001', NOW(), NOW()),
-('Pesas ajustables', 'Set de 20kg con maletín.', 'Pesas ajustables.jpg', 1250.00, 4, TRUE, 'APPROVED', (SELECT id_category FROM categories WHERE category_name = 'Otro'), '2549871362001', NOW(), NOW()),
-('Colchoneta de yoga', 'Antideslizante, 6mm.', 'Colchoneta de yoga.jpg', 225.00, 15, TRUE, 'APPROVED', (SELECT id_category FROM categories WHERE category_name = 'Otro'), '2549871362001', NOW(), NOW()),
-('Casco de ciclismo', 'Certificado y ventilado.', 'Casco de ciclismo.jpg', 480.00, 10, TRUE, 'APPROVED', (SELECT id_category FROM categories WHERE category_name = 'Otro'), '2549871362001', NOW(), NOW()),
-('Botella deportiva', 'Botella de acero inoxidable 750ml.', 'Botella deportiva.jpg', 150.00, 25, TRUE, 'APPROVED', (SELECT id_category FROM categories WHERE category_name = 'Otro'), '2549871362001', NOW(), NOW()),
-('Toalla de microfibra', 'Toalla deportiva absorbente.', 'Toalla de microfibra.jpg', 95.00, 20, TRUE, 'APPROVED', (SELECT id_category FROM categories WHERE category_name = 'Otro'), '2549871362001', NOW(), NOW()),
-('Cuerda para saltar', 'Cuerda ajustable de velocidad.', 'Cuerda para saltar.jpg', 75.00, 30, TRUE, 'APPROVED', (SELECT id_category FROM categories WHERE category_name = 'Otro'), '2549871362001', NOW(), NOW());
+('Balón de fútbol Adidas', 'Balón oficial tamaño 5.', 'Balón de fútbol Adidas.jpg', 350.00, 12, TRUE, 'APPROVED', (SELECT id_category FROM categories WHERE category_name = 'Otros'), '2549871362001', NOW(), NOW()),
+('Raqueta de tenis Wilson', 'Raqueta ligera de grafito.', 'Raqueta de tenis Wilson.jpg', 890.00, 5, TRUE, 'APPROVED', (SELECT id_category FROM categories WHERE category_name = 'Otros'), '2549871362001', NOW(), NOW()),
+('Guantes de portero', 'Guantes talla M con agarre Pro.', 'Guantes de portero.jpg', 425.00, 8, TRUE, 'APPROVED', (SELECT id_category FROM categories WHERE category_name = 'Otros'), '2549871362001', NOW(), NOW()),
+('Camisola del Real Madrid', 'Original temporada 2024/2025.', 'Camisola del Real Madrid.jpg', 950.00, 6, TRUE, 'APPROVED', (SELECT id_category FROM categories WHERE category_name = 'Otros'), '2549871362001', NOW(), NOW()),
+('Pesas ajustables', 'Set de 20kg con maletín.', 'Pesas ajustables.jpg', 1250.00, 4, TRUE, 'APPROVED', (SELECT id_category FROM categories WHERE category_name = 'Otros'), '2549871362001', NOW(), NOW()),
+('Colchoneta de yoga', 'Antideslizante, 6mm.', 'Colchoneta de yoga.jpg', 225.00, 15, TRUE, 'APPROVED', (SELECT id_category FROM categories WHERE category_name = 'Otros'), '2549871362001', NOW(), NOW()),
+('Casco de ciclismo', 'Certificado y ventilado.', 'Casco de ciclismo.jpg', 480.00, 10, TRUE, 'APPROVED', (SELECT id_category FROM categories WHERE category_name = 'Otros'), '2549871362001', NOW(), NOW()),
+('Botella deportiva', 'Botella de acero inoxidable 750ml.', 'Botella deportiva.jpg', 150.00, 25, TRUE, 'APPROVED', (SELECT id_category FROM categories WHERE category_name = 'Otros'), '2549871362001', NOW(), NOW()),
+('Toalla de microfibra', 'Toalla deportiva absorbente.', 'Toalla de microfibra.jpg', 95.00, 20, TRUE, 'APPROVED', (SELECT id_category FROM categories WHERE category_name = 'Otros'), '2549871362001', NOW(), NOW()),
+('Cuerda para saltar', 'Cuerda ajustable de velocidad.', 'Cuerda para saltar.jpg', 75.00, 30, TRUE, 'APPROVED', (SELECT id_category FROM categories WHERE category_name = 'Otros'), '2549871362001', NOW(), NOW());
 

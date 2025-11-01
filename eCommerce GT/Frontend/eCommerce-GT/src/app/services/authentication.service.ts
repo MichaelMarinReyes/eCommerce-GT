@@ -64,7 +64,8 @@ export class AuthenticationService {
   logout(): void {
     const token = localStorage.getItem('token') || '';
     this.http.post(`${this.baseUrl}/logout`, {}, {
-      headers: { 'Authorization': `Bearer ${token}` }
+      headers: { 'Authorization': `Bearer ${token}` },
+      responseType: 'text'
     }).subscribe();
 
     localStorage.clear();

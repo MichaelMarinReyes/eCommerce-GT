@@ -5,6 +5,7 @@ import backend.dto.market.ProductResponseDTO;
 import backend.dto.market.ProductUpdateDTO;
 import backend.service.ProductService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -104,6 +105,7 @@ public class ProductController {
      * @param userDpi es el dpi del usuario.
      * @return una respuesta para el frontend.
      */
+    @PreAuthorize("hasAuthority('USUARIO COMÚN')")
     @GetMapping("/user/{userDpi}")
     public ResponseEntity<List<ProductResponseDTO>> getProductByUser(@PathVariable String userDpi) {
         return ResponseEntity.ok(productService.getProductsByUser(userDpi));
@@ -139,6 +141,7 @@ public class ProductController {
      * @return un json con los productos.
      */
     @GetMapping("/exclude/{userDpi}")
+    @PreAuthorize("hasAuthority('USUARIO COMÚN')")
     public ResponseEntity<List<ProductResponseDTO>> getActiveProductsExcludingUser(@PathVariable String userDpi) {
         return ResponseEntity.ok(productService.getAllActiveProductsExceptUser(userDpi));
     }
