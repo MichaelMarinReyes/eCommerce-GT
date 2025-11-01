@@ -74,9 +74,7 @@ public class AuthenticationService {
         }
 
         if (!user.isStatus()) {
-            return AuthResponseDTO.builder()
-                    .message("Usuario suspendido.")
-                    .build();
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Usuario suspendido, no puede iniciar sesión hasta que la suspensión haya terminado.");
         }
 
         String token = jwtUtils.generateToken(user.getEmail(), user.getRole().getNameRole());

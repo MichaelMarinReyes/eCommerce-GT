@@ -29,7 +29,7 @@ export class LoginComponent {
 
   login() {
     if (!this.email?.trim() || !this.password?.trim()) {
-      alert("Debe llenar ambos campos para iniciar sesión");
+      Swal.fire("Campos vacíos", "Debe llenar ambos campos para iniciar sesión", "info");
       return;
     }
 
@@ -58,13 +58,16 @@ export class LoginComponent {
             break;
           default:
             Swal.fire('Credenciales inválidas', 'Correo o contraseña incorrectos', 'error');
-            this.router.navigate(['#']);
+            this.email = '';
+            this.password = '';
             break;
         }
       },
       error: (err) => {
-        console.error('Error en login:', err);
-        Swal.fire('Credenciales inválidas', 'Correo o contraseña incorrectos', 'error');
+        const msg = err.error?.message || 'Correo o contraseña incorrectos';
+        Swal.fire('Acceso denegado', msg, 'error');
+        this.email = '';
+        this.password = '';
       }
     });
   }

@@ -50,7 +50,7 @@ public class SanctionService {
         user.setStatus(false);
         userRepository.save(user);
 
-        sanctionEmailService.sendSanctionEmail(user, violationType, reason, endDate);
+        sanctionEmailService.sendSanctionEmail(user, violationType, reason, new Date());
         return toDTO(sanction);
     }
 
@@ -58,15 +58,17 @@ public class SanctionService {
         Sanction sanction = sanctionRepository.findById(sanctionId)
                 .orElseThrow(() -> new RuntimeException("Sanción no encontrada"));
 
+        Date endDate = new Date();
         sanction.setStatus(status);
         if (!status) {
-            sanction.setEndDate(new Date());
+            sanction.setEndDate(endDate);
         }
         sanction = sanctionRepository.save(sanction);
 
         User user = sanction.getUserDpi();
         user.setStatus(!status);
         userRepository.save(user);
+        sanctionEmailService.sendSanctionEmail(sanction.getUserDpi(), "Activado", "Su cuenta ha sido reactivada", endDate);
         return toDTO(sanction);
     }
 

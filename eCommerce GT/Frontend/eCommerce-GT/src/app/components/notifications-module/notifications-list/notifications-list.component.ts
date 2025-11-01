@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NotificationService, NotificationAdminDTO } from '../../../services/notification.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-notifications-list',
@@ -50,4 +51,24 @@ export class NotificationsListComponent implements OnInit {
       this.page--;
     }
   }
+
+  getPreview(message: string): string {
+    if (!message) return 'Sin contenido';
+    const textOnly = message.replace(/<[^>]+>/g, '');
+    const words = textOnly.split(/\s+/).slice(0, 25).join(' ');
+    return words + (textOnly.split(/\s+/).length > 25 ? '...' : '');
+  }
+
+  openMessage(message: string) {
+    Swal.fire({
+      title: '📩 Mensaje completo',
+      html: message,
+      width: '800px',
+      confirmButtonText: 'Cerrar',
+      confirmButtonColor: '#fa8541',
+      background: '#fff',
+      showCloseButton: true,
+    });
+  }
+
 }

@@ -17,7 +17,14 @@
         <td>{{ i + 1 + page * size }}</td>
         <td>{{ notif.subject || 'Sin título' }}</td>
         <td>{{ notif.userDpi }}</td>
-        <td>{{ notif.message || 'Sin contenido' }}</td>
+        <td>
+          <div class="message-box">
+            <span [innerHTML]="getPreview(notif.message)"></span>
+            <a *ngIf="notif.message" (click)="openMessage(notif.message)" class="view-more">
+              Ver más
+            </a>
+          </div>
+        </td>
         <td>{{ notif.sendAt | date:'short' }}</td>
         <td>
           <span [ngClass]="notif.emailSent ? 'badge bg-success' : 'badge bg-secondary'">
